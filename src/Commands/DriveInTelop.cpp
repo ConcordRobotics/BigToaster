@@ -27,7 +27,10 @@ void DriveInTelop::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveInTelop::Execute() {
-	
+	Joystick* stick = Robot::oi->getJoystick1();
+
+	RobotMap::driveMotorsRobotDrive->MecanumDrive_Cartesian(stick->GetX(),stick->GetY(),0.0);
+	Wait(0.005); // wait 5ms to avoid hogging CPU cycles
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -37,7 +40,7 @@ bool DriveInTelop::IsFinished() {
 
 // Called once after isFinished returns true
 void DriveInTelop::End() {
-	
+	// Add something to kill the motors
 }
 
 // Called when another command which requires one or more of the same
