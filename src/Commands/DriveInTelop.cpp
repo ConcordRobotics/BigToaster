@@ -10,6 +10,12 @@
 
 
 #include "DriveInTelop.h"
+#include <tgmath.h>
+
+float xGain = 1.0;
+float yGain = 1.0;
+float zGain = 0.5;
+float zDeadBand = 0.0;
 
 DriveInTelop::DriveInTelop() {
 	// Use requires() here to declare subsystem dependencies
@@ -28,8 +34,21 @@ void DriveInTelop::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void DriveInTelop::Execute() {
 	Joystick* stick = Robot::oi->getJoystick1();
+	float x = stick->GetX();
+	float y = stick->GetY();
+    float z = stick->GetTwist();
+    if (z > zDeadBand) {
+    	z = (z - zDeadBand)/(1.0-zDeadBand);
+    } else if (z < -zDeadBand) {
+    	z = (z + zDeadBand)/(1.0 - zDeadBand);
+    } else {
+    	z = 0;
+    }
+    x = exp(xGain*abs(x))/exp(xGain)*x;
+    y = exp(yGain*abs(y))/exp(yGain)*y;
+    z = exp(zGain*abs(z))/exp(zGain)*z;
 
-	RobotMap::driveMotorsRobotDrive->MecanumDrive_Cartesian(stick->GetX(),stick->GetY(),0.0);
+	RobotMap::driveMotorsRobotDrive->MecanumDrive_Cartesian(x,y,z);
 	Wait(0.005); // wait 5ms to avoid hogging CPU cycles
 }
 
