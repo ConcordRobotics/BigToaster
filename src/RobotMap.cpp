@@ -64,9 +64,9 @@ void RobotMap::init() {
 	driveMotorsHeadingPIDOutput = new drivePIDOutput(0.0);
 	//lw->AddActuator("DriveMotors", "HeadingPIDoutput", (PIDOutput*) driveMotorsHeadingPIDOutput);
 	
-	driveMotorsHeadingPIDController = new PIDController(1.0, 0.0, 0.0,/* F: 0.0, */ driveMotorsGyro1, driveMotorsHeadingPIDOutput, 0.02);
+	driveMotorsHeadingPIDController = new PIDController(100.0, 0.0, 0.0,/* F: 0.0, */ driveMotorsGyro1, driveMotorsHeadingPIDOutput, 0.02);
 	lw->AddActuator("DriveMotors", "HeadingPIDController", driveMotorsHeadingPIDController);
-	driveMotorsHeadingPIDController->SetContinuous(false); driveMotorsHeadingPIDController->SetAbsoluteTolerance(0.2); 
+	driveMotorsHeadingPIDController->SetContinuous(false); driveMotorsHeadingPIDController->SetAbsoluteTolerance(0.2);
         driveMotorsHeadingPIDController->SetOutputRange(-1.0, 1.0);
 
 }

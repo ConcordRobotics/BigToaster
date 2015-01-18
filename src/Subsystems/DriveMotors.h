@@ -39,6 +39,7 @@ public:
 	PIDController* headingPIDController;
 	bool turning;
     float targetHeading;
+    float lastHeading;
 	DriveMotors();
 	void arcadeDrive(float dx, float dy, float dz);
 	void InitDefaultCommand();
