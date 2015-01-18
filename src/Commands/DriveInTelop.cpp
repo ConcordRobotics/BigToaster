@@ -38,7 +38,7 @@ void DriveInTelop::Execute() {
 	float y = stick->GetY();
     float z = stick->GetTwist();
     if (z > zDeadBand) {
-    	z = (z - zDeadBand)/(1.0-zDeadBand);
+    	z = (z - zDeadBand)/(1.0 - zDeadBand);
     } else if (z < -zDeadBand) {
     	z = (z + zDeadBand)/(1.0 - zDeadBand);
     } else {
@@ -48,8 +48,8 @@ void DriveInTelop::Execute() {
     y = exp(yGain*abs(y))/exp(yGain)*y;
     z = exp(zGain*abs(z))/exp(zGain)*z;
 
-	RobotMap::driveMotorsRobotDrive->MecanumDrive_Cartesian(x,y,z);
-	Wait(0.005); // wait 5ms to avoid hogging CPU cycles
+	Robot::driveMotors->arcadeDrive(x,y,z);
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
