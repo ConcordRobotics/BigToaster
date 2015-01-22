@@ -20,7 +20,6 @@ SpeedController* RobotMap::driveMotorsBackLeftSC = NULL;
 SpeedController* RobotMap::driveMotorsBackRightSC = NULL;
 SpeedController* RobotMap::liftSC = NULL;
 RobotDrive* RobotMap::driveMotorsRobotDrive = NULL;
-RobotDrive* RobotMap::liftMotor = NULL;
 Gyro* RobotMap::driveMotorsGyro1 = NULL;
 Encoder* RobotMap::driveMotorsQuadratureEncoder1 = NULL;
 
