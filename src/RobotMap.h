@@ -13,6 +13,7 @@
 #define ROBOTMAP_H
 #include "WPILib.h"
 #include "Subsystems/drivePIDOutput.h"
+#include "Subsystems/Lift.h"
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -26,6 +27,7 @@ public:
 	static SpeedController* driveMotorsFrontRightSC;
 	static SpeedController* driveMotorsBackLeftSC;
 	static SpeedController* driveMotorsBackRightSC;
+	static SpeedController* liftMotor;
 	static RobotDrive* driveMotorsRobotDrive;
 	static Gyro* driveMotorsGyro1;
 
