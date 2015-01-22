@@ -64,7 +64,6 @@ void RobotMap::init() {
 	driveMotorsQuadratureEncoder1->SetDistancePerPulse(1.0);
         driveMotorsQuadratureEncoder1->SetPIDSourceParameter(Encoder::kRate);
 
-
 	liftSC = new Victor(4);
 	liftMotor = new RobotDrive(liftSC);
 	lw->AddActuator("Lift", "LiftMotor", (Victor*) liftSC);
