@@ -28,7 +28,6 @@ public:
 	static SpeedController* driveMotorsBackLeftSC;
 	static SpeedController* driveMotorsBackRightSC;
 	static SpeedController* liftSC;
-	static RobotDrive* liftMotor;
 	static RobotDrive* driveMotorsRobotDrive;
 	static Gyro* driveMotorsGyro1;
 	static Encoder* driveMotorsQuadratureEncoder1;

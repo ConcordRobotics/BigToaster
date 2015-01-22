@@ -18,8 +18,9 @@ SpeedController* RobotMap::driveMotorsFrontLeftSC = NULL;
 SpeedController* RobotMap::driveMotorsFrontRightSC = NULL;
 SpeedController* RobotMap::driveMotorsBackLeftSC = NULL;
 SpeedController* RobotMap::driveMotorsBackRightSC = NULL;
-SpeedController* RobotMap::liftMotor = NULL;
+SpeedController* RobotMap::liftSC = NULL;
 RobotDrive* RobotMap::driveMotorsRobotDrive = NULL;
+RobotDrive* RobotMap::liftMotor = NULL;
 Gyro* RobotMap::driveMotorsGyro1 = NULL;
 Encoder* RobotMap::driveMotorsQuadratureEncoder1 = NULL;
 
@@ -65,7 +66,6 @@ void RobotMap::init() {
         driveMotorsQuadratureEncoder1->SetPIDSourceParameter(Encoder::kRate);
 
 	liftSC = new Victor(4);
-	liftMotor = new RobotDrive(liftSC);
 	lw->AddActuator("Lift", "LiftMotor", (Victor*) liftSC);
 
 
