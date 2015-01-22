@@ -15,7 +15,7 @@
 float xGain = 1.0;
 float yGain = 1.0;
 float zGain = 0.5;
-float zDeadBand = 0.0;
+float zDeadBand = 0.1;
 
 DriveInTelop::DriveInTelop() {
 	// Use requires() here to declare subsystem dependencies
