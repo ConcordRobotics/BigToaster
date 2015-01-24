@@ -12,9 +12,9 @@
 #include "DriveInTelop.h"
 #include <tgmath.h>
 
-float xGain = 1.0;
-float yGain = 1.0;
-float zGain = 0.5;
+float xGain = 0.0;
+float yGain = 0.0;
+float zGain = 0.0;
 float zDeadBand = 0.1;
 
 DriveInTelop::DriveInTelop() {
@@ -48,7 +48,7 @@ void DriveInTelop::Execute() {
     y = exp(yGain*abs(y))/exp(yGain)*y;
     z = exp(zGain*abs(z))/exp(zGain)*z;
 
-	Robot::driveMotors->arcadeDrive(x,y,z);
+	Robot::driveMotors->ArcadeDrive(x,y,z);
 
 }
 
