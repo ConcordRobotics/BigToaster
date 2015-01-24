@@ -48,17 +48,9 @@ void RobotMap::init() {
 	// Set Drive Motor Data
 		//Speed Controllers
 			driveMotorsFrontLeftSC = new Talon(1);
-			lw->AddActuator("DriveMotors", "FrontLeftSC", (Talon*) driveMotorsFrontLeftSC);
-
 			driveMotorsFrontRightSC = new Talon(3);
-			lw->AddActuator("DriveMotors", "FrontRightSC", (Talon*) driveMotorsFrontRightSC);
-
 			driveMotorsBackLeftSC = new Talon(2);
-			lw->AddActuator("DriveMotors", "BackLeftSC", (Talon*) driveMotorsBackLeftSC);
-
 			driveMotorsBackRightSC = new Talon(0);
-			lw->AddActuator("DriveMotors", "BackRightSC", (Talon*) driveMotorsBackRightSC);
-	
 
 		// Add the gyro and accelerometer
 			driveMotorsGyro1 = new Gyro(0);
@@ -66,24 +58,21 @@ void RobotMap::init() {
 			driveMotorsGyro1->SetSensitivity(0.007);
 			driveMotorsAccelerometer = new BuiltInAccelerometer();
 			lw->AddSensor("Gyros", "Accelerometer", driveMotorsAccelerometer);
+
 		// Add the Encoders.
 			// ToDo: Set the distance per pulse, and also the direction.
 			// Use # revolutions as the distance.
 			float distPerPulse = 1.0/293.0;
 			driveMotorsFrontLeftEncoder = new Encoder(6, 7, true, Encoder::k4X);
-			lw->AddSensor("DriveMotors", "FrontLeftEncoder", driveMotorsFrontLeftEncoder);
 			driveMotorsFrontLeftEncoder->SetDistancePerPulse(distPerPulse/1.34);
 			//
 			driveMotorsFrontRightEncoder = new Encoder(2, 3, false, Encoder::k4X);
-			lw->AddSensor("DriveMotors", "FrontRightEncoder", driveMotorsFrontRightEncoder);
 			driveMotorsFrontRightEncoder->SetDistancePerPulse(distPerPulse/1.028);
 			//
 			driveMotorsBackLeftEncoder = new Encoder(4, 5, true, Encoder::k4X);
-			lw->AddSensor("DriveMotors", "BackLeftEncoder", driveMotorsBackLeftEncoder);
 			driveMotorsBackLeftEncoder->SetDistancePerPulse(distPerPulse/1.4379);
 			//
 			driveMotorsBackRightEncoder = new Encoder(0, 1, false, Encoder::k4X);
-			lw->AddSensor("DriveMotors", "BackRightEncoder", driveMotorsBackRightEncoder);
 			driveMotorsBackRightEncoder->SetDistancePerPulse(distPerPulse/0.65);
 		// Add the Controllers
 			// Setup some parameters to be used by all controllers
@@ -119,6 +108,17 @@ void RobotMap::init() {
 			driveMotorsBackRightMotor->PIControlled = PIControlled;
 			driveMotorsBackRightMotor->scReversed = true;
 			driveMotorsBackRightMotor->maxEnc = maxEnc;
+
+		// Set up Live Windows
+			lw->AddActuator("DriveMotors", "FrontLeftSC", (Talon*) driveMotorsFrontLeftSC);
+			lw->AddSensor("DriveMotors", "FrontLeftEncoder", driveMotorsFrontLeftEncoder);
+			lw->AddActuator("DriveMotors", "FrontRightSC", (Talon*) driveMotorsFrontRightSC);
+			lw->AddSensor("DriveMotors", "FrontRightEncoder", driveMotorsFrontRightEncoder);
+			lw->AddActuator("DriveMotors", "BackLeftSC", (Talon*) driveMotorsBackLeftSC);
+			lw->AddSensor("DriveMotors", "BackLeftEncoder", driveMotorsBackLeftEncoder);
+			lw->AddActuator("DriveMotors", "BackRightSC", (Talon*) driveMotorsBackRightSC);
+			lw->AddSensor("DriveMotors", "BackRightEncoder", driveMotorsBackRightEncoder);
+
 	// Set Lift Data
 		// Speed Controller
 			liftSC = new Victor(4);
