@@ -32,6 +32,7 @@ SingleMotor* RobotMap::driveMotorsFrontRightMotor = NULL;
 SingleMotor* RobotMap::driveMotorsBackLeftMotor = NULL;
 SingleMotor* RobotMap::driveMotorsBackRightMotor = NULL;
 BuiltInAccelerometer* RobotMap::driveMotorsAccelerometer = NULL;
+Gyro* RobotMap::driveMotorsGyro1 = NULL;
 
 // Data for lift system
 SpeedController* RobotMap::liftSC = NULL;
