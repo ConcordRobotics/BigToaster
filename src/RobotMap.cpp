@@ -72,25 +72,25 @@ void RobotMap::init() {
 			float distPerPulse = 1.0/293.0;
 			driveMotorsFrontLeftEncoder = new Encoder(6, 7, true, Encoder::k4X);
 			lw->AddSensor("DriveMotors", "FrontLeftEncoder", driveMotorsFrontLeftEncoder);
-			driveMotorsFrontLeftEncoder->SetDistancePerPulse(distPerPulse);
+			driveMotorsFrontLeftEncoder->SetDistancePerPulse(distPerPulse/1.34);
 			//
 			driveMotorsFrontRightEncoder = new Encoder(2, 3, false, Encoder::k4X);
 			lw->AddSensor("DriveMotors", "FrontRightEncoder", driveMotorsFrontRightEncoder);
-			driveMotorsFrontRightEncoder->SetDistancePerPulse(distPerPulse);
+			driveMotorsFrontRightEncoder->SetDistancePerPulse(distPerPulse/1.028);
 			//
 			driveMotorsBackLeftEncoder = new Encoder(4, 5, true, Encoder::k4X);
 			lw->AddSensor("DriveMotors", "BackLeftEncoder", driveMotorsBackLeftEncoder);
-			driveMotorsBackLeftEncoder->SetDistancePerPulse(distPerPulse);
+			driveMotorsBackLeftEncoder->SetDistancePerPulse(distPerPulse/1.4379);
 			//
 			driveMotorsBackRightEncoder = new Encoder(0, 1, false, Encoder::k4X);
 			lw->AddSensor("DriveMotors", "BackRightEncoder", driveMotorsBackRightEncoder);
-			driveMotorsBackRightEncoder->SetDistancePerPulse(distPerPulse);
+			driveMotorsBackRightEncoder->SetDistancePerPulse(distPerPulse/0.65);
 		// Add the Controllers
 			// Setup some parameters to be used by all controllers
-			// These need to be calibrated
+			// ToDo: These need to be calibrated
 			double pGain = 10.0;
 			double iGain = 0.0;
-            double maxOutput = 1.0; // Need to calibrate
+            double maxOutput = 1.0; // deg/sec
             double timeFilter = 0.01;
             double maxEnc = 1.0;
             bool PIControlled = false;
