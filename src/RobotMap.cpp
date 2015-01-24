@@ -68,18 +68,23 @@ void RobotMap::init() {
 			lw->AddSensor("Gyros", "Accelerometer", driveMotorsAccelerometer);
 		// Add the Encoders.
 			// ToDo: Set the distance per pulse, and also the direction.
-			driveMotorsFrontLeftEncoder = new Encoder(4, 5, false, Encoder::k4X);
+			// Use # revolutions as the distance.
+			float distPerPulse = 1.0/293.0;
+			driveMotorsFrontLeftEncoder = new Encoder(6, 7, true, Encoder::k4X);
 			lw->AddSensor("DriveMotors", "FrontLeftEncoder", driveMotorsFrontLeftEncoder);
-			driveMotorsFrontLeftEncoder->SetDistancePerPulse(1.0);
-			driveMotorsFrontRightEncoder = new Encoder(0, 1, false, Encoder::k4X);
+			driveMotorsFrontLeftEncoder->SetDistancePerPulse(distPerPulse);
+			//
+			driveMotorsFrontRightEncoder = new Encoder(2, 3, false, Encoder::k4X);
 			lw->AddSensor("DriveMotors", "FrontRightEncoder", driveMotorsFrontRightEncoder);
-			driveMotorsFrontRightEncoder->SetDistancePerPulse(1.0);
-			driveMotorsBackLeftEncoder = new Encoder(6, 7, false, Encoder::k4X);
+			driveMotorsFrontRightEncoder->SetDistancePerPulse(distPerPulse);
+			//
+			driveMotorsBackLeftEncoder = new Encoder(4, 5, true, Encoder::k4X);
 			lw->AddSensor("DriveMotors", "BackLeftEncoder", driveMotorsBackLeftEncoder);
-			driveMotorsBackLeftEncoder->SetDistancePerPulse(1.0);
-			driveMotorsBackRightEncoder = new Encoder(2, 3, false, Encoder::k4X);
+			driveMotorsBackLeftEncoder->SetDistancePerPulse(distPerPulse);
+			//
+			driveMotorsBackRightEncoder = new Encoder(0, 1, false, Encoder::k4X);
 			lw->AddSensor("DriveMotors", "BackRightEncoder", driveMotorsBackRightEncoder);
-			driveMotorsBackRightEncoder->SetDistancePerPulse(1.0);
+			driveMotorsBackRightEncoder->SetDistancePerPulse(distPerPulse);
 		// Add the Controllers
 			// Setup some parameters to be used by all controllers
 			// These need to be calibrated
@@ -122,6 +127,7 @@ void RobotMap::init() {
 			// ToDo: Set the distance per pulse, and also the direction.
 			liftEncoder = new Encoder(8, 9, false, Encoder::k4X);
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
-			liftEncoder->SetDistancePerPulse(1.0);
+			// Use inches for lift encoder
+			liftEncoder->SetDistancePerPulse(0.0348);
 
 }
