@@ -48,7 +48,8 @@ public:
 	// Data for Lift system
 	static SpeedController* liftSC;
 	static Encoder* liftEncoder;
-
+	static PIController* liftController;
+    static SingleMotor* liftMotor;
 	static void init();
 
 };

@@ -21,7 +21,7 @@ SingleMotor::SingleMotor (SpeedController* scIn, PIController* controllerIn, Enc
 };
 
 void SingleMotor::UpdateController(void){
-	if (PIControlled) controller->SetRate((encoder->GetRate())/maxEnc);
+	if (PIControlled) controller->SetRate(encoder->GetRate());
 }
 
 void SingleMotor::SetTarget(float powerIn) {

@@ -8,7 +8,8 @@
 #include "PIController.h"
 #include <algorithm>
 
-PIController::PIController (double pGainIn, double iGainIn, double timeFilterIn, double maxOutputIn, double initPosition){
+PIController::PIController (double pGainIn, double iGainIn, double timeFilterIn, double maxOutputIn,  double maxRateIn, double initPosition){
+	maxRate = maxRateIn;
 	curPosition = initPosition;
 	lastPosition = initPosition;
 	lastRate = 0.0;
@@ -25,6 +26,7 @@ PIController::PIController (double pGainIn, double iGainIn, double timeFilterIn,
 	curTime = timer->Get();
 	controlOutput = 0.0;
 	target = 0.0;
+	rateController = true;
 };
 
 void PIController::SetPosition(double position){
@@ -58,16 +60,29 @@ void PIController::FilterRate(double delT) {
 
 void PIController::SetTarget (float targetIn){
 	target = targetIn;
+	// Scale the target based on maxRates
+	if (rateController) {
+		target = target/maxOutput*maxRate;
+	}
 }
 void PIController::CalcOutput() {
-	double error = target - curRate;
+	double error;
+	if (rateController) {
+		error = target - curRate;
+	} else {
+		error = target - curPosition;
+	}
 	// Should be no need to filter the error since we are filtering
 	// the rate itself.
 	intErr = intErr + error;
 	// Include the target for the control since this is a rate controller
 	// This is known as feed-forward - see http://en.wikipedia.org/wiki/Feed_forward_(control)
 	// For basic PID method see: http://en.wikipedia.org/wiki/PID_controller
-	controlOutput = target + pGain*error + iGain*intErr;
+	if (rateController) {
+		controlOutput = maxOutput*target/maxRate + pGain*error + iGain*intErr;
+	} else {
+		controlOutput =  pGain*error + iGain*intErr;
+	}
 	// Check to see if controls are maxed out and clip the output
 	// Also, don't accumulate error that would drive the output further past
 	// the max

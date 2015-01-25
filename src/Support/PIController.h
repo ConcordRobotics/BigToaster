@@ -24,14 +24,16 @@ public:
 	double iGain;
 	double timeFilter;
 	double maxOutput;
+	double maxRate;
 	float target;
 	double lastTime;
 	double curTime;
 	double controlOutput;
+	bool rateController;
 	void SetTarget(float targetIn);
     void SetPosition(double output);
     void SetRate(double rate);
-    PIController(double pGain, double iGain, double timeFilter, double maxOutputIn, double initPosition);
+    PIController(double pGain, double iGain, double timeFilter, double maxOutputIn, double maxRateIn, double initPosition);
 };
 #endif
 
