@@ -19,10 +19,10 @@ public:
 	Encoder* encoder;
 	bool scReversed;
 	SingleMotor (SpeedController* scIn, PIController* controllerIn, Encoder* encoderIn);
-	float maxEnc;
-	float maxOutput;
+	double maxEnc;
+	double maxOutput;
 	bool PIControlled;
-	void SetTarget(float powerIn);
+	void SetTarget(double powerIn);
 	void SetPower();
 	void UpdateController();
 };

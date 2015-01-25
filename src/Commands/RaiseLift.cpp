@@ -40,6 +40,7 @@ bool RaiseLift::IsFinished() {
 // Called once after isFinished returns true
 void RaiseLift::End() {
 	Robot::lift->SetPower(0.0);
+	Robot::lift->liftSC->Set(0.0);
 
 }
 
@@ -47,4 +48,5 @@ void RaiseLift::End() {
 // subsystems is scheduled to run
 void RaiseLift::Interrupted() {
 	Robot::lift->SetPower(0.0);
+	Robot::lift->liftSC->Set(0.0);
 }

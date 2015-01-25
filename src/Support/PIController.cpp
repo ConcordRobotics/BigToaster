@@ -7,7 +7,7 @@
 
 #include "PIController.h"
 #include <algorithm>
-
+#include "SmartDashboard/SmartDashboard.h"
 PIController::PIController (double pGainIn, double iGainIn, double timeFilterIn, double maxOutputIn,  double maxRateIn, double initPosition){
 	maxRate = maxRateIn;
 	curPosition = initPosition;
@@ -17,7 +17,7 @@ PIController::PIController (double pGainIn, double iGainIn, double timeFilterIn,
 	pGain = pGainIn;
 	iGain = iGainIn;
 	timeFilter = timeFilterIn;
-	maxOutput = abs(maxOutputIn);
+	maxOutput = maxOutputIn;
 	intErr = 0.0;
 	// Start the clock
 	timer = new Timer();
@@ -49,16 +49,18 @@ void PIController::SetRate(double rate) {
 	double delT =  (curTime - lastTime);
 	FilterRate(delT);
 	CalcOutput();
+
 }
 
 void PIController::FilterRate(double delT) {
 	// Perform EMA averaging, using a time filter
 	// See: http://lorien.ncl.ac.uk/ming/filter/fillpass.htm
 	double alpha = delT/(delT+timeFilter);
-	curRate = alpha*lastRate + (1.0 - alpha)*curRate;
+	alpha = 1.0;
+	curRate = (1.0-alpha)*lastRate + alpha*curRate;
 }
 
-void PIController::SetTarget (float targetIn){
+void PIController::SetTarget (double targetIn){
 	target = targetIn;
 	// Scale the target based on maxRates
 	if (rateController) {

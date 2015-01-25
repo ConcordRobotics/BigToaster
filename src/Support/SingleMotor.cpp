@@ -24,9 +24,13 @@ void SingleMotor::UpdateController(void){
 	if (PIControlled) controller->SetRate(encoder->GetRate());
 }
 
-void SingleMotor::SetTarget(float powerIn) {
-	power = std::min(powerIn,maxOutput);
-	power = std::max(power,-maxOutput);
+void SingleMotor::SetTarget(double powerIn) {
+	power = powerIn;
+	if (power > maxOutput) {
+		power = maxOutput;
+	} else if (power < -maxOutput) {
+		power = -maxOutput;
+	}
 	if (PIControlled) {
 		controller->SetTarget(power);
 	}

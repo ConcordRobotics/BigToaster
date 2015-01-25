@@ -133,8 +133,9 @@ void RobotMap::init() {
 			// ToDo Reset controller parameters
 			maxOutput = 0.5;
 			maxRate = 10.0;
-			pGain = 10.0;
+			pGain = 0.05;
 			iGain = 0.0;
+			timeFilter = 0.1;
 			liftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate,0.0);
 		// The Motor
 			liftMotor = new SingleMotor(liftSC, liftController, liftEncoder);
