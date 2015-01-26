@@ -6,25 +6,22 @@
 #define SINGLEMOTOR_H
 #include "WPILib.h"
 #include "PIController.h"
-
+#include <string.h>
 
 class SingleMotor {
 private:
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
-	float power;
+
+
 public:
 	SpeedController* sc;
 	PIController* controller;
 	Encoder* encoder;
 	bool scReversed;
 	SingleMotor (SpeedController* scIn, PIController* controllerIn, Encoder* encoderIn);
-	double maxEnc;
-	double maxOutput;
-	bool PIControlled;
-	void SetTarget(double powerIn);
+	void SetTargetPower(double power);
 	void SetPower();
-	void UpdateController();
+	void UpdateRate();
+	void OutputToDashboard(std::string motorName);
 };
 #endif
 

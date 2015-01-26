@@ -6,43 +6,39 @@
  */
 
 #include "SingleMotor.h"
-
+#include "SmartDashboard/SmartDashboard.h"
 #include <algorithm>
 
 SingleMotor::SingleMotor (SpeedController* scIn, PIController* controllerIn, Encoder* encoderIn) {
 	sc = scIn;
 	controller = controllerIn;
 	encoder = encoderIn;
-	PIControlled = true;
 	scReversed = false;
-    maxEnc = 1.0;
-	maxOutput = 1.0;
-	power = 0.0;
 };
 
-void SingleMotor::UpdateController(void){
-	if (PIControlled) controller->SetRate(encoder->GetRate());
+void SingleMotor::UpdateRate(void){
+	controller->SetRate(encoder->GetRate());
 }
 
-void SingleMotor::SetTarget(double powerIn) {
-	power = powerIn;
-	if (power > maxOutput) {
-		power = maxOutput;
-	} else if (power < -maxOutput) {
-		power = -maxOutput;
-	}
-	if (PIControlled) {
-		controller->SetTarget(power);
-	}
+void SingleMotor::SetTargetPower(double power) {
+	controller->SetTarget(power);
 }
 
 void SingleMotor::SetPower() {
-	if (PIControlled) {
-		power = controller->controlOutput;
-	}
+	double power = controller->controlOutput;
 	if (scReversed) {
 		sc->Set(-power);
 	} else {
 		sc->Set(power);
 	}
+}
+
+void SingleMotor::OutputToDashboard(std::string motorName) {
+	std::string keyName;
+
+	keyName = motorName + "/Cont/";
+	controller->OutputToDashboard(keyName);
+	keyName = motorName + "/Enc/rate";
+	SmartDashboard::PutNumber(keyName,double(encoder->GetRate()));
+
 }

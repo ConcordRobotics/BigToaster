@@ -28,7 +28,7 @@ void RaiseLift::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void RaiseLift::Execute() {
-	Robot::lift->SetPower(0.2);
+	Robot::lift->SetPower(0.4);
 
 }
 

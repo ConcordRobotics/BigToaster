@@ -41,6 +41,7 @@ public:
 	DriveMotors();
 	void ArcadeDrive(float dx, float dy, float dz);
 	void InitDefaultCommand();
+	void Stop();
 };
 
 #endif

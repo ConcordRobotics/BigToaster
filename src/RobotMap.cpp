@@ -76,39 +76,37 @@ void RobotMap::init() {
 		// Add the Controllers
 			// Setup some parameters to be used by all controllers
 			// ToDo: These need to be calibrated
-			double pGain = 10.0;
+			double pGain = 0.1;
 			double iGain = 0.0;
             double maxOutput = 1.0; //Power setting
             double maxRate = 15.0; // rev/sec
             double timeFilter = 0.01;
-            double maxEnc = 1.0;
-            bool PIControlled = false;
-			driveMotorsFrontLeftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, 0.0);
-			driveMotorsFrontRightController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, 0.0);
-			driveMotorsBackLeftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, 0.0);
-			driveMotorsBackRightController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, 0.0);
+            double controlSlope = 15.0;  // This is the change in rate per unit of power
+
+			driveMotorsFrontLeftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);
+			driveMotorsFrontRightController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);
+			driveMotorsBackLeftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);
+			driveMotorsBackRightController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);
 			maxRate = 10.0; // deg/sec for gyro
-			driveMotorsGyroController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, 0.0);
+			// ToDo: Calibrate the gyro settings
+			pGain = 0.0;
+			iGain = 0.0;
+			controlSlope = 1.0;
+			maxOutput = 0.3;
+			driveMotorsGyroController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);
 		// Add the Motors
 			driveMotorsFrontLeftMotor = new SingleMotor(driveMotorsFrontLeftSC, driveMotorsFrontLeftController, driveMotorsFrontLeftEncoder);
-			driveMotorsFrontLeftMotor->PIControlled = PIControlled;
 			driveMotorsFrontLeftMotor->scReversed = true;
-			driveMotorsFrontLeftMotor->maxEnc = maxEnc;
 			//
 			driveMotorsFrontRightMotor = new SingleMotor(driveMotorsFrontRightSC, driveMotorsFrontRightController, driveMotorsFrontRightEncoder);
-			driveMotorsFrontRightMotor->PIControlled = PIControlled;
 			driveMotorsFrontRightMotor->scReversed = false;
-			driveMotorsFrontRightMotor->maxEnc = maxEnc;
 			//
 			driveMotorsBackLeftMotor = new SingleMotor(driveMotorsBackLeftSC, driveMotorsBackLeftController, driveMotorsBackLeftEncoder);
-			driveMotorsBackLeftMotor->PIControlled = PIControlled;
 			driveMotorsBackLeftMotor->scReversed = true;
-			driveMotorsBackLeftMotor->maxEnc = maxEnc;
 			//
 			driveMotorsBackRightMotor = new SingleMotor(driveMotorsBackRightSC, driveMotorsBackRightController, driveMotorsBackRightEncoder);
-			driveMotorsBackRightMotor->PIControlled = PIControlled;
 			driveMotorsBackRightMotor->scReversed = true;
-			driveMotorsBackRightMotor->maxEnc = maxEnc;
+
 
 		// Set up Live Windows
 			lw->AddActuator("DriveMotors", "FrontLeftSC", (Talon*) driveMotorsFrontLeftSC);
@@ -136,12 +134,10 @@ void RobotMap::init() {
 			pGain = 0.05;
 			iGain = 0.0;
 			timeFilter = 0.1;
-			liftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate,0.0);
+			controlSlope = 20.0;
+			liftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);
 		// The Motor
 			liftMotor = new SingleMotor(liftSC, liftController, liftEncoder);
-			PIControlled = true;
-			liftMotor->PIControlled = PIControlled;
 			liftMotor->scReversed = false;
-			liftMotor->maxEnc = maxEnc;
 
 }

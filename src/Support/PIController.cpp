@@ -8,10 +8,12 @@
 #include "PIController.h"
 #include <algorithm>
 #include "SmartDashboard/SmartDashboard.h"
-PIController::PIController (double pGainIn, double iGainIn, double timeFilterIn, double maxOutputIn,  double maxRateIn, double initPosition){
+PIController::PIController (double pGainIn, double iGainIn, double timeFilterIn, double maxOutputIn,
+		double maxRateIn, double controlSlopeIn, double initPosition) {
 	maxRate = maxRateIn;
 	curPosition = initPosition;
 	lastPosition = initPosition;
+	controlSlope = controlSlopeIn;
 	lastRate = 0.0;
 	curRate = 0.0;
 	pGain = pGainIn;
@@ -22,8 +24,8 @@ PIController::PIController (double pGainIn, double iGainIn, double timeFilterIn,
 	// Start the clock
 	timer = new Timer();
 	timer->Start();
-	lastTime = curTime;
 	curTime = timer->Get();
+	lastTime = curTime;
 	controlOutput = 0.0;
 	target = 0.0;
 	rateController = true;
@@ -56,6 +58,7 @@ void PIController::FilterRate(double delT) {
 	// Perform EMA averaging, using a time filter
 	// See: http://lorien.ncl.ac.uk/ming/filter/fillpass.htm
 	double alpha = delT/(delT+timeFilter);
+	// ToDo Try using the filter, or averaging the encoders
 	alpha = 1.0;
 	curRate = (1.0-alpha)*lastRate + alpha*curRate;
 }
@@ -64,7 +67,7 @@ void PIController::SetTarget (double targetIn){
 	target = targetIn;
 	// Scale the target based on maxRates
 	if (rateController) {
-		target = target/maxOutput*maxRate;
+		target = target*controlSlope;
 	}
 }
 void PIController::CalcOutput() {
@@ -81,7 +84,7 @@ void PIController::CalcOutput() {
 	// This is known as feed-forward - see http://en.wikipedia.org/wiki/Feed_forward_(control)
 	// For basic PID method see: http://en.wikipedia.org/wiki/PID_controller
 	if (rateController) {
-		controlOutput = maxOutput*target/maxRate + pGain*error + iGain*intErr;
+		controlOutput = target/controlSlope + pGain*error + iGain*intErr;
 	} else {
 		controlOutput =  pGain*error + iGain*intErr;
 	}
@@ -95,4 +98,18 @@ void PIController::CalcOutput() {
 		controlOutput = -maxOutput;
 		if (error < 0) intErr = intErr - error;
 	}
+}
+
+void PIController::OutputToDashboard(std::string controllerName) {
+	std::string keyName;
+	keyName = controllerName + "/pGain";
+	pGain = SmartDashboard::GetNumber(keyName,double(pGain));
+	keyName = controllerName + "/iGain";
+	iGain = SmartDashboard::GetNumber(keyName,double(iGain));
+	keyName = controllerName + "/output";
+	SmartDashboard::PutNumber(keyName,double(controlOutput));
+	keyName = controllerName + "/curRate";
+	SmartDashboard::PutNumber(keyName,curRate);
+	keyName = controllerName + "/target";
+	SmartDashboard::PutNumber(keyName,double(target));
 }

@@ -37,20 +37,11 @@ void Lift::InitDefaultCommand() {
 }
 
 void Lift::SetPower(float power){
-
-	SmartDashboard::GetNumber("liftPGain",liftMotor->controller->pGain);
-	SmartDashboard::GetNumber("liftIGain",liftMotor->controller->iGain);
-	SmartDashboard::PutNumber("liftPGain",liftMotor->controller->pGain);
-	SmartDashboard::PutNumber("liftIGain",liftMotor->controller->iGain);
-	liftMotor->SetTarget(power);
-	liftMotor->UpdateController();
+	liftMotor->OutputToDashboard("Lift");
+	liftMotor->SetTargetPower(power);
+	liftMotor->UpdateRate();
 	liftMotor->SetPower();
-	SmartDashboard::PutNumber("PIOutput",double(liftMotor->controller->controlOutput));
-	SmartDashboard::PutNumber("LiftRate",double(liftMotor->encoder->GetRate()));
-	SmartDashboard::PutNumber("PIcurRate",liftMotor->controller->curRate);
-	SmartDashboard::PutNumber("target",double(liftMotor->controller->target));
-	SmartDashboard::PutNumber("maxOutput",double(liftMotor->controller->maxOutput));
-	SmartDashboard::PutNumber("maxRate",double(liftMotor->controller->maxRate));
+
 }
 
 

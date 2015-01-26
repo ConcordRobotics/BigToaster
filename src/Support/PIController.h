@@ -5,7 +5,7 @@
 #ifndef PICONTROLLER_H
 #define PICONTROLLER_H
 #include "WPILib.h"
-
+#include <string.h>
 
 class PIController {
 private:
@@ -29,11 +29,13 @@ public:
 	double lastTime;
 	double curTime;
 	double controlOutput;
+	double controlSlope;
 	bool rateController;
 	void SetTarget(double targetIn);
     void SetPosition(double output);
     void SetRate(double rate);
-    PIController(double pGain, double iGain, double timeFilter, double maxOutputIn, double maxRateIn, double initPosition);
+    PIController(double pGain, double iGain, double timeFilter, double maxOutputIn, double maxRateIn, double controlSlope, double initPosition);
+    void OutputToDashboard(std::string controllerName);
 };
 #endif
 

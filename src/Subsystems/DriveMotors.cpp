@@ -51,7 +51,12 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 		headingCont->SetPosition(gyro1->GetAngle());
 		z = headingCont->controlOutput;
 	}
-
+    // Set up smart dashboard
+	flMotor->OutputToDashboard("flMotor");
+	frMotor->OutputToDashboard("frMotor");
+	blMotor->OutputToDashboard("blMotor");
+	brMotor->OutputToDashboard("brMotor");
+	headingCont->OutputToDashboard("gyro");
     // Negate y for the joystick. Is this needed?
     y = -y;
 
@@ -60,19 +65,23 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     wheelSpeeds[1] = -x + y - z;
     wheelSpeeds[2] = -x + y + z;
     wheelSpeeds[3] = x + y - z;
-    flMotor->SetTarget(wheelSpeeds[0]);
-    frMotor->SetTarget(wheelSpeeds[1]);
-    blMotor->SetTarget(wheelSpeeds[2]);
-    brMotor->SetTarget(wheelSpeeds[3]);
-    flMotor->UpdateController();
-    frMotor->UpdateController();
-    blMotor->UpdateController();
-    brMotor->UpdateController();
+    flMotor->SetTargetPower(wheelSpeeds[0]);
+    frMotor->SetTargetPower(wheelSpeeds[1]);
+    blMotor->SetTargetPower(wheelSpeeds[2]);
+    brMotor->SetTargetPower(wheelSpeeds[3]);
+    flMotor->UpdateRate();
+    frMotor->UpdateRate();
+    blMotor->UpdateRate();
+    brMotor->UpdateRate();
     flMotor->SetPower();
     frMotor->SetPower();
     blMotor->SetPower();
     brMotor->SetPower();
 }
 
-
-
+void DriveMotors::Stop() {
+	flMotor->sc->Set(0.0);
+	frMotor->sc->Set(0.0);
+	blMotor->sc->Set(0.0);
+	brMotor->sc->Set(0.0);
+}
