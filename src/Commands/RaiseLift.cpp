@@ -10,7 +10,7 @@
 
 
 #include "RaiseLift.h"
-
+#include "Support/SingleMotor.h"
 
 RaiseLift::RaiseLift() {
 	// Use requires() here to declare subsystem dependencies
@@ -29,7 +29,7 @@ void RaiseLift::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void RaiseLift::Execute() {
 	Robot::lift->SetPower(0.4);
-
+    Robot::lift->liftMotor->OutputToDashboard("Lift");
 }
 
 // Make this return true when this Command no longer needs to run execute()
