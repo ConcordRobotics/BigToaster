@@ -102,14 +102,14 @@ void PIController::CalcOutput() {
 
 void PIController::OutputToDashboard(std::string controllerName) {
 	std::string keyName;
-	keyName = controllerName + "/pGain";
+	keyName = controllerName + "pGain";
 	pGain = SmartDashboard::GetNumber(keyName,double(pGain));
-	keyName = controllerName + "/iGain";
+	keyName = controllerName + "iGain";
 	iGain = SmartDashboard::GetNumber(keyName,double(iGain));
-	keyName = controllerName + "/output";
+	keyName = controllerName + "output";
 	SmartDashboard::PutNumber(keyName,double(controlOutput));
-	keyName = controllerName + "/curRate";
+	keyName = controllerName + "curRate";
 	SmartDashboard::PutNumber(keyName,curRate);
-	keyName = controllerName + "/target";
+	keyName = controllerName + "target";
 	SmartDashboard::PutNumber(keyName,double(target));
 }

@@ -129,10 +129,10 @@ void RobotMap::init() {
 			liftEncoder->SetDistancePerPulse(0.0348);
 		// The Controller
 			// ToDo Reset controller parameters
-			maxOutput = 0.5;
+			maxOutput = 0.8;
 			maxRate = 10.0;
 			pGain = 0.05;
-			iGain = 0.0;
+			iGain = 0.01;
 			timeFilter = 0.1;
 			controlSlope = 20.0;
 			liftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);

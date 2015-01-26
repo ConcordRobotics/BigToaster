@@ -33,6 +33,9 @@ void TestDrive::Execute() {
 	x = SmartDashboard::GetNumber("driveX",0.0);
 	y = SmartDashboard::GetNumber("driveY",0.0);
 	z = SmartDashboard::GetNumber("driveZ",0.0);
+	x = 0.1;
+	y = 0.1;
+	z=0.1;
 	Robot::driveMotors->ArcadeDrive(x,y,z);
 }
 

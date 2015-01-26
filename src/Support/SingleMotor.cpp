@@ -36,9 +36,9 @@ void SingleMotor::SetPower() {
 void SingleMotor::OutputToDashboard(std::string motorName) {
 	std::string keyName;
 
-	keyName = motorName + "/Cont/";
+	keyName = motorName + "Cont";
 	controller->OutputToDashboard(keyName);
-	keyName = motorName + "/Enc/rate";
+	keyName = motorName + "EncRate";
 	SmartDashboard::PutNumber(keyName,double(encoder->GetRate()));
 
 }
