@@ -77,7 +77,7 @@ void RobotMap::init() {
 			// Setup some parameters to be used by all controllers
 			// ToDo: These need to be calibrated
 			double pGain = 0.1;
-			double iGain = 0.0;
+			double iGain = 0.01;
             double maxOutput = 1.0; //Power setting
             double maxRate = 15.0; // rev/sec
             double timeFilter = 0.01;
@@ -129,10 +129,10 @@ void RobotMap::init() {
 			liftEncoder->SetDistancePerPulse(0.0348);
 		// The Controller
 			// ToDo Reset controller parameters
-			maxOutput = 0.8;
+			maxOutput = 0.5;
 			maxRate = 10.0;
 			pGain = 0.05;
-			iGain = 0.01;
+			iGain = 0.0;
 			timeFilter = 0.1;
 			controlSlope = 20.0;
 			liftController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);
