@@ -91,7 +91,7 @@ void RobotMap::init() {
 			// ToDo: Calibrate the gyro settings
 			pGain = 0.0;
 			iGain = 0.0;
-			controlSlope = 1.0;
+			controlSlope = 360.0;
 			maxOutput = 0.3;
 			driveMotorsGyroController = new PIController(pGain, iGain, timeFilter, maxOutput, maxRate, controlSlope, 0.0);
 		// Add the Motors

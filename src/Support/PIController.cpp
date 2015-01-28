@@ -59,13 +59,15 @@ void PIController::FilterRate(double delT) {
 	// See: http://lorien.ncl.ac.uk/ming/filter/fillpass.htm
 	double alpha = delT/(delT+timeFilter);
 	// ToDo Try using the filter, or averaging the encoders
+	// Tried it and it seemed to cause oscillations, so disable
+	// by setting weight to 1.0
 	alpha = 1.0;
 	curRate = (1.0-alpha)*lastRate + alpha*curRate;
 }
 
 void PIController::SetTarget (double targetIn){
 	target = targetIn;
-	// Scale the target based on maxRates
+	// Scale the rate target based on expected slope of rate/power
 	if (rateController) {
 		target = target*controlSlope;
 	}
@@ -100,16 +102,34 @@ void PIController::CalcOutput() {
 	}
 }
 
+void PIController::ResetCont(bool rateCont, double position, double rate) {
+	// Reset the controller and enable switching to/from rate control vs. position
+	rateController = rateCont;
+	intErr = 0.0;
+	controlOutput = 0.0;
+	curPosition = position;
+	lastPosition = position;
+	curRate = rate;
+	lastRate = rate;
+}
+
 void PIController::OutputToDashboard(std::string controllerName) {
 	std::string keyName;
 	keyName = controllerName + "pGain";
-	pGain = SmartDashboard::GetNumber(keyName,double(pGain));
+	// Get inputs
+	double input;
+	input = SmartDashboard::GetNumber(keyName,pGain);
+	pGain = input;
+	SmartDashboard::PutNumber(keyName,pGain);
 	keyName = controllerName + "iGain";
-	iGain = SmartDashboard::GetNumber(keyName,double(iGain));
+	input = SmartDashboard::GetNumber(keyName,iGain);
+	iGain = input;
+	SmartDashboard::PutNumber(keyName,iGain);
+	input = SmartDashboard::GetNumber(keyName,double(pGain));
 	keyName = controllerName + "output";
 	SmartDashboard::PutNumber(keyName,double(controlOutput));
-	keyName = controllerName + "curRate";
-	SmartDashboard::PutNumber(keyName,curRate);
+	//keyName = controllerName + "curRate";
+	//SmartDashboard::PutNumber(keyName,curRate);
 	keyName = controllerName + "target";
 	SmartDashboard::PutNumber(keyName,double(target));
 }

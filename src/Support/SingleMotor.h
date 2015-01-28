@@ -18,10 +18,11 @@ public:
 	Encoder* encoder;
 	bool scReversed;
 	SingleMotor (SpeedController* scIn, PIController* controllerIn, Encoder* encoderIn);
-	void SetTargetPower(double power);
 	void SetPower();
 	void UpdateRate();
+	void UpdatePosition();
 	void OutputToDashboard(std::string motorName);
+	void Reset(bool rateCont);
 };
 #endif
 

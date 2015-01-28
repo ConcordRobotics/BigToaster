@@ -65,10 +65,10 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     wheelSpeeds[1] = -x + y - z;
     wheelSpeeds[2] = -x + y + z;
     wheelSpeeds[3] = x + y - z;
-    flMotor->SetTargetPower(wheelSpeeds[0]);
-    frMotor->SetTargetPower(wheelSpeeds[1]);
-    blMotor->SetTargetPower(wheelSpeeds[2]);
-    brMotor->SetTargetPower(wheelSpeeds[3]);
+    flMotor->controller->SetTarget(wheelSpeeds[0]);
+    frMotor->controller->SetTarget(wheelSpeeds[1]);
+    blMotor->controller->SetTarget(wheelSpeeds[2]);
+    brMotor->controller->SetTarget(wheelSpeeds[3]);
     flMotor->UpdateRate();
     frMotor->UpdateRate();
     blMotor->UpdateRate();

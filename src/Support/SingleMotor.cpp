@@ -20,10 +20,9 @@ void SingleMotor::UpdateRate(void){
 	controller->SetRate(encoder->GetRate());
 }
 
-void SingleMotor::SetTargetPower(double power) {
-	controller->SetTarget(power);
+void SingleMotor::UpdatePosition(void){
+	controller->SetPosition(encoder->GetDistance());
 }
-
 void SingleMotor::SetPower() {
 	double power = controller->controlOutput;
 	if (scReversed) {
@@ -33,12 +32,19 @@ void SingleMotor::SetPower() {
 	}
 }
 
+void SingleMotor::Reset(bool rateCont) {
+	double position = encoder->GetDistance();
+	double rate = encoder->GetRate();
+	controller->ResetCont(rateCont, position, rate);
+}
+
 void SingleMotor::OutputToDashboard(std::string motorName) {
 	std::string keyName;
 
-	keyName = motorName + "Cont";
-	controller->OutputToDashboard(keyName);
+	//keyName = motorName + "Cont";
+	//controller->OutputToDashboard(keyName);
 	keyName = motorName + "EncRate";
 	SmartDashboard::PutNumber(keyName,double(encoder->GetRate()));
-
+	keyName = motorName + "EncPosition";
+	SmartDashboard::PutNumber(keyName,double(encoder->GetDistance()));
 }

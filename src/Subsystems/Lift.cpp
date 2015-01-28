@@ -37,13 +37,19 @@ void Lift::InitDefaultCommand() {
 
 void Lift::SetPower(float power){
 	liftMotor->OutputToDashboard("Lift");
-	liftMotor->SetTargetPower(power);
+	liftMotor->controller->SetTarget(double(power));
 	liftMotor->UpdateRate();
 	liftMotor->SetPower();
 
 }
 
+void Lift::SetPosition(double position){
+	liftMotor->OutputToDashboard("Lift");
+	liftMotor->controller->SetTarget(position);
+	liftMotor->UpdatePosition();
+	liftMotor->SetPower();
 
+}
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 

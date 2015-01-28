@@ -34,8 +34,11 @@ public:
 	void SetTarget(double targetIn);
     void SetPosition(double output);
     void SetRate(double rate);
-    PIController(double pGain, double iGain, double timeFilter, double maxOutputIn, double maxRateIn, double controlSlope, double initPosition);
+    void ResetCont(bool rateCont, double postion, double rate);
     void OutputToDashboard(std::string controllerName);
+    PIController(double pGain, double iGain, double timeFilter, double maxOutputIn,
+    		double maxRateIn, double controlSlope, double initPosition);
+
 };
 #endif
 
