@@ -68,28 +68,28 @@ void PIController::FilterRate(double delT) {
 void PIController::SetTarget (double targetIn){
 	target = targetIn;
 	// Scale the rate target based on expected slope of rate/power
-	if (rateController) {
+	//if (rateController) {
 		target = target*controlSlope;
-	}
+	//}
 }
 void PIController::CalcOutput() {
 	double error;
-	if (rateController) {
+	//if (rateController) {
 		error = target - curRate;
-	} else {
-		error = target - curPosition;
-	}
+	//} else {
+		//error = target - curPosition;
+	//}
 	// Should be no need to filter the error since we are filtering
 	// the rate itself.
 	intErr = intErr + error;
 	// Include the target for the control since this is a rate controller
 	// This is known as feed-forward - see http://en.wikipedia.org/wiki/Feed_forward_(control)
 	// For basic PID method see: http://en.wikipedia.org/wiki/PID_controller
-	if (rateController) {
+	//if (rateController) {
 		controlOutput = target/controlSlope + pGain*error + iGain*intErr;
-	} else {
-		controlOutput =  pGain*error + iGain*intErr;
-	}
+	//} else {
+	//	controlOutput =  pGain*error + iGain*intErr;
+	//}
 	// Check to see if controls are maxed out and clip the output
 	// Also, don't accumulate error that would drive the output further past
 	// the max
