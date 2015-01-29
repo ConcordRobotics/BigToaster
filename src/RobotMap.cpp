@@ -76,7 +76,7 @@ void RobotMap::init() {
 		// Add the Controllers
 			// Setup some parameters to be used by all controllers
 			// ToDo: These need to be calibrated
-			double pGain = 0.0;
+			double pGain = 0.1;
 			double iGain = 0.0;
             double maxOutput = 1.0; //Power setting
             double maxRate = 15.0; // rev/sec
