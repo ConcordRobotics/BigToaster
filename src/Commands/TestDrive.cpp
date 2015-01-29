@@ -29,7 +29,7 @@ void TestDrive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void TestDrive::Execute() {
-	double x,y,z;
+	float x,y,z;
 	x = SmartDashboard::GetNumber("driveX",0.0);
 	y = SmartDashboard::GetNumber("driveY",0.0);
 	z = SmartDashboard::GetNumber("driveZ",0.0);

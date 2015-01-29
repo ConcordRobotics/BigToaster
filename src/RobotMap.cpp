@@ -63,7 +63,8 @@ void RobotMap::init() {
 		// Add the Encoders.
 			// Use # revolutions as the distance.
 			driveMotorsBackRightEncoder = new Encoder(0, 1, false, Encoder::k4X);
-			driveMotorsBackRightEncoder->SetDistancePerPulse(0.002744581);
+			//Todo recalibrate
+			driveMotorsBackRightEncoder->SetDistancePerPulse(0.008);
 			//
 			driveMotorsFrontRightEncoder = new Encoder(2, 3, false, Encoder::k4X);
 			driveMotorsFrontRightEncoder->SetDistancePerPulse(0.004332584);
