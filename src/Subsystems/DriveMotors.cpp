@@ -46,11 +46,13 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 	x = dx;
 	y = dy;
 	z = dz;
-	if (gyroControlled) {
+	/*
+	 if (gyroControlled) {
 		headingCont->SetTarget(z);
 		headingCont->SetPosition(gyro1->GetAngle());
 		z = headingCont->controlOutput;
 	}
+	 */
     // Set up smart dashboard
 	flMotor->OutputToDashboard("flMotor");
 	frMotor->OutputToDashboard("frMotor");
@@ -61,10 +63,10 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     y = -y;
 
     double wheelSpeeds[4];
-    wheelSpeeds[0] = x + y + z;
-    wheelSpeeds[1] = -x + y - z;
-    wheelSpeeds[2] = -x + y + z;
-    wheelSpeeds[3] = x + y - z;
+    wheelSpeeds[0] = double(x + y + z);
+    wheelSpeeds[1] = double(-x + y - z);
+    wheelSpeeds[2] = double(-x + y + z);
+    wheelSpeeds[3] = double(x + y - z);
 
     flMotor->controller->SetTarget(wheelSpeeds[0]);
     frMotor->controller->SetTarget(wheelSpeeds[1]);
