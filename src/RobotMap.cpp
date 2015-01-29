@@ -64,7 +64,7 @@ void RobotMap::init() {
 			// Use # revolutions as the distance.
 			driveMotorsBackRightEncoder = new Encoder(0, 1, false, Encoder::k4X);
 			//Todo recalibrate
-			driveMotorsBackRightEncoder->SetDistancePerPulse(0.008);
+			driveMotorsBackRightEncoder->SetDistancePerPulse(0.0032);
 			//
 			driveMotorsFrontRightEncoder = new Encoder(2, 3, false, Encoder::k4X);
 			driveMotorsFrontRightEncoder->SetDistancePerPulse(0.004332584);
@@ -106,7 +106,7 @@ void RobotMap::init() {
 			driveMotorsBackLeftMotor->scReversed = true;
 			//
 			driveMotorsBackRightMotor = new SingleMotor(driveMotorsBackRightSC, driveMotorsBackRightController, driveMotorsBackRightEncoder);
-			driveMotorsBackRightMotor->scReversed = true;
+			driveMotorsBackRightMotor->scReversed = false;
 
 
 		// Set up Live Windows
