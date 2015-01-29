@@ -77,6 +77,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     frMotor->SetPower();
     blMotor->SetPower();
     brMotor->SetPower();
+    Stop();
 }
 
 void DriveMotors::Stop() {
