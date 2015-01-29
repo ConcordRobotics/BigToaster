@@ -25,6 +25,7 @@ void SingleMotor::UpdatePosition(void){
 }
 void SingleMotor::SetPower() {
 	double power = controller->controlOutput;
+	if (controller->target == 0) power = 0.0;
 	if (scReversed) {
 		sc->Set(-power);
 	} else {
