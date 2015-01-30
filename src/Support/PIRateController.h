@@ -2,42 +2,35 @@
 // It uses feed-forward to provide a baseline of control.
 
 
-#ifndef PICONTROLLER_H
-#define PICONTROLLER_H
+#ifndef PIRATECONTROLLER_H
+#define PIRATECONTROLLER_H
 #include "WPILib.h"
 #include <string.h>
 
-class PIController {
+class PIRateController {
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-    void FilterRate(double delT);
-	void CalcOutput();
+	void CalcOutput(double delT);
 public:
 	Timer* timer;
-	double lastPosition;
-	double curPosition;
-	double lastRate;
 	double curRate;
 	double intErr;
 	double pGain;
 	double iGain;
-	double timeFilter;
 	double maxOutput;
 	double maxRate;
 	double target;
-	double lastTime;
-	double curTime;
 	double controlOutput;
 	double controlSlope;
-	bool rateController;
+	double curTime;
+	double lastTime;
 	void SetTarget(double targetIn);
-    void SetPosition(double output);
     void SetRate(double rate);
-    void ResetCont(bool rateCont, double postion, double rate);
+    void ResetCont();
     void OutputToDashboard(std::string controllerName);
-    PIController(double pGain, double iGain, double timeFilter, double maxOutputIn,
-    		double maxRateIn, double controlSlope, double initPosition);
+    PIRateController(double pGain, double iGain, double maxOutputIn,
+    		double maxRateIn, double controlSlope);
 
 };
 #endif

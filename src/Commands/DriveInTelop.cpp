@@ -11,12 +11,7 @@
 
 #include "DriveInTelop.h"
 #include <tgmath.h>
-
-float xGain = 0.0;
-float yGain = 0.0;
-float zGain = 0.0;
-float zDeadBand = 0.1;
-
+#include "Support/AdvancedJoystick.h"
 DriveInTelop::DriveInTelop() {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
@@ -33,21 +28,10 @@ void DriveInTelop::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveInTelop::Execute() {
-	Joystick* stick = Robot::oi->getJoystick1();
-	float x = stick->GetX();
-	float y = stick->GetY();
-    float z = stick->GetTwist();
-    if (z > zDeadBand) {
-    	z = (z - zDeadBand)/(1.0 - zDeadBand);
-    } else if (z < -zDeadBand) {
-    	z = (z + zDeadBand)/(1.0 - zDeadBand);
-    } else {
-    	z = 0;
-    }
-    x = exp(xGain*abs(x))/exp(xGain)*x;
-    y = exp(yGain*abs(y))/exp(yGain)*y;
-    z = exp(zGain*abs(z))/exp(zGain)*z;
-
+	AdvancedJoystick* stick = Robot::oi->getJoystick1();
+	float x = stick->aGetX();
+	float y = stick->aGetY();
+    float z = stick->aGetTwist();
 	Robot::driveMotors->ArcadeDrive(x,y,z);
 
 }
@@ -59,11 +43,13 @@ bool DriveInTelop::IsFinished() {
 
 // Called once after isFinished returns true
 void DriveInTelop::End() {
-	// Add something to kill the motors
+	// Kill the motors
+	Robot::driveMotors->Stop();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DriveInTelop::Interrupted() {
-
+	// Kill the motors
+	Robot::driveMotors->Stop();
 }

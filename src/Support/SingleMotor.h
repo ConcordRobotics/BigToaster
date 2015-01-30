@@ -5,8 +5,8 @@
 #ifndef SINGLEMOTOR_H
 #define SINGLEMOTOR_H
 #include "WPILib.h"
-#include "PIController.h"
 #include <string.h>
+#include <Support/PIRateController.h>
 
 class SingleMotor {
 private:
@@ -14,13 +14,12 @@ private:
 
 public:
 	SpeedController* sc;
-	PIController* controller;
+	PIRateController* controller;
 	Encoder* encoder;
 	bool scReversed;
-	SingleMotor (SpeedController* scIn, PIController* controllerIn, Encoder* encoderIn);
+	SingleMotor (SpeedController* scIn, PIRateController* controllerIn, Encoder* encoderIn);
 	void SetPower();
 	void UpdateRate();
-	void UpdatePosition();
 	void OutputToDashboard(std::string motorName);
 	void Reset(bool rateCont);
 };

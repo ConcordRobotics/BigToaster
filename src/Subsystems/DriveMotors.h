@@ -14,7 +14,7 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-#include "../Support/PIController.h"
+#include "../Support/PIRateController.h"
 #include "../Support/SingleMotor.h"
 
 /**
@@ -34,7 +34,7 @@ public:
 	SingleMotor* brMotor;
 	Gyro* gyro1;
 
-	PIController* headingCont;
+	PIRateController* headingCont;
 
 	BuiltInAccelerometer* accelerometer;
     bool gyroControlled;

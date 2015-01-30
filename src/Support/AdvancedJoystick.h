@@ -9,24 +9,28 @@
 // it from being updated in the future.
 
 
-#ifndef LIFTHIGH_H
-#define LIFTHIGH_H
+#ifndef ADVANCEDJOYSTICK_H
+#define ADVANCEDJOYSTICK_H
 
-#include "../Robot.h"
+#include "WPILib.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class LiftHigh: public Command {
+class AdvancedJoystick: public Joystick {
+private:
+	float deadband[3];
+	float eGain[3];
+	float ApplyDeadBand(float input, int channel);
+	float ApplyEGain(float input, int channel);
 public:
-	LiftHigh();
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
+	AdvancedJoystick(uint32_t port, float deadbandIn[3], float eGainIn[3]);
+	float aGetX (void);
+	float aGetY (void);
+	float aGetTwist (void);
+
 };
 
 #endif

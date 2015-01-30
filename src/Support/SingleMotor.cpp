@@ -9,7 +9,7 @@
 #include "SmartDashboard/SmartDashboard.h"
 #include <algorithm>
 
-SingleMotor::SingleMotor (SpeedController* scIn, PIController* controllerIn, Encoder* encoderIn) {
+SingleMotor::SingleMotor (SpeedController* scIn, PIRateController* controllerIn, Encoder* encoderIn) {
 	sc = scIn;
 	controller = controllerIn;
 	encoder = encoderIn;
@@ -20,9 +20,7 @@ void SingleMotor::UpdateRate(void){
 	controller->SetRate(encoder->GetRate());
 }
 
-void SingleMotor::UpdatePosition(void){
-	controller->SetPosition(encoder->GetDistance());
-}
+
 void SingleMotor::SetPower() {
 	double power = controller->controlOutput;
 	if (std::abs(controller->target - 0.0)<0.001) power = 0.0;
@@ -34,9 +32,7 @@ void SingleMotor::SetPower() {
 }
 
 void SingleMotor::Reset(bool rateCont) {
-	double position = encoder->GetDistance();
-	double rate = encoder->GetRate();
-	controller->ResetCont(rateCont, position, rate);
+	controller->ResetCont();
 }
 
 void SingleMotor::OutputToDashboard(std::string motorName) {

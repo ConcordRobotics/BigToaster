@@ -9,40 +9,39 @@
 // it from being updated in the future.
 
 
-#include "LiftHigh.h"
+#include "LiftPosition.h"
 #include "Support/SingleMotor.h"
 
-LiftHigh::LiftHigh() {
+LiftPosition::LiftPosition(double targetPositionIn ) {
 	// Use requires() here to declare subsystem dependencies
 	Requires(Robot::lift);
-    // Set the controller to go to a position by reseting it and passing it false
-	// for whether or not it is rate controlled.
-    Robot::lift->liftMotor->Reset(false);
-    // ToDo: add checks to see if lift is above or below the top, and reset the encoder
-    // postion and prevent the lift from moving further up or down
+	curPosition = Robot::lift->liftEncoder->GetDistance();
+	tolerance = 0.5;
+	targetPosition = targetPositionIn;
 
 }
 
 // Called just before this Command runs the first time
-void LiftHigh::Initialize() {
+void LiftPosition::Initialize() {
 	
 }
 
 // Called repeatedly when this Command is scheduled to run
-void LiftHigh::Execute() {
+void LiftPosition::Execute() {
     // Set the target at 30 inches.  This is referenced from the original starting
     // position, so ensure lift is at bottom
-	Robot::lift->SetPosition(30.0);
-    Robot::lift->liftMotor->OutputToDashboard("Lift");
+	curPosition = Robot::lift->SetPosition(30.0);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool LiftHigh::IsFinished() {
-	return false;
+bool LiftPosition::IsFinished() {
+	bool finished = false;
+	if (std::abs(curPosition - targetPosition) < tolerance) finished = true;
+	return finished;
 }
 
 // Called once after isFinished returns true
-void LiftHigh::End() {
+void LiftPosition::End() {
 	Robot::lift->SetPower(0.0);
 	Robot::lift->liftSC->Set(0.0);
 
@@ -50,7 +49,7 @@ void LiftHigh::End() {
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void LiftHigh::Interrupted() {
+void LiftPosition::Interrupted() {
 	Robot::lift->SetPower(0.0);
 	Robot::lift->liftSC->Set(0.0);
 }

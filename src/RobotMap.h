@@ -11,10 +11,11 @@
 
 #ifndef ROBOTMAP_H
 #define ROBOTMAP_H
+#include "Support/PIRateController.h"
+#include "Support/PIPositionController.h"
 #include "WPILib.h"
 #include "Subsystems/Lift.h"
 #include "Support/SingleMotor.h"
-#include "Support/PIController.h"
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -33,11 +34,11 @@ public:
 	static Encoder* driveMotorsFrontRightEncoder;
 	static Encoder* driveMotorsBackLeftEncoder;
 	static Encoder* driveMotorsBackRightEncoder;
-	static PIController* driveMotorsFrontLeftController;
-	static PIController* driveMotorsFrontRightController;
-	static PIController* driveMotorsBackLeftController;
-	static PIController* driveMotorsBackRightController;
-	static PIController* driveMotorsGyroController;
+	static PIRateController* driveMotorsFrontLeftController;
+	static PIRateController* driveMotorsFrontRightController;
+	static PIRateController* driveMotorsBackLeftController;
+	static PIRateController* driveMotorsBackRightController;
+	static PIRateController* driveMotorsGyroController;
 	static Gyro* driveMotorsGyro1;
 	static SingleMotor* driveMotorsFrontLeftMotor;
 	static SingleMotor* driveMotorsFrontRightMotor;
@@ -48,8 +49,9 @@ public:
 	// Data for Lift system
 	static SpeedController* liftSC;
 	static Encoder* liftEncoder;
-	static PIController* liftController;
+	static PIRateController* liftRateController;
     static SingleMotor* liftMotor;
+    static PIPositionController* liftPositionController;
 	static void init();
 
 };
