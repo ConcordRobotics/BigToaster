@@ -54,5 +54,8 @@ public:
     static PIPositionController* liftPositionController;
 	static void init();
 
+	// Data for the Claw Not enabled in telop yet
+	static SpeedController* clawSC;
+	static Encoder* clawEncoder;
 };
 #endif
