@@ -124,7 +124,7 @@ void RobotMap::init() {
 			liftSC = new Victor(4);
 			lw->AddActuator("Lift", "LiftMotor", (Victor*) liftSC);
 		// The Encoder
-			liftEncoder = new Encoder(8, 9, false, Encoder::k4X);
+			liftEncoder = new Encoder(4, 14, false, Encoder::k4X);
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 			// Use inches for lift encoder
 			liftEncoder->SetDistancePerPulse(0.0348);
