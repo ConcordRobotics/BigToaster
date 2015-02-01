@@ -63,17 +63,17 @@ void RobotMap::init() {
 
 		// Add the Encoders.
 			// Use # revolutions as the distance.
-			driveMotorsBackRightEncoder = new Encoder(0, 10, false, Encoder::k4X);
+			driveMotorsBackRightEncoder = new Encoder(0, 1, false, Encoder::k4X);
 			//Todo recalibrate
 			driveMotorsBackRightEncoder->SetDistancePerPulse(0.0032);
 			//
-			driveMotorsFrontRightEncoder = new Encoder(3, 13, false, Encoder::k4X);
+			driveMotorsFrontRightEncoder = new Encoder(6, 7, false, Encoder::k4X);
 			driveMotorsFrontRightEncoder->SetDistancePerPulse(0.004332584);
 			//
-			driveMotorsFrontLeftEncoder = new Encoder(1, 11, true, Encoder::k4X);
+			driveMotorsFrontLeftEncoder = new Encoder(2, 3, true, Encoder::k4X);
 			driveMotorsFrontLeftEncoder->SetDistancePerPulse(0.004655532);
 			//
-			driveMotorsBackLeftEncoder = new Encoder(2, 12, true, Encoder::k4X);
+			driveMotorsBackLeftEncoder = new Encoder(4, 5, true, Encoder::k4X);
 			driveMotorsBackLeftEncoder->SetDistancePerPulse(0.004019032);
 		// Add the Controllers
 			// Setup some parameters to be used by all controllers
@@ -124,7 +124,7 @@ void RobotMap::init() {
 			liftSC = new Victor(4);
 			lw->AddActuator("Lift", "LiftMotor", (Victor*) liftSC);
 		// The Encoder
-			liftEncoder = new Encoder(6, 7, false, Encoder::k4X);
+			liftEncoder = new Encoder(8, 9, false, Encoder::k4X);
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 			// Use inches for lift encoder
 			liftEncoder->SetDistancePerPulse(0.0348);
