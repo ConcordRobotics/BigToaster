@@ -57,5 +57,6 @@ public:
 	// Data for the Claw Not enabled in telop yet
 	static SpeedController* clawSC;
 	static Encoder* clawEncoder;
+ 	static PIDController* clawPIDController;
 };
 #endif
