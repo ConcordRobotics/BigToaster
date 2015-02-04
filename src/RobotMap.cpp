@@ -73,13 +73,13 @@ void RobotMap::init() {
 			// Turn wheels 10 times, and ensure that the distance on the
 			// encoder is 10.  If not, adjust distance per pulse to
 			// 10.0/distanceRead*currentValue
-			driveMotorsBackRightEncoder->SetDistancePerPulse(0.0032);
+			driveMotorsBackRightEncoder->SetDistancePerPulse(0.0028);
 			//
 			driveMotorsFrontRightEncoder = new Encoder(6, 7, false, Encoder::k4X);
 			driveMotorsFrontRightEncoder->SetDistancePerPulse(0.004332584);
 			//
 			driveMotorsFrontLeftEncoder = new Encoder(2, 3, true, Encoder::k4X);
-			driveMotorsFrontLeftEncoder->SetDistancePerPulse(0.004655532);
+			driveMotorsFrontLeftEncoder->SetDistancePerPulse(0.00532);
 			//
 			driveMotorsBackLeftEncoder = new Encoder(4, 5, true, Encoder::k4X);
 			driveMotorsBackLeftEncoder->SetDistancePerPulse(0.004019032);
