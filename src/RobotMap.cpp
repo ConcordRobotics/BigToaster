@@ -86,7 +86,7 @@ void RobotMap::init() {
 		// Add the Controllers
 			// Setup some parameters to be used by all controllers
 			double pGain = 0.01;
-			double iGain = 0.1;
+			double iGain = 0.01;
             double maxOutput = 1.0; //Power setting
             double maxRate = 15.0; // rev/sec
             double controlSlope = 15.0;  // This is the change in rate per unit of power
