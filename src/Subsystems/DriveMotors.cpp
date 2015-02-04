@@ -32,7 +32,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 	accelerometer = RobotMap::driveMotorsAccelerometer;
 
 	headingCont = RobotMap::driveMotorsGyroController;
-
+	Stop();
 }
     
 void DriveMotors::InitDefaultCommand() {

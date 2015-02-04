@@ -43,7 +43,9 @@ void PIRateController::CalcOutput(double delT) {
 	double error;
 
 	error = target - curRate;
-	intErr = intErr + delT*error;
+	if (delT > 0.0) {
+		intErr = intErr + delT*error;
+	}
 
 	// Include the target for the control since this is a rate controller
 	// This is known as feed-forward - see http://en.wikipedia.org/wiki/Feed_forward_(control)
