@@ -59,6 +59,9 @@ void Claw::SetRateMode() {
 void Claw::UpdateController() {
 	// Enforce a lower limit of zero
 	if (encoder->GetDistance() < 0) encoder->Reset();
+	// ToDo: May need to add code to prevent
+	// buildup of integration error in the controller when
+	// holding things.
 
 }
 void Claw::Stop() {

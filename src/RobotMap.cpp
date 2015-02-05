@@ -188,7 +188,7 @@ void RobotMap::init() {
 				clawPIDController = new PIDController(p[0], p[1], p[2], p[3], clawEncoder, clawSC, 0.02);
 				lw->AddActuator("Claw", "ClawPIDController", clawPIDController);
 				clawPIDController->SetContinuous(false);
-				clawPIDController->SetAbsoluteTolerance(0.02);
+				clawPIDController->SetAbsoluteTolerance(0.01);
 				// ToDo Set the max output range of the claw
-				clawPIDController->SetOutputRange(-1.0, 1.0);
+				clawPIDController->SetOutputRange(-0.3, 0.3);
 }

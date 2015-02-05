@@ -9,8 +9,8 @@
 // it from being updated in the future.
 
 
-#ifndef ClawPosition_H
-#define ClawPosition_H
+#ifndef ClawRate_H
+#define ClawRate_H
 
 #include "../Robot.h"
 
@@ -19,11 +19,11 @@
  *
  * @author ExampleAuthor
  */
-class ClawPosition: public Command {
+class ClawRate: public Command {
 private:
 
 public:
-	ClawPosition(float rate);
+	ClawRate(float position);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
