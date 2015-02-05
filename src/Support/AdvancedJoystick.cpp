@@ -24,7 +24,7 @@ float AdvancedJoystick::ApplyDeadBand(float input, int channel) {
 	float output;
 	if (input > deadband[channel]) {
 		output = (input - deadband[channel])/(1.0 - deadband[channel]);
-	} else if (input < deadband[channel]) {
+	} else if (input < -deadband[channel]) {
 		output = (input + deadband[channel])/(1.0 - deadband[channel]);
 	} else {
 		output = 0.0;
