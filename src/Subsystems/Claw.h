@@ -21,10 +21,6 @@
  * @author ExampleAuthor
  */
 
-// Some parameters for claw positioning
-float clawOpenTarget = 1.0;
-float clawClosedTarget = 0.0;
-
 class Claw: public Subsystem {
 private:
 	int mode;

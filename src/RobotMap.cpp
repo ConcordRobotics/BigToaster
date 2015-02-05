@@ -56,7 +56,7 @@ void RobotMap::init() {
 	LiveWindow* lw = LiveWindow::GetInstance();
 
 	// Generic pointer to float
-	float p[];
+	float* p;
 
 	// Set Drive Motor Data
 		//Speed Controllers

@@ -33,7 +33,7 @@ void Claw::SetPositionMode() {
 	// Change the PID source parameter to position
 	encoder->SetPIDSourceParameter(Encoder::kDistance);
 	// Adjust gains here
-	float p[];
+	float* p;
 	p = RobotMap::clawPositionGains;
 	controller->SetPID(p[0], p[1], p[2], p[3]);
 	// Set the target to the current position to be safe
@@ -48,7 +48,7 @@ void Claw::SetRateMode() {
 	// Change the PID source parameter to position
 	encoder->SetPIDSourceParameter(Encoder::kRate);
 	// Adjust gains here
-	float p[];
+	float* p;
 	p = RobotMap::clawRateGains;
 	controller->SetPID(p[0], p[1], p[2], p[3]);
 	// Set the target to a rate of zero to be safe
