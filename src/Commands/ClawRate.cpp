@@ -17,6 +17,7 @@ ClawRate::ClawRate(float rate) {
 	Requires(Robot::claw);
 	Robot::claw->SetRateMode();
 	Robot::claw->controller->SetSetpoint(rate);
+	targetRate = rate;
 }
 
 // Called just before this Command runs the first time
@@ -26,6 +27,7 @@ void ClawRate::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ClawRate::Execute() {
+	Robot::claw->controller->SetSetpoint(targetRate);
 	Robot::claw->UpdateController();
 	//ToDo Add limit checks in the Claw class
 }

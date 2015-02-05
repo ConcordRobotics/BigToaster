@@ -17,6 +17,7 @@ ClawPosition::ClawPosition(float position) {
 	Requires(Robot::claw);
 	Robot::claw->SetPositionMode();
 	Robot::claw->controller->SetSetpoint(position);
+	targetPosition = position;
 }
 
 // Called just before this Command runs the first time
@@ -27,6 +28,7 @@ void ClawPosition::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void ClawPosition::Execute() {
 	Robot::claw->UpdateController();
+	Robot::claw->controller->SetSetpoint(targetPosition);
 }
 
 // Make this return true when this Command no longer needs to run execute()

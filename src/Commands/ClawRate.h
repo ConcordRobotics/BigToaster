@@ -21,7 +21,7 @@
  */
 class ClawRate: public Command {
 private:
-
+	float targetRate;
 public:
 	ClawRate(float position);
 	virtual void Initialize();
