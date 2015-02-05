@@ -58,9 +58,5 @@ public:
 	static SpeedController* clawSC;
 	static Encoder* clawEncoder;
  	static PIDController* clawPIDController;
- 	static float clawOpenPosition;
- 	static float clawClosedPosition;
- 	static float clawPositionGains[4];
- 	static float clawRateGains[4];
 };
 #endif
