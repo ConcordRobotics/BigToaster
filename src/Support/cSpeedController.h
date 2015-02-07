@@ -15,7 +15,7 @@ private:
 	bool reversed = false;
 	SpeedController* sc;
 public:
-	void Set(float 	speed, uint8_t 	syncGroup = 0);
+	void Set(float 	speed);
 	void PIDWrite (float speed);
     cSpeedController(SpeedController* scIn, bool reversedIn);
 };

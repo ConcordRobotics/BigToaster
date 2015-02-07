@@ -12,9 +12,10 @@
 #include "ClawRate.h"
 #include "Subsystems/Claw.h"
 
-ClawRate::ClawRate(float rate) {
+ClawRate::ClawRate(float rateIn) {
 	// Use requires() here to declare subsystem dependencies
 	Requires(Robot::claw);
+	rate = rateIn;
 	Robot::claw->SetRateMode();
 	Robot::claw->controller->SetSetpoint(rate);
 }
@@ -26,6 +27,7 @@ void ClawRate::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ClawRate::Execute() {
+	Robot::claw->controller->SetSetpoint(rate);
 	Robot::claw->UpdateController();
 	//ToDo Add limit checks in the Claw class
 }

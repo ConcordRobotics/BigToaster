@@ -11,11 +11,11 @@ cSpeedController::cSpeedController (SpeedController* scIn, bool reversedIn) {
 	reversed = reversedIn;
 }
 
-void cSpeedController::Set(float speed, uint8_t syncGroup = 0) {
+void cSpeedController::Set(float speed) {
 	if (reversed) {
-		sc->Set(-speed,syncGroup);
+		sc->Set(-speed);
 	} else {
-		sc->Set(speed,syncGroup);
+		sc->Set(speed);
 	}
 }
 

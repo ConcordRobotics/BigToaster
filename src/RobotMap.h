@@ -41,11 +41,11 @@ public:
 	static float driveMotorEncoderLimits[2];
 	static float driveMotorSCLimits[2];
 	static unsigned int driveMotorsPWMs[4];
-	static unsigned int driveMotorsPIOs[2][4];
+	static unsigned int driveMotorsPIOs[4][2];
 	static bool driveMotorsSCReversed[4];
 	static bool driveMotorsEncReversed[4];
 	static float driveMotorsDPP[4];
-	const char* driveMotorsNames[4];
+	static const char* driveMotorsNames[4];
 
 	// Data for Lift system
 	static SpeedController* liftSC;

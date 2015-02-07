@@ -100,6 +100,9 @@ void cPIDController::UpdateController() {
 	// Apply the output
 	output[ind] = tempOut;
 	if (enabled) pidOutput->PIDWrite(output[ind]);
+	if (logData) {
+		logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
+	}
 
 }
 
@@ -131,4 +134,14 @@ void cPIDController::OutputToDashboard(std::string controllerName) {
 	//SmartDashboard::PutNumber(keyName,curRate);
 	keyName = controllerName + "target";
 	SmartDashboard::PutNumber(keyName,double(setPoint[ind]));
+}
+
+void cPIDController::LogData(bool active, char* fileName) {
+
+	if (active) {
+		logFile.open(fileName);
+	} else if (logData) {
+		logFile.close();
+	}
+	logData = active;
 }

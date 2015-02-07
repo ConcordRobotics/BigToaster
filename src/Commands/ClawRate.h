@@ -21,9 +21,9 @@
  */
 class ClawRate: public Command {
 private:
-
+	double rate;
 public:
-	ClawRate(float position);
+	ClawRate(float rateIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

@@ -24,6 +24,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		scs[i] = RobotMap::driveMotorsSCs[i];
 		encoders[i] = RobotMap::driveMotorsEncoders[i];
 		controllers[i] = RobotMap::driveMotorsControllers[i];
+		controllers[i]->Enable();
 	}
 
 	gyro1 = RobotMap::driveMotorsGyro1;
@@ -42,6 +43,7 @@ void DriveMotors::InitDefaultCommand() {
 	SetDefaultCommand(new DriveInTelop());
 
 }
+
 void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 	float x,y,z;
 	x = dx;
@@ -80,6 +82,5 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 void DriveMotors::Stop() {
 	for (int i = 0; i < 4; i++) {
 		scs[i]->Set(0.0);  // Could go back to inherited
-		controllers[i]->Reset();
 	}
 }

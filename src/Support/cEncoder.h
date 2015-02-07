@@ -8,7 +8,7 @@
  *
  * @author ExampleAuthor
  */
-class cEncoder : protected PIDSource {
+class cEncoder : public PIDSource {
 protected:
 	~cEncoder() {};
 private:

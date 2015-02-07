@@ -21,7 +21,7 @@ cPIDController* RobotMap::driveMotorsControllers[4] = {NULL, NULL, NULL, NULL};
 cPIDController* RobotMap::driveMotorsGyroController = NULL;
 BuiltInAccelerometer* RobotMap::driveMotorsAccelerometer = NULL;
 Gyro* RobotMap::driveMotorsGyro1 = NULL;
-float RobotMap::driveMotorsGains[4] =  {1.0, 0.0, 0.0, 0.0};
+float RobotMap::driveMotorsGains[4] =  {0.01, 0.0, 0.0, 0.1};
 float RobotMap::gyroRateGains[4] =  {1.0, 0.0, 0.0, 0.0};
 // Encoder limits in revs/sec
 float RobotMap::driveMotorEncoderLimits[2] = {-15.0,15.0};
@@ -32,6 +32,7 @@ unsigned int RobotMap:: driveMotorsPIOs[4][2] = { {2,3}, {6,7}, {4,5}, {0,1} };
 bool RobotMap::driveMotorsSCReversed[4] = {true, false, true, false};
 bool RobotMap::driveMotorsEncReversed[4] = {true, false, true, false};
 const char* RobotMap::driveMotorsNames[4] = {"fl","fr","bl","br"};
+float RobotMap::driveMotorsDPP[4] = {0.00532, 0.00433, 0.004019, 0.0028};
 
 // Data for lift system
 SpeedController* RobotMap::liftSC = NULL;
@@ -71,6 +72,9 @@ void RobotMap::init() {
 			driveMotorsControllers[i]->SetInputRange(-15.0,15.0);
 			lw->AddActuator("DriveMotorsSC", driveMotorsNames[i], (Talon*) driveMotorsSCs[i]);
 			lw->AddSensor("DriveMotors", driveMotorsNames[i], driveMotorsEncoders[i]);
+			char name[10];
+			strcpy(name,driveMotorsNames[i]);
+			driveMotorsControllers[i]->LogData(true,name);
 	}
 
 
@@ -92,16 +96,16 @@ void RobotMap::init() {
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 			// Use inches for lift encoder
 			liftEncoder->SetDistancePerPulse(0.0348);
-			clawEncoder->SetPIDSourceParameter(Encoder::kRate);
+			liftEncoder->SetPIDSourceParameter(Encoder::kRate);
 		// The Controller
 			// ToDo Determine control slope for lift to improve controls
 			// Run The lift up and down, and see what the encoder rate is vs. the controller output
 			// Set the control slope as the rate/output.  We may need to have a different slope
 			// going up vs. down.  For now, average the two.
-			p = clawRateGains;
-			clawPositionController = new cPIDController(p[0], p[1], p[2], p[3],
+			p = liftRateGains;
+			liftRateController = new cPIDController(p[0], p[1], p[2], p[3],
 					liftEncoder, liftSC);
-			clawPositionController->SetOutputRange[-0.5,0.5];
+			liftRateController->SetOutputRange(-0.5,0.5);
 
 
 
@@ -109,7 +113,7 @@ void RobotMap::init() {
 			// ToDo Tune the lift position control and test that it works
 			// Make sure that the rate controller above is working first.
 			// Then in TelopMode,
-			liftPositionEncoder = new cEncoder(liftEncoder, cEncoder::kDistance);
+			liftPositionEncoder = new cEncoder(liftEncoder, PIDSource::kDistance);
 			liftPositionController = new cPIDController(p[0], p[1], p[2], p[3],
 					liftPositionEncoder, liftSC);
 	 // Set Claw data

@@ -8,6 +8,8 @@
 #define NSAVE 2
 #include "WPILib.h"
 #include <string.h>
+#include <iostream>
+#include <fstream>
 
 static const unsigned int nsave = 2;
 class cPIDController {
@@ -39,6 +41,8 @@ private:
 	bool enabled;
 	float rangeOutOverIn;
 	void CalcRangeRatio(void);
+	bool logData = false;
+	std::ofstream logFile;
 public:
 	void SetSetpoint(double set);
 	void UpdateController();
@@ -48,6 +52,7 @@ public:
     cPIDController(float p, float i, float d, float f, PIDSource* pSource, PIDOutput* pOutput);
     void Reset();
     void Enable();
+    void LogData(bool active, char* fileName);
 };
 #endif
 
