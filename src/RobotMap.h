@@ -11,11 +11,13 @@
 
 #ifndef ROBOTMAP_H
 #define ROBOTMAP_H
-#include "Support/PIRateController.h"
-#include "Support/PIPositionController.h"
+
 #include "WPILib.h"
 #include "Subsystems/Lift.h"
-#include "Support/SingleMotor.h"
+#include "Support/cEncoder.h"
+#include "Support/cSpeedController.h"
+
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -26,37 +28,43 @@ class RobotMap {
 public:
 
 	// Data for Drive Motors
-	static SpeedController* driveMotorsFrontLeftSC;
-	static SpeedController* driveMotorsFrontRightSC;
-	static SpeedController* driveMotorsBackLeftSC;
-	static SpeedController* driveMotorsBackRightSC;
-	static Encoder* driveMotorsFrontLeftEncoder;
-	static Encoder* driveMotorsFrontRightEncoder;
-	static Encoder* driveMotorsBackLeftEncoder;
-	static Encoder* driveMotorsBackRightEncoder;
-	static PIRateController* driveMotorsFrontLeftController;
-	static PIRateController* driveMotorsFrontRightController;
-	static PIRateController* driveMotorsBackLeftController;
-	static PIRateController* driveMotorsBackRightController;
-	static PIRateController* driveMotorsGyroController;
+	static enum {fl,fr,bl,br} motorPosition;
+	// Declare all as arrays of pointers
+	static cSpeedController* driveMotorsSCs[4];
+	static Encoder* driveMotorsEncoders[4];
+	static cPIDController* driveMotorsControllers[4];
+	static cPIDController* driveMotorsGyroController;
 	static Gyro* driveMotorsGyro1;
-	static SingleMotor* driveMotorsFrontLeftMotor;
-	static SingleMotor* driveMotorsFrontRightMotor;
-	static SingleMotor* driveMotorsBackLeftMotor;
-	static SingleMotor* driveMotorsBackRightMotor;
 	static BuiltInAccelerometer* driveMotorsAccelerometer;
+	static float driveMotorsGains[4];
+	static float gyroRateGains[4];
+	static float driveMotorEncoderLimits[2];
+	static float driveMotorSCLimits[2];
+	static unsigned int driveMotorsPWMs[4];
+	static unsigned int driveMotorsPIOs[2][4];
+	static bool driveMotorsSCReversed[4];
+	static bool driveMotorsEncReversed[4];
+	static float driveMotorsDPP[4];
+	const char* driveMotorsNames[4];
 
 	// Data for Lift system
 	static SpeedController* liftSC;
 	static Encoder* liftEncoder;
-	static PIRateController* liftRateController;
-    static SingleMotor* liftMotor;
-    static PIPositionController* liftPositionController;
+	static cEncoder* liftPositionEncoder;
+	static cPIDController* liftRateController;
+    static cPIDController* liftPositionController;
 	static void init();
+ 	static float liftPositionGains[4];
+ 	static float liftRateGains[4];
 
 	// Data for the Claw Not enabled in telop yet
 	static SpeedController* clawSC;
 	static Encoder* clawEncoder;
- 	static PIDController* clawPIDController;
+ 	static cPIDController* clawPositionController;
+ 	static cPIDController* clawRateController;
+ 	static float clawOpenPosition;
+ 	static float clawClosedPosition;
+ 	static float clawPositionGains[4];
+ 	static float clawRateGains[4];
 };
 #endif

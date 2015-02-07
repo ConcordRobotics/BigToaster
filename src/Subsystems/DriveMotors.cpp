@@ -20,10 +20,11 @@
 
 DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 
-	flMotor = RobotMap::driveMotorsFrontLeftMotor;
-	frMotor = RobotMap::driveMotorsFrontRightMotor;
-	blMotor = RobotMap::driveMotorsBackLeftMotor;
-	brMotor = RobotMap::driveMotorsBackRightMotor;
+	for (int i=0; i < 4; i++) {
+		scs[i] = RobotMap::driveMotorsSCs[i];
+		encoders[i] = RobotMap::driveMotorsEncoders[i];
+		controllers[i] = RobotMap::driveMotorsControllers[i];
+	}
 
 	gyro1 = RobotMap::driveMotorsGyro1;
 	gyro1->Reset();
@@ -54,11 +55,12 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 	}
 	 */
     // Set up smart dashboard
+	/*
 	flMotor->OutputToDashboard("flMotor");
 	frMotor->OutputToDashboard("frMotor");
 	blMotor->OutputToDashboard("blMotor");
 	brMotor->OutputToDashboard("brMotor");
-	headingCont->OutputToDashboard("gyro");
+	headingCont->OutputToDashboard("gyro"); */
     // Negate y for the joystick. Is this needed?
     y = -y;
 
@@ -67,25 +69,17 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     wheelSpeeds[1] = double(-x + y - z);
     wheelSpeeds[2] = double(-x + y + z);
     wheelSpeeds[3] = double(x + y - z);
-
-    flMotor->controller->SetTarget(wheelSpeeds[0]);
-    frMotor->controller->SetTarget(wheelSpeeds[1]);
-    blMotor->controller->SetTarget(wheelSpeeds[2]);
-    brMotor->controller->SetTarget(wheelSpeeds[3]);
-    flMotor->UpdateRate();
-    frMotor->UpdateRate();
-    blMotor->UpdateRate();
-    brMotor->UpdateRate();
-    flMotor->SetPower();
-    frMotor->SetPower();
-    blMotor->SetPower();
-    brMotor->SetPower();
+    for (int i = 0; i < 4; i++) {
+    	// ToDo hard code the 15.
+    	controllers[i]->SetSetpoint(wheelSpeeds[i]*15);
+    	controllers[i]->UpdateController();
+    }
     //Stop();
 }
 
 void DriveMotors::Stop() {
-	flMotor->sc->Set(0.0);
-	frMotor->sc->Set(0.0);
-	blMotor->sc->Set(0.0);
-	brMotor->sc->Set(0.0);
+	for (int i = 0; i < 4; i++) {
+		scs[i]->Set(0.0);  // Could go back to inherited
+		controllers[i]->Reset();
+	}
 }

@@ -10,7 +10,6 @@
 
 
 #include "ZeroLift.h"
-#include "Support/SingleMotor.h"
 
 ZeroLift::ZeroLift() {
 	// Use requires() here to declare subsystem dependencies

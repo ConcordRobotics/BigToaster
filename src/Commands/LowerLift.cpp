@@ -28,7 +28,7 @@ void LowerLift::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void LowerLift::Execute() {
-	Robot::lift->SetPower(-0.4);
+	Robot::lift->SetSetpoint(-0.4);
 
 }
 
@@ -39,14 +39,14 @@ bool LowerLift::IsFinished() {
 
 // Called once after isFinished returns true
 void LowerLift::End() {
-	Robot::lift->SetPower(0.0);
-	Robot::lift->liftSC->Set(0.0);
+	Robot::lift->sc->Set(0.0);
+	Robot::lift->controller->Reset();
 
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void LowerLift::Interrupted() {
-	Robot::lift->SetPower(0.0);
-	Robot::lift->liftSC->Set(0.0);
+	Robot::lift->sc->Set(0.0);
+	Robot::lift->controller->Reset();
 }

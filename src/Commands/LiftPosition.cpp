@@ -10,15 +10,14 @@
 
 
 #include "LiftPosition.h"
-#include "Support/SingleMotor.h"
 
 LiftPosition::LiftPosition(double targetPositionIn ) {
 	// Use requires() here to declare subsystem dependencies
 	Requires(Robot::lift);
-	curPosition = Robot::lift->liftEncoder->GetDistance();
+	curPosition = Robot::lift->encoder->GetDistance();
 	tolerance = 0.5;
 	targetPosition = targetPositionIn;
-
+	// Add Switch to position mode
 }
 
 // Called just before this Command runs the first time
@@ -30,7 +29,9 @@ void LiftPosition::Initialize() {
 void LiftPosition::Execute() {
     // Set the target at 30 inches.  This is referenced from the original starting
     // position, so ensure lift is at bottom
-	curPosition = Robot::lift->SetPosition(30.0);
+	Robot::lift->SetSetpoint(30.0);
+	Robot::lift->UpdateController();
+	curPosition = Robot::lift->encoder->GetDistance();
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -42,14 +43,14 @@ bool LiftPosition::IsFinished() {
 
 // Called once after isFinished returns true
 void LiftPosition::End() {
-	Robot::lift->SetPower(0.0);
-	Robot::lift->liftSC->Set(0.0);
+	Robot::lift->sc->Set(0.0);
+	Robot::lift->controller->Reset();
 
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void LiftPosition::Interrupted() {
-	Robot::lift->SetPower(0.0);
-	Robot::lift->liftSC->Set(0.0);
+	Robot::lift->sc->Set(0.0);
+	Robot::lift->controller->Reset();
 }

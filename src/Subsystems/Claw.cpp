@@ -20,7 +20,7 @@ Claw::Claw() : Subsystem("Claw") {
 
 	sc = RobotMap::clawSC;
 	encoder = RobotMap::clawEncoder;
-	controller = RobotMap::clawPIDController;
+	controller = RobotMap::clawPositionController;
 	mode = OFF;
 	// ToDo: Enable PID controller on claw, once tuned.
 	// Need to find the zero position
@@ -29,13 +29,9 @@ Claw::Claw() : Subsystem("Claw") {
 void Claw::SetPositionMode() {
 	mode = POSITION;
 	// Reset the controller to zero the integral error.
-	controller->Reset();
 	// Change the PID source parameter to position
-	encoder->SetPIDSourceParameter(Encoder::kDistance);
-	// Adjust gains here
-	float* p;
-	p = RobotMap::clawPositionGains;
-	controller->SetPID(p[0], p[1], p[2], p[3]);
+	controller=RobotMap::clawPositionController;
+	// Reset the controller
 	// Set the target to the current position to be safe
 	controller->SetSetpoint(encoder->GetDistance());
 	controller->Enable();
@@ -44,14 +40,10 @@ void Claw::SetPositionMode() {
 void Claw::SetRateMode() {
 	mode = RATE;
 	// Reset the controller to zero the integral error.
-	controller->Reset();
 	// Change the PID source parameter to position
-	encoder->SetPIDSourceParameter(Encoder::kRate);
-	// Adjust gains here
-	float* p;
-	p = RobotMap::clawRateGains;
-	controller->SetPID(p[0], p[1], p[2], p[3]);
-	// Set the target to a rate of zero to be safe
+	controller=RobotMap::clawRateController;
+	// Reset the controller
+	// Set the target zero
 	controller->SetSetpoint(0.0);
 	controller->Enable();
 }
@@ -59,14 +51,14 @@ void Claw::SetRateMode() {
 void Claw::UpdateController() {
 	// Enforce a lower limit of zero
 	if (encoder->GetDistance() < 0) encoder->Reset();
-	// ToDo: May need to add code to prevent
-	// buildup of integration error in the controller when
-	// holding things.
-
+	if ( mode <> OFF) {
+		controller->UpdateController();
+	}
 }
+
 void Claw::Stop() {
 	mode = OFF;
-	controller->Disable();
+	controller->Reset();
 	sc->Set(0.0);
 
 }
