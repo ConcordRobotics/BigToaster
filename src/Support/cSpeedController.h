@@ -13,8 +13,8 @@ protected:
 	~cSpeedController();
 private:
 	bool reversed = false;
-	SpeedController* sc;
 public:
+	SpeedController* sc;
 	void Set(float 	speed);
 	void PIDWrite (float speed);
     cSpeedController(SpeedController* scIn, bool reversedIn);

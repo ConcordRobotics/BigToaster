@@ -10,6 +10,7 @@
 cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* pSource, PIDOutput* pOutput) {
 	pGain = p;
 	iGain = i;
+	if (iGain < 1.0E-6) iGain = 1.0E30;
 	dGain = d;
 	fGain = f;
 	pidSource = pSource;
@@ -101,7 +102,8 @@ void cPIDController::UpdateController() {
 	output[ind] = tempOut;
 	if (enabled) pidOutput->PIDWrite(output[ind]);
 	if (logData) {
-		logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
+		fprintf(cLogFile, "%f %f %f\n",time[ind], sensVal[ind], output[ind]);
+		//logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
 	}
 
 }
@@ -119,19 +121,19 @@ void cPIDController::Enable() {
 void cPIDController::OutputToDashboard(std::string controllerName) {
 	std::string keyName;
 	keyName = controllerName + "pGain";
-	// Get inputs
-	//double input;
-	//input = SmartDashboard::GetNumber(keyName,pGain);
-	//pGain = input;
 	SmartDashboard::PutNumber(keyName,pGain);
 	keyName = controllerName + "iGain";
-	//input = SmartDashboard::GetNumber(keyName,iGain);
-	//iGain = input;
-	SmartDashboard::PutNumber(keyName,iGain);
+	SmartDashboard::PutNumber(keyName,1.0/iGain);
+	keyName = controllerName + "dGain";
+	SmartDashboard::PutNumber(keyName,dGain);
+	keyName = controllerName + "fGain";
+	SmartDashboard::PutNumber(keyName,fGain);
+	keyName = controllerName + "ind";
+	SmartDashboard::PutNumber(keyName,double(ind));
+	keyName = controllerName + "sens";
+	SmartDashboard::PutNumber(keyName,double(sensVal[ind]));
 	keyName = controllerName + "output";
 	SmartDashboard::PutNumber(keyName,double(output[ind]));
-	//keyName = controllerName + "curRate";
-	//SmartDashboard::PutNumber(keyName,curRate);
 	keyName = controllerName + "target";
 	SmartDashboard::PutNumber(keyName,double(setPoint[ind]));
 }
@@ -139,9 +141,9 @@ void cPIDController::OutputToDashboard(std::string controllerName) {
 void cPIDController::LogData(bool active, char* fileName) {
 
 	if (active) {
-		logFile.open(fileName);
+		cLogFile = fopen(fileName,"w");
 	} else if (logData) {
-		logFile.close();
+		fclose(cLogFile);
 	}
 	logData = active;
 }

@@ -26,6 +26,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		controllers[i] = RobotMap::driveMotorsControllers[i];
 		controllers[i]->Enable();
 		controllers[i]->SetSetpoint(0.0);
+		scs[i]->Set(0.0);
 	}
 
 	gyro1 = RobotMap::driveMotorsGyro1;
@@ -76,6 +77,8 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	// ToDo hard code the 15.
     	controllers[i]->SetSetpoint(wheelSpeeds[i]*15);
     	controllers[i]->UpdateController();
+    	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
+    	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }
     //Stop();
 }

@@ -23,7 +23,7 @@ cPIDController *RobotMap::driveMotorsControllers[4] = {NULL, NULL, NULL, NULL};
 cPIDController* RobotMap::driveMotorsGyroController = NULL;
 BuiltInAccelerometer* RobotMap::driveMotorsAccelerometer = NULL;
 Gyro* RobotMap::driveMotorsGyro1 = NULL;
-float RobotMap::driveMotorsGains[4] =  {0.0, 0.0, 0.0, 0.1};
+float RobotMap::driveMotorsGains[4] =  {0.1, 0.5, 0.1, 1.0};
 float RobotMap::gyroRateGains[4] =  {1.0, 0.0, 0.0, 0.0};
 // Encoder limits in revs/sec
 float RobotMap::driveMotorEncoderLimits[2] = {-15.0,15.0};
@@ -70,6 +70,7 @@ void RobotMap::init() {
 			driveMotorsEncoders[i] = new Encoder(driveMotorsPIOs[i][0],driveMotorsPIOs[i][1],
 					driveMotorsEncReversed[i], Encoder::k4X);
 			driveMotorsEncoders[i]->SetDistancePerPulse(driveMotorsDPP[i]);
+			driveMotorsEncoders[i]->SetPIDSourceParameter(Encoder::kRate);
 			p = driveMotorsGains;
 			driveMotorsControllers[i] = new cPIDController(p[0], p[1], p[2], p[3],
 					driveMotorsEncoders[i], driveMotorsSCs[i]);
@@ -78,7 +79,7 @@ void RobotMap::init() {
 			lw->AddSensor(driveMotorsNames[i], "Encoders", driveMotorsEncoders[i]);
 			//char name[10];
 			//strcpy(name,driveMotorsNames[i]);
-			driveMotorsControllers[i]->LogData(true,driveMotorsNames[i]);
+			//driveMotorsControllers[i]->LogData(true,driveMotorsNames[i]);
 	}
 	std::cout << "Test\n";
 

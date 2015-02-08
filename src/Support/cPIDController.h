@@ -10,6 +10,7 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
 
 static const unsigned int nsave = 2;
 class cPIDController {
@@ -29,8 +30,8 @@ private:
 	// Use a looping index to prevent having to
 	// copy values over
 	double setPoint[nsave];
-	float output[nsave];
-	float dodt[nsave];
+	double output[nsave];
+	double dodt[nsave];
 	double sensVal[nsave];
 	double time[nsave];
 	double intErr;
@@ -42,6 +43,7 @@ private:
 	void CalcRangeRatio(void);
 	bool logData = false;
 	std::ofstream logFile;
+	_IO_FILE* cLogFile;
 public:
 	void SetSetpoint(double set);
 	void UpdateController();
