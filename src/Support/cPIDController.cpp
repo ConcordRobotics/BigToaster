@@ -109,12 +109,16 @@ void cPIDController::UpdateController() {
 }
 
 void cPIDController::Reset() {
-	enabled = false;
 	intErr = 0.0;
 }
 
 void cPIDController::Enable() {
 	enabled = true;
+	intErr = 0.0;
+}
+
+void cPIDController::Disable() {
+	enabled = false;
 	intErr = 0.0;
 }
 

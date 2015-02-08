@@ -13,9 +13,9 @@
 #define ROBOTMAP_H
 
 #include "WPILib.h"
-#include "Subsystems/Lift.h"
 #include "Support/cEncoder.h"
 #include "Support/cSpeedController.h"
+#include "Support/cPIDController.h"
 
 
 /**

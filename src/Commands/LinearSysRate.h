@@ -9,23 +9,23 @@
 // it from being updated in the future.
 
 
-#ifndef LIFTHIGH_H
-#define LIFTHIGH_H
+#ifndef LINEARSYSRATE_H
+#define LINEARSYSRATE_H
 
 #include "../Robot.h"
+#include "Subsystems/LinearSystem.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class LiftPosition: public Command {
+class LinearSysRate: public Command {
 private:
-	double tolerance;
-	double curPosition;
-	double targetPosition;
+	double rate;
+	LinearSystem* sys;
 public:
-	LiftPosition(double targetPosition);
+	LinearSysRate(LinearSystem* sysIn, float rateIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

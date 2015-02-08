@@ -80,6 +80,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }
+    Wait(0.005); // wait 5ms to avoid hogging CPU cycles
     //Stop();
 }
 

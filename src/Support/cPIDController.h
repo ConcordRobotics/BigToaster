@@ -53,6 +53,7 @@ public:
     cPIDController(float p, float i, float d, float f, PIDSource* pSource, PIDOutput* pOutput);
     void Reset();
     void Enable();
+    void Disable();
     void LogData(bool active, char* fileName);
 };
 #endif
