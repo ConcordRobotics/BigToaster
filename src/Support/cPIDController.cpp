@@ -7,6 +7,7 @@
 
 #include "cPIDController.h"
 #include "SmartDashboard/SmartDashboard.h"
+#include <iostream>
 cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* pSource, PIDOutput* pOutput) {
 	pGain = p;
 	iGain = i;
@@ -31,6 +32,7 @@ cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* 
 	enabled = false;
 	ind = 0;
 	rangeOutOverIn = 1.0;
+	cLogFile = 0;
 	// ToDo add ability to set ranges, and scale above accordingly
 };
 
@@ -143,9 +145,10 @@ void cPIDController::OutputToDashboard(std::string controllerName) {
 }
 
 void cPIDController::LogData(bool active, char* fileName) {
-	char* fname = new char[strlen(fileName) + 2];
-	strcpy(fname,"/");
+	char* fname = new char[strlen(fileName) + 20];
+	strcpy(fname,"/home/lvuser/");
 	strcat(fname,fileName);
+	std::cout << fname << "opening\n";
 	if (active) {
 		cLogFile = fopen(fname,"w");
 	} else if (logData) {
