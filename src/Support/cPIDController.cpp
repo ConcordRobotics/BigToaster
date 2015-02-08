@@ -143,11 +143,14 @@ void cPIDController::OutputToDashboard(std::string controllerName) {
 }
 
 void cPIDController::LogData(bool active, char* fileName) {
-
+	char* fname = new char[strlen(fileName) + 2];
+	strcpy(fname,"/");
+	strcat(fname,fileName);
 	if (active) {
-		cLogFile = fopen(fileName,"w");
+		cLogFile = fopen(fname,"w");
 	} else if (logData) {
 		fclose(cLogFile);
 	}
 	logData = active;
+	delete(fname);
 }

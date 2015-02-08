@@ -22,6 +22,9 @@
  * @author ExampleAuthor
  */
 class TestDrive: public Command {
+private:
+	Timer* timer;
+	float rate;
 public:
 	TestDrive();
 	virtual void Initialize();
