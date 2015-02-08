@@ -9,10 +9,10 @@
 // it from being updated in the future.
 #include "Commands/LinearSysRate.h"
 
-LinearSysRate::LinearSysRate(LinearSystem* sysIn, float rateIn) {
+LinearSysRate::LinearSysRate(Subsystem* sysIn, LinearSystem* linSys, float rateIn) {
 	// Use requires() here to declare subsystem dependencies
 	Requires(sysIn);
-	sys = sysIn;
+	sys = linSys;
 	rate = rateIn;
 	sys->SetRateMode();
 	sys->SetSetpoint(rate);

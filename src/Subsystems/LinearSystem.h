@@ -21,8 +21,8 @@
  * @author ExampleAuthor
  */
 
-class LinearSystem: public Subsystem {
-private:
+class LinearSystem {
+protected:
 	int mode;
 	enum modeType {OFF, POSITION, RATE};
 	double limits[2] = {0,1};
@@ -34,7 +34,8 @@ private:
 	cPIDController* rateController;
 	cPIDController* positionController;
  public:
-	LinearSystem(const char *sysName, SpeedController* scIn, Encoder* encIn,
+	LinearSystem();
+	LinearSystem(SpeedController* scIn, Encoder* encIn,
 			cPIDController* pController, cPIDController* rController);
 	void Stop();
 	void SetSetpoint(double setSetpoint);

@@ -14,9 +14,16 @@
 #include "../RobotMap.h"
 #include "LiveWindow/LiveWindow.h"
 
+LinearSystem::LinearSystem() {
+	sc = NULL;
+	encoder = NULL;
+	positionController = NULL;
+	rateController = NULL;
+	mode = OFF;
+}
 
-LinearSystem::LinearSystem(const char *sysName, SpeedController* scIn, Encoder* encIn,
-		cPIDController* pController, cPIDController* rController) : Subsystem(sysName) {
+LinearSystem::LinearSystem(SpeedController* scIn, Encoder* encIn,
+		cPIDController* pController, cPIDController* rController)  {
 
 	sc = scIn;
 	encoder = encIn;

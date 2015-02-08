@@ -9,10 +9,10 @@
 // it from being updated in the future.
 #include "Commands/LinearSysPosition.h"
 
-LinearSysPosition::LinearSysPosition(LinearSystem* sysIn, double positionIn) {
+LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, double positionIn) {
 	// Use requires() here to declare subsystem dependencies
 	Requires(sysIn);
-	sys = sysIn;
+	sys = linSys;
 	position = positionIn;
 	sys->SetPositionMode();
 	sys->SetSetpoint(position);

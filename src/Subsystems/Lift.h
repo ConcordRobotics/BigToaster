@@ -9,29 +9,24 @@
 // it from being updated in the future.
 
 
-#ifndef LINEARSYSPOSITION_H
-#define LINEARSYSPOSITION_H
-
-#include "../Robot.h"
+#ifndef LIFT_H
+#define LIFT_H
 #include "Subsystems/LinearSystem.h"
+#include "Support/cPIDController.h"
+#include "WPILib.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class LinearSysPosition: public Command {
+
+class Lift: public LinearSystem , public Subsystem {
 private:
-	double position;
-	LinearSystem* sys;
-	double tolerance = 0.02; // percent tolerance to find position
+
 public:
-	LinearSysPosition(Subsystem* sysIn,  LinearSystem* linSys, double position);
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
+	Lift();
+
 };
 
 #endif

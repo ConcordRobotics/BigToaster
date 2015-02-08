@@ -9,28 +9,15 @@
 // it from being updated in the future.
 
 
-#ifndef LINEARSYSRATE_H
-#define LINEARSYSRATE_H
+#include "Claw.h"
+#include "../RobotMap.h"
+#include "LiveWindow/LiveWindow.h"
 
-#include "../Robot.h"
-#include "Subsystems/LinearSystem.h"
 
-/**
- *
- *
- * @author ExampleAuthor
- */
-class LinearSysRate: public Command {
-private:
-	double rate;
-	LinearSystem* sys;
-public:
-	LinearSysRate(Subsystem* sysIn, LinearSystem*, float rateIn);
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
-};
+Claw::Claw() : LinearSystem(), Subsystem("Claw") {
+	sc = RobotMap::clawSC;
+	encoder = RobotMap::clawEncoder;
+	positionController = RobotMap::clawPositionController;
+	rateController = RobotMap::clawRateController;
+}
 
-#endif
