@@ -25,6 +25,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		encoders[i] = RobotMap::driveMotorsEncoders[i];
 		controllers[i] = RobotMap::driveMotorsControllers[i];
 		controllers[i]->Enable();
+		controllers[i]->SetSetpoint(0.0);
 	}
 
 	gyro1 = RobotMap::driveMotorsGyro1;

@@ -10,18 +10,20 @@
 
 
 #include "RobotMap.h"
+#include <iostream>
 #include "LiveWindow/LiveWindow.h"
 
 
 
 // Data for Robot Drive system
-cSpeedController* RobotMap::driveMotorsSCs[4] = {NULL, NULL, NULL, NULL};
-Encoder* RobotMap::driveMotorsEncoders[4] = {NULL, NULL, NULL, NULL};
-cPIDController* RobotMap::driveMotorsControllers[4] = {NULL, NULL, NULL, NULL};
+SpeedController *RobotMap::dmSCs[4] = {NULL, NULL, NULL, NULL};
+cSpeedController *RobotMap::driveMotorsSCs[4] = {NULL, NULL, NULL, NULL};
+Encoder *RobotMap::driveMotorsEncoders[4] = {NULL, NULL, NULL, NULL};
+cPIDController *RobotMap::driveMotorsControllers[4] = {NULL, NULL, NULL, NULL};
 cPIDController* RobotMap::driveMotorsGyroController = NULL;
 BuiltInAccelerometer* RobotMap::driveMotorsAccelerometer = NULL;
 Gyro* RobotMap::driveMotorsGyro1 = NULL;
-float RobotMap::driveMotorsGains[4] =  {0.01, 0.0, 0.0, 0.1};
+float RobotMap::driveMotorsGains[4] =  {0.0, 0.0, 0.0, 0.1};
 float RobotMap::gyroRateGains[4] =  {1.0, 0.0, 0.0, 0.0};
 // Encoder limits in revs/sec
 float RobotMap::driveMotorEncoderLimits[2] = {-15.0,15.0};
@@ -31,8 +33,8 @@ unsigned int RobotMap::driveMotorsPWMs[4] = {1,3,2,0};
 unsigned int RobotMap:: driveMotorsPIOs[4][2] = { {2,3}, {6,7}, {4,5}, {0,1} };
 bool RobotMap::driveMotorsSCReversed[4] = {true, false, true, false};
 bool RobotMap::driveMotorsEncReversed[4] = {true, false, true, false};
-const char* RobotMap::driveMotorsNames[4] = {"fl","fr","bl","br"};
-float RobotMap::driveMotorsDPP[4] = {0.00532, 0.00433, 0.004019, 0.0028};
+char RobotMap::driveMotorsNames[4][4] = {"fl","fr","bl","br"};
+float RobotMap::driveMotorsDPP[4] = {0.00419, 0.00433, 0.004019, 0.0028};
 
 // Data for lift system
 SpeedController* RobotMap::liftSC = NULL;
@@ -61,23 +63,31 @@ void RobotMap::init() {
 	// Generic pointer to float
 	float* p;
 	// Loop over motors to initialize Drive Motor data
+	std::cout << "Test1\n";
 	for (int i = 0; i < 4; i++) {
-			driveMotorsSCs[i] = new cSpeedController (new Talon(driveMotorsPWMs[i]),driveMotorsSCReversed[i]);
-			driveMotorsEncoders[i] = new Encoder(driveMotorsPIOs[i][0],driveMotorsPIOs[i][0],
+			dmSCs[i] = new Talon(driveMotorsPWMs[i]);
+			driveMotorsSCs[i] = new cSpeedController (dmSCs[i],driveMotorsSCReversed[i]);
+			driveMotorsEncoders[i] = new Encoder(driveMotorsPIOs[i][0],driveMotorsPIOs[i][1],
 					driveMotorsEncReversed[i], Encoder::k4X);
 			driveMotorsEncoders[i]->SetDistancePerPulse(driveMotorsDPP[i]);
 			p = driveMotorsGains;
 			driveMotorsControllers[i] = new cPIDController(p[0], p[1], p[2], p[3],
 					driveMotorsEncoders[i], driveMotorsSCs[i]);
 			driveMotorsControllers[i]->SetInputRange(-15.0,15.0);
-			lw->AddActuator("DriveMotorsSC", driveMotorsNames[i], (Talon*) driveMotorsSCs[i]);
-			lw->AddSensor("DriveMotors", driveMotorsNames[i], driveMotorsEncoders[i]);
-			char name[10];
-			strcpy(name,driveMotorsNames[i]);
-			driveMotorsControllers[i]->LogData(true,name);
+			lw->AddActuator(driveMotorsNames[i], "SpeedController", (Talon*) dmSCs[i]);
+			lw->AddSensor(driveMotorsNames[i], "Encoders", driveMotorsEncoders[i]);
+			//char name[10];
+			//strcpy(name,driveMotorsNames[i]);
+			driveMotorsControllers[i]->LogData(true,driveMotorsNames[i]);
 	}
+	std::cout << "Test\n";
 
-
+	//lw->AddActuator("DriveMotorSC", "FrontRight", (Talon*) driveMotorsSCs[1]);
+	//lw->AddSensor("DriveMotors", "FrontRight", driveMotorsEncoders[1]);
+	//lw->AddActuator("DriveMotorSC", "BackLeft", (Talon*) driveMotorsSCs[2]);
+	//lw->AddSensor("DriveMotors", "BackLeft", driveMotorsEncoders[2]);
+	//lw->AddActuator("DriveMotorSC", "BackRight", (Talon*) driveMotorsSCs[3]);
+	//lw->AddSensor("DriveMotors", "BackRight", driveMotorsEncoders[3]);
 	// Add the gyro and accelerometer
 		driveMotorsGyro1 = new Gyro(0);
 		lw->AddSensor("Gyros", "Gyro", driveMotorsGyro1);

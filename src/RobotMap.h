@@ -30,9 +30,10 @@ public:
 	// Data for Drive Motors
 	static enum {fl,fr,bl,br} motorPosition;
 	// Declare all as arrays of pointers
-	static cSpeedController* driveMotorsSCs[4];
-	static Encoder* driveMotorsEncoders[4];
-	static cPIDController* driveMotorsControllers[4];
+	static cSpeedController *driveMotorsSCs[4];
+	static SpeedController *dmSCs[4];
+	static Encoder *driveMotorsEncoders[4];
+	static cPIDController *driveMotorsControllers[4];
 	static cPIDController* driveMotorsGyroController;
 	static Gyro* driveMotorsGyro1;
 	static BuiltInAccelerometer* driveMotorsAccelerometer;
@@ -45,7 +46,7 @@ public:
 	static bool driveMotorsSCReversed[4];
 	static bool driveMotorsEncReversed[4];
 	static float driveMotorsDPP[4];
-	static const char* driveMotorsNames[4];
+	static char driveMotorsNames[4][4];
 
 	// Data for Lift system
 	static SpeedController* liftSC;

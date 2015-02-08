@@ -16,7 +16,6 @@ class cPIDController {
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	void CalcOutput(double delT);
 	unsigned int ind;
 	// Gains
 	float pGain;
