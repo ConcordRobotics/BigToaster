@@ -58,6 +58,8 @@ public:
 	static void init();
  	static float liftPositionGains[4];
  	static float liftRateGains[4];
+ 	static DigitalInput* liftUpperSwitch;
+ 	static DigitalInput* liftLowerSwitchL;
 
 	// Data for the Claw Not enabled in telop yet
 	static SpeedController* clawSC;

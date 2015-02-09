@@ -21,6 +21,8 @@ Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 	encoder = RobotMap::liftEncoder;
 	positionController = RobotMap::liftPositionController;
 	rateController = RobotMap::liftRateController;
+	upperSwitch = RobotMap::liftUpperSwitch;
+	lowerSwitch = RobotMap::liftLowerSwitchL;
 	name = new char[5];
 	strcpy(name,"Lift");
 }
@@ -36,9 +38,19 @@ void Lift::InitDefaultCommand() {
 void Lift::EnforceLimits() {
 	// Add something for the limit switch
 	// Don't reset distance to zero since the lift can unwind past zero
-
+	bool atBottom = false;
+	bool atTop = false;
+	if (lowerSwitch->Get() == CLOSED) {
+		atBottom = true;
+		encoder->Reset();
+	} else if (upperSwitch->Get() == CLOSED) {
+		atTop = true;
+	}
+	// ToDo Create some soft limits
+	double distance = encoder->GetDistance();
 	if (mode == RATE) {
-		if (encoder->GetDistance() < 0.0) rateController->SetSetpoint(0.0);
+
+		//if (atBottom and )
 	}
 	// Don't do anything for position - we shouldn't be commanding a negative position.
 }

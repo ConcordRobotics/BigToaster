@@ -45,6 +45,8 @@ cPIDController* RobotMap::liftRateController = NULL;
 cPIDController* RobotMap::liftPositionController = NULL;
 float RobotMap::liftPositionGains[4] = {2.0, 1.0, 0.0, 0.0};
 float RobotMap::liftRateGains[4] =  {1.0, 1.0, 0.0, 1.5};
+DigitalInput* RobotMap::liftUpperSwitch = NULL;
+DigitalInput* RobotMap::liftLowerSwitchL = NULL;
 
 
 // Data for claw
@@ -99,6 +101,7 @@ void RobotMap::init() {
 		//lw->AddSensor("Gyros", "Accelerometer", driveMotorsAccelerometer);
 		//p = gyroRateGains;
 		//driveMotorsGyroController = new cPIDController(p[0], p[1], p[2], p[3], driveMotorsGyro1, );
+
 	std::cout << "Setting Lift Data\n";
 	// Set Lift Data
 		// Speed Controller
@@ -127,7 +130,12 @@ void RobotMap::init() {
 					liftPositionEncoder, liftSC);
 			liftPositionController->SetInputRange(0.0,50.0);
 			liftPositionController->SetOutputRange(-1.0,1.0);
+			liftUpperSwitch = new DigitalInput(18);
+			liftLowerSwitchL = new DigitalInput(19);
+			lw->AddSensor("Lift","UpperSwitch", liftUpperSwitch);
+			lw->AddSensor("Lift","LowerSwitch", liftLowerSwitchL);
 			std::cout << "Setting Claw Data\n";
+
 	 // Set Claw data
 			// Speed Controller
 				clawSC = new Victor(5);

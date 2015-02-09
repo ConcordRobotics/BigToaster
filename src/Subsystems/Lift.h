@@ -23,7 +23,9 @@
 
 class Lift: public LinearSystem , public Subsystem {
 private:
-
+	DigitalInput* upperSwitch;
+	DigitalInput* lowerSwitch;
+	enum switchPositions {OPEN, CLOSED};
 public:
 	Lift();
 	void InitDefaultCommand(void);
