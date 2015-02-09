@@ -77,7 +77,7 @@ void LinearSystem::UpdateController() {
 		positionController->UpdateController();
 		positionController->OutputToDashboard(name);
 	} else sc->Set(0.0);
-	Wait(0.005); // wait 5ms to avoid hogging CPU cycles
+	Wait(RobotMap::MotorWaitTime); // wait 5ms to avoid hogging CPU cycles
 
 }
 

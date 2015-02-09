@@ -65,7 +65,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 	blMotor->OutputToDashboard("blMotor");
 	brMotor->OutputToDashboard("brMotor");
 	headingCont->OutputToDashboard("gyro"); */
-    // Negate y for the joystick. Is this needed?
+    // Negate y for the joystick.
     y = -y;
 
     double wheelSpeeds[4];
@@ -80,7 +80,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }
-    Wait(0.005); // wait 5ms to avoid hogging CPU cycles
+    Wait(RobotMap::MotorWaitTime); // wait 5ms to avoid hogging CPU cycles
     //Stop();
 }
 
