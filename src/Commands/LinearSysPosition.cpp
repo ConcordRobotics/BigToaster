@@ -9,19 +9,22 @@
 // it from being updated in the future.
 #include "Commands/LinearSysPosition.h"
 
-LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, double positionIn) {
+LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, double positionIn, double tol = -1.0) {
 	// Use requires() here to declare subsystem dependencies
 	Requires(sysIn);
 	sys = linSys;
 	position = positionIn;
 	sys->SetPositionMode();
 	sys->SetSetpoint(position);
+	// default tolerance will mean the command will hold until another command is requested.
+	tolerance = tol;
 }
+
 
 // Called just before this Command runs the first time
 void LinearSysPosition::Initialize() {
 	sys->SetPositionMode();
-	sys->rateController->LogData(true,sys->name);
+	sys->positionController->LogData(true,sys->name);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -33,13 +36,14 @@ void LinearSysPosition::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool LinearSysPosition::IsFinished() {
-	return (sys->PositionError(position) < tolerance);
+	return false; // Hold this position until told otherwise.
+	//return (sys->PositionError(position) < tolerance);
 }
 
 // Called once after isFinished returns true
 void LinearSysPosition::End() {
 	sys->Stop();
-	RobotMap::liftRateController->LogData(false,sys->name);
+	RobotMap::liftPositionController->LogData(false,sys->name);
 
 }
 

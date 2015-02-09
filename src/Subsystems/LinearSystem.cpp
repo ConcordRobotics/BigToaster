@@ -65,16 +65,9 @@ void LinearSystem::SetRateMode() {
 }
 
 void LinearSystem::UpdateController() {
-	// Enforce limits - adjust offset
-	double distance = encoder->GetDistance();
-	double penalty = 0.0;
-	if (distance < limits[0]) penalty = distance - limits[0];
-	if (distance > limits[1]) penalty = distance - limits[1];
+
+	EnforceLimits();
 	if ( mode == RATE) {
-		//double setPoint = rateController->GetSetpoint();
-		//penalty = penalty*setPoint;
-		//if (penalty > 0) setPoint = setPoint*penalty;
-		//SetSetpoint(setPoint);
 		rateController->UpdateController();
 		rateController->OutputToDashboard(name);
 	} else if (mode == POSITION) {

@@ -13,7 +13,7 @@
 #include "../RobotMap.h"
 #include "Robot.h"
 #include "LiveWindow/LiveWindow.h"
-#include "Commands/LinearSysPosition.h"
+#include "Commands/LinearSysRate.h"
 
 
 Lift::Lift() : LinearSystem(), Subsystem("Lift") {
@@ -29,6 +29,16 @@ Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 void Lift::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 
-	SetDefaultCommand(new LinearSysPosition(Robot::lift,Robot::lift,encoder->GetDistance()));
+	SetDefaultCommand(new LinearSysRate(Robot::lift,Robot::lift,0.0));
 
+}
+
+void Lift::EnforceLimits() {
+	// Add something for the limit switch
+	// Don't reset distance to zero since the lift can unwind past zero
+
+	if (mode == RATE) {
+		if (encoder->GetDistance() < 0.0) rateController->SetSetpoint(0.0);
+	}
+	// Don't do anything for position - we shouldn't be commanding a negative position.
 }

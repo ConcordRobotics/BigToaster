@@ -26,7 +26,8 @@ private:
 
 public:
 	Claw();
-
+	void EnforceLimits();
+	void InitDefaultCommand(void);
 };
 
 #endif

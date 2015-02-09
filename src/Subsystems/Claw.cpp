@@ -23,3 +23,15 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	strcpy(name,"Claw");
 }
 
+void Claw::InitDefaultCommand() {
+	// Set the default command for a subsystem here.
+
+	SetDefaultCommand(new LinearSysRate(Robot::claw,Robot::claw,0.0));
+
+}
+void Claw::EnforceLimits() {
+	// The claw can not physically go below zero, so reset the encoder if it reads negative
+	if (encoder->GetDistance() < 0.0) encoder->Reset();
+
+	// Don't do anything for rate, applying some outward or inward pressure is OK
+}

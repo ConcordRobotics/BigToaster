@@ -27,6 +27,7 @@ private:
 public:
 	Lift();
 	void InitDefaultCommand(void);
+	void EnforceLimits();
 };
 
 #endif

@@ -39,13 +39,11 @@ bool LinearSysRate::IsFinished() {
 
 // Called once after isFinished returns true
 void LinearSysRate::End() {
-	sys->Stop();
 	RobotMap::liftRateController->LogData(false,sys->name);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void LinearSysRate::Interrupted() {
-	sys->Stop();
 	sys->rateController->LogData(false,sys->name);
 }

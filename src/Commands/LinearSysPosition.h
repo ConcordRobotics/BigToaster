@@ -24,9 +24,9 @@ class LinearSysPosition: public Command {
 private:
 	double position;
 	LinearSystem* sys;
-	double tolerance = 0.02; // percent tolerance to find position
+	double tolerance; // percent tolerance to find position
 public:
-	LinearSysPosition(Subsystem* sysIn,  LinearSystem* linSys, double position);
+	LinearSysPosition(Subsystem* sysIn,  LinearSystem* linSys, double position, double tol = -1.0);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

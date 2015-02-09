@@ -46,6 +46,7 @@ protected:
 	void SetPositionMode();
 	void SetRateMode();
 	void UpdateController();
+	virtual void EnforceLimits();
 	double PositionError(double target);
 };
 
