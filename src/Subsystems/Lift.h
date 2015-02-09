@@ -26,7 +26,7 @@ private:
 
 public:
 	Lift();
-
+	void InitDefaultCommand(void);
 };
 
 #endif

@@ -33,29 +33,29 @@ OI::OI() {
 	joystick1 = new AdvancedJoystick(0, deadband, eGain);
 	joystick2 = new Joystick(1);
 
-//	RaiseLiftRateButton = new JoystickButton(joystick2, 1);
-//	RaiseLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,10.0));
-//	SmartDashboard::PutData("RaiseLiftRate", new LinearSysRate(Robot::lift,10.0));
+	RaiseLiftRateButton = new JoystickButton(joystick2, 1);
+	RaiseLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, 10.0));
+	SmartDashboard::PutData("RaiseLiftRate", new LinearSysRate(Robot::lift,Robot::lift, 10.0));
+
+	LowerLiftRateButton = new JoystickButton(joystick2, 2);
+	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -10.0));
+	SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
+
+	LiftTopPosButton = new JoystickButton(joystick2, 4);
+	LiftTopPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,30.0));
+	SmartDashboard::PutData("LiftTopPos", new LinearSysPosition(Robot::lift,Robot::lift,30.0));
+
+	LiftBottomPosButton = new JoystickButton(joystick2, 3);
+	LiftBottomPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,20.0));
+	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,20.0));
 //
-//	LowerLiftRateButton = new JoystickButton(joystick2, 2);
-//	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,-10.0));
-//	SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,-10.0));
+	OpenClawRateButton = new JoystickButton(joystick2, 5);
+	OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw, 0.2));
+	SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,Robot::claw, 0.2));
 //
-//	LiftTopPosButton = new JoystickButton(joystick2, 3);
-//	LiftTopPosButton->WhileHeld(new LinearSysPosition(Robot::lift,40.0));
-//	SmartDashboard::PutData("LiftTopPos", new LinearSysPosition(Robot::lift,40.0));
-//
-//	LiftBottomPosButton = new JoystickButton(joystick2, 4);
-//	LiftBottomPosButton->WhileHeld(new LinearSysPosition(Robot::lift,5.0));
-//	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,5.0));
-//
-//	OpenClawRateButton = new JoystickButton(joystick2, 5);
-//	OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,0.1));
-//	SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,0.1));
-//
-//	CloseClawRateButton = new JoystickButton(joystick2, 6);
-//	CloseClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,-0.1));
-//	SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,-0.1));
+	CloseClawRateButton = new JoystickButton(joystick2, 6);
+	CloseClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw,-0.2));
+	SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,Robot::claw,-0.2));
 //
 //	ClawOpenPosButton = new JoystickButton(joystick2, 7);
 //	ClawOpenPosButton->WhileHeld(new LinearSysPosition(Robot::claw,0.9));

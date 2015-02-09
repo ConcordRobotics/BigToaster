@@ -11,7 +11,9 @@
 
 #include "Subsystems/Lift.h"
 #include "../RobotMap.h"
+#include "Robot.h"
 #include "LiveWindow/LiveWindow.h"
+#include "Commands/LinearSysPosition.h"
 
 
 Lift::Lift() : LinearSystem(), Subsystem("Lift") {
@@ -19,5 +21,14 @@ Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 	encoder = RobotMap::liftEncoder;
 	positionController = RobotMap::liftPositionController;
 	rateController = RobotMap::liftRateController;
+	name = new char[5];
+	strcpy(name,"Lift");
 }
 
+
+void Lift::InitDefaultCommand() {
+	// Set the default command for a subsystem here.
+
+	SetDefaultCommand(new LinearSysPosition(Robot::lift,Robot::lift,encoder->GetDistance()));
+
+}

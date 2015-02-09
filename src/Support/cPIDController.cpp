@@ -8,6 +8,7 @@
 #include "cPIDController.h"
 #include "SmartDashboard/SmartDashboard.h"
 #include <iostream>
+
 cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* pSource, PIDOutput* pOutput) {
 	pGain = p;
 	iGain = i;
@@ -52,8 +53,8 @@ void cPIDController::SetInputRange (float iMin, float iMax) {
 }
 
 void cPIDController::SetOutputRange (float oMin, float oMax) {
-	inRange[0] = oMin;
-	inRange[1] = oMax;
+	outRange[0] = oMin;
+	outRange[1] = oMax;
 	CalcRangeRatio();
 }
 
@@ -64,6 +65,9 @@ void cPIDController::SetSetpoint(double set) {
 	setPoint[(ind+1)%nsave ] = set;
 }
 
+double cPIDController::GetSetpoint() {
+	return setPoint[ind];
+}
 void cPIDController::UpdateController() {
 	if (enabled == false) return;
 	// Advance the index, with mod to loop it
@@ -85,11 +89,12 @@ void cPIDController::UpdateController() {
 
 	// Calculate the target output
 	double tempOut;
-	tempOut = rangeOutOverIn* // Scale everything by range of out over in
-			 (fGain*setPoint[ind] +  // Feed forward term
-					 pGain*( error + // All feedback terms scaled by the pGain
-							 intErr/iGain + // iGain has units of time,
-							 dGain*dodt[ind] ));//dGain has units of time
+	double f, p, i, d;
+	f = fGain*setPoint[ind];
+	p = pGain*error;
+	i = pGain*intErr/iGain;
+	d = pGain*dGain*dodt[ind];
+	tempOut = rangeOutOverIn*(f + p + i + d);
 	// Now check the output
 	if (tempOut > outRange[1]) {
 		if (error > 0 ) intErr = intErr - error*delT;
@@ -104,7 +109,7 @@ void cPIDController::UpdateController() {
 	output[ind] = tempOut;
 	if (enabled) pidOutput->PIDWrite(output[ind]);
 	if (logData) {
-		fprintf(cLogFile, "%f %f %f\n",time[ind], sensVal[ind], output[ind]);
+		fprintf(cLogFile, "%f %f %f %f %f %f %f\n",time[ind], sensVal[ind], output[ind], f, p, i, d);
 		//logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
 	}
 
@@ -151,6 +156,7 @@ void cPIDController::LogData(bool active, char* fileName) {
 	std::cout << fname << "opening\n";
 	if (active) {
 		cLogFile = fopen(fname,"w");
+		rewind(cLogFile);
 	} else if (logData) {
 		fclose(cLogFile);
 	}

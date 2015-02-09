@@ -19,5 +19,7 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	encoder = RobotMap::clawEncoder;
 	positionController = RobotMap::clawPositionController;
 	rateController = RobotMap::clawRateController;
+	name = new char[5];
+	strcpy(name,"Claw");
 }
 

@@ -61,8 +61,9 @@ public:
 	// Data for the Claw Not enabled in telop yet
 	static SpeedController* clawSC;
 	static Encoder* clawEncoder;
+	static cEncoder* clawPositionEncoder;
+	static cPIDController* clawRateController;
  	static cPIDController* clawPositionController;
- 	static cPIDController* clawRateController;
  	static float clawOpenPosition;
  	static float clawClosedPosition;
  	static float clawPositionGains[4];

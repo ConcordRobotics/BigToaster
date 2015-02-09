@@ -54,7 +54,7 @@ void TestDrive::End() {
 	Robot::driveMotors->ArcadeDrive(0.0,0.0,0.0);
 	Robot::driveMotors->Stop();
 	for (int i = 0; i<4; i++) {
-		//Robot::driveMotors->controllers[i]->LogData(false,RobotMap::driveMotorsNames[i]);
+		Robot::driveMotors->controllers[i]->LogData(false,RobotMap::driveMotorsNames[i]);
 	}
 }
 

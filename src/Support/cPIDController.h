@@ -45,6 +45,7 @@ private:
 	std::ofstream logFile;
 	_IO_FILE* cLogFile;
 public:
+	double GetSetpoint();
 	void SetSetpoint(double set);
 	void UpdateController();
     void OutputToDashboard(std::string controllerName);

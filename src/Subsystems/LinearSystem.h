@@ -31,9 +31,11 @@ protected:
 	double distanceOffset = 0.0;
 	SpeedController* sc;
 	Encoder* encoder;
+
+ public:
 	cPIDController* rateController;
 	cPIDController* positionController;
- public:
+	char* name = NULL;
 	LinearSystem();
 	LinearSystem(SpeedController* scIn, Encoder* encIn,
 			cPIDController* pController, cPIDController* rController);

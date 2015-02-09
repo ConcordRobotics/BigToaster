@@ -20,7 +20,8 @@ LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, dou
 
 // Called just before this Command runs the first time
 void LinearSysPosition::Initialize() {
-	
+	sys->SetPositionMode();
+	sys->rateController->LogData(true,sys->name);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -38,6 +39,7 @@ bool LinearSysPosition::IsFinished() {
 // Called once after isFinished returns true
 void LinearSysPosition::End() {
 	sys->Stop();
+	RobotMap::liftRateController->LogData(false,sys->name);
 
 }
 
@@ -45,4 +47,5 @@ void LinearSysPosition::End() {
 // subsystems is scheduled to run
 void LinearSysPosition::Interrupted() {
 	sys->Stop();
+	RobotMap::liftRateController->LogData(false,sys->name);
 }
