@@ -34,6 +34,9 @@ LinearSystem::LinearSystem(SpeedController* scIn, Encoder* encIn,
 	// Need to find the zero position
 }
 
+void LinearSystem::EnforceLimits () {
+
+}
 void LinearSystem::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	//setDefaultCommand(new ClawInTelop());
@@ -50,8 +53,8 @@ void LinearSystem::SetPositionMode() {
 	// Reset the controller
 	// Set the target to the current position to be safe
 	positionController->SetSetpoint(encoder->GetDistance());
-	positionController->Enable();
-	rateController->Disable();
+	positionController->SetMode(cPIDController::ENABLED);
+	rateController->SetMode(cPIDController::OFF);
 }
 
 void LinearSystem::SetRateMode() {
@@ -60,8 +63,8 @@ void LinearSystem::SetRateMode() {
 	rateController->Reset();
 	// Set the target zero
 	rateController->SetSetpoint(0.0);
-	rateController->Enable();
-	positionController->Disable();
+	rateController->SetMode(cPIDController::ENABLED);
+	positionController->SetMode(cPIDController::OFF);
 }
 
 void LinearSystem::UpdateController() {

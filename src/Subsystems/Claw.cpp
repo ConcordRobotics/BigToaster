@@ -12,6 +12,7 @@
 #include "Claw.h"
 #include "../RobotMap.h"
 #include "LiveWindow/LiveWindow.h"
+#include "Commands/LinearSysRate.h"
 
 
 Claw::Claw() : LinearSystem(), Subsystem("Claw") {

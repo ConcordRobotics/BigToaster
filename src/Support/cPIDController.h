@@ -17,6 +17,7 @@ class cPIDController {
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
+	unsigned int mode;
 	unsigned int ind;
 	// Gains
 	float pGain;
@@ -38,13 +39,13 @@ private:
 	PIDSource* pidSource;
 	PIDOutput* pidOutput;
 	Timer* timer;
-	bool enabled;
 	float rangeOutOverIn;
 	void CalcRangeRatio(void);
 	bool logData = false;
 	std::ofstream logFile;
 	_IO_FILE* cLogFile;
 public:
+	enum modeType {OFF, ENABLED, DIRECT};
 	double GetSetpoint();
 	void SetSetpoint(double set);
 	void UpdateController();
@@ -53,8 +54,7 @@ public:
     void SetOutputRange(float oMin, float oMax);
     cPIDController(float p, float i, float d, float f, PIDSource* pSource, PIDOutput* pOutput);
     void Reset();
-    void Enable();
-    void Disable();
+    void SetMode(unsigned int modeIn);
     void LogData(bool active, char* fileName);
 };
 #endif

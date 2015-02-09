@@ -30,10 +30,10 @@ cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* 
 		sensVal[k] = tempSensor;
 	}
 	intErr = 0.0;
-	enabled = false;
 	ind = 0;
 	rangeOutOverIn = 1.0;
 	cLogFile = 0;
+	mode = OFF;
 	// ToDo add ability to set ranges, and scale above accordingly
 };
 
@@ -69,7 +69,7 @@ double cPIDController::GetSetpoint() {
 	return setPoint[ind];
 }
 void cPIDController::UpdateController() {
-	if (enabled == false) return;
+	if (mode == OFF) return;
 	// Advance the index, with mod to loop it
 	unsigned int im1 = ind;
 	ind = (ind+1)%nsave;
@@ -94,7 +94,11 @@ void cPIDController::UpdateController() {
 	p = pGain*error;
 	i = pGain*intErr/iGain;
 	d = pGain*dGain*dodt[ind];
-	tempOut = rangeOutOverIn*(f + p + i + d);
+	if (mode==ENABLED) {
+		tempOut = rangeOutOverIn*(f + p + i + d);
+	} else if (mode==DIRECT) {
+		tempOut = rangeOutOverIn*setPoint[ind];
+	}
 	// Now check the output
 	if (tempOut > outRange[1]) {
 		if (error > 0 ) intErr = intErr - error*delT;
@@ -107,7 +111,7 @@ void cPIDController::UpdateController() {
 
 	// Apply the output
 	output[ind] = tempOut;
-	if (enabled) pidOutput->PIDWrite(output[ind]);
+	pidOutput->PIDWrite(output[ind]);
 	if (logData) {
 		fprintf(cLogFile, "%f %f %f %f %f %f %f\n",time[ind], sensVal[ind], output[ind], f, p, i, d);
 		//logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
@@ -119,15 +123,11 @@ void cPIDController::Reset() {
 	intErr = 0.0;
 }
 
-void cPIDController::Enable() {
-	enabled = true;
+void cPIDController::SetMode(unsigned int modeIn) {
+	mode = modeIn;
 	intErr = 0.0;
 }
 
-void cPIDController::Disable() {
-	enabled = false;
-	intErr = 0.0;
-}
 
 void cPIDController::OutputToDashboard(std::string controllerName) {
 	std::string keyName;
