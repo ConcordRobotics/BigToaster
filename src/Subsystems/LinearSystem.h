@@ -29,9 +29,11 @@ protected:
 	double range = 1.0;
 	double setPoint = 0.0;
 	double distanceOffset = 0.0;
+	double ff = 0.0;
 	SpeedController* sc;
 	Encoder* encoder;
-
+	virtual void EnforceLimits() {};
+	virtual void SetFeedForward() { ff = 0.0; };
  public:
 	cPIDController* rateController;
 	cPIDController* positionController;
@@ -45,8 +47,7 @@ protected:
 	void InitDefaultCommand();
 	void SetPositionMode();
 	void SetRateMode();
-	virtual void UpdateController(double ff);
-	virtual void EnforceLimits();
+	void UpdateController();
 	double PositionError(double target);
 };
 

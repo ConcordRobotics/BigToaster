@@ -17,6 +17,8 @@ class cPIDController {
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
+	static double PIDSampleTime;
+	static double setPointAlpha;
 	unsigned int mode;
 	unsigned int ind;
 	// Gains
@@ -27,6 +29,7 @@ private:
 	// Limits
 	float outRange[2] = {-1.0, 1.0};
 	float inRange[2] = {-1.0, 1.0};
+	bool smoothReset = false;
 	// Time based variables
 	// Use a looping index to prevent having to
 	// copy values over
@@ -48,6 +51,7 @@ public:
 	enum modeType {OFF, ENABLED, DIRECT};
 	double GetSetpoint();
 	void SetSetpoint(double set);
+	void SmoothReset(double out, double set);
 	void UpdateController(double ff);
     void OutputToDashboard(std::string controllerName);
     void SetInputRange(float iMin, float iMax);

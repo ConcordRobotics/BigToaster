@@ -24,7 +24,7 @@ cPIDController *RobotMap::driveMotorsControllers[4] = {NULL, NULL, NULL, NULL};
 cPIDController* RobotMap::driveMotorsGyroController = NULL;
 BuiltInAccelerometer* RobotMap::driveMotorsAccelerometer = NULL;
 Gyro* RobotMap::driveMotorsGyro1 = NULL;
-float RobotMap::driveMotorsGains[4] =  {0.1, 3.0, 0.0, 0.02};
+float RobotMap::driveMotorsGains[4] =  {0.02, 0.5, 0.0, 0.02};
 float RobotMap::gyroRateGains[4] =  {1.0, 0.0, 0.0, 0.0};
 // Encoder limits in revs/sec
 float RobotMap::driveMotorEncoderLimits[2] = {-15.0,15.0};
@@ -43,8 +43,8 @@ Encoder* RobotMap::liftEncoder = NULL;
 cEncoder* RobotMap::liftPositionEncoder = NULL;
 cPIDController* RobotMap::liftRateController = NULL;
 cPIDController* RobotMap::liftPositionController = NULL;
-float RobotMap::liftPositionGains[4] = {0.0254, 1.1, 0.275, 0.3}; // Feed forward term to counter gravity
-float RobotMap::liftRateGains[4] =  {0.02, 1.1, 0.0, 0.3};
+float RobotMap::liftPositionGains[4] = {0.0254, 1.1, 0.275, 1.0}; // Feed forward term to counter gravity
+float RobotMap::liftRateGains[4] =  {0.02, 1.1, 0.0, 1.0};
 DigitalInput* RobotMap::liftUpperSwitch = NULL;
 DigitalInput* RobotMap::liftLowerSwitch = NULL;
 

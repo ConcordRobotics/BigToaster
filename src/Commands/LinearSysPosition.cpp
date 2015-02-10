@@ -22,13 +22,12 @@ LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, dou
 // Called just before this Command runs the first time
 void LinearSysPosition::Initialize() {
 	sys->SetPositionMode();
-	sys->positionController->LogData(true,sys->name);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void LinearSysPosition::Execute() {
 	sys->SetSetpoint(position);
-	sys->UpdateController(0.0);
+	sys->UpdateController();
 	//ToDo Add limit checks in the Claw class
 }
 
@@ -41,13 +40,10 @@ bool LinearSysPosition::IsFinished() {
 // Called once after isFinished returns true
 void LinearSysPosition::End() {
 	sys->Stop();
-	RobotMap::liftPositionController->LogData(false,sys->name);
-
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void LinearSysPosition::Interrupted() {
 	sys->Stop();
-	RobotMap::liftRateController->LogData(false,sys->name);
 }

@@ -29,14 +29,17 @@ Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
 	mode = OFF;
 	Stop();
+	rateController->LogData(true,"LiftRate");
+	positionController->LogData(true,"LiftPos");
 }
 
-void Lift::UpdateController( double ffIn) {
-    std::cout << "In Lift update controllers";
-	EnforceLimits();
-	double ff = 1.0; // To account for gravity
-	LinearSystem::UpdateController(ff);
+
+
+void Lift::SetFeedForward ( ) {
+	// Set a constant to help support the weight of the lift
+	ff = 0.2;
 }
+
 void Lift::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 
@@ -58,10 +61,20 @@ void Lift::EnforceLimits() {
 //		atTop = true;
 //	}
 //	// ToDo Create some soft limits
-//	double distance = encoder->GetDistance();
-//	if (mode == RATE) {
-//
-//		//if (atBottom and )
-//	}
+	double distance = encoder->GetDistance();
+	double penalty = 1.0;
+	if (mode == RATE) {
+		if (setPoint > 0.0) {
+			penalty = 20.0*(limits[1] - distance)/range;
+			penalty = std::max(1.0,penalty);
+			setPoint = setPoint*penalty;
+		} else if (setPoint < 0.0) {
+			penalty = 20.0*(distance - limits[0])/range;
+			penalty = std::max(1.0,penalty);
+			setPoint = setPoint*penalty;
+		}
+		rateController -> SetSetpoint(setPoint);
+		//if (atBottom and )
+	}
 	// Don't do anything for position - we shouldn't be commanding a negative position.
 }

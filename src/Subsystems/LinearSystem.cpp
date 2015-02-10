@@ -35,9 +35,7 @@ LinearSystem::LinearSystem(SpeedController* scIn, Encoder* encIn,
 	// Need to find the zero position
 }
 
-void LinearSystem::EnforceLimits () {
 
-}
 void LinearSystem::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	//setDefaultCommand(new ClawInTelop());
@@ -50,7 +48,7 @@ void LinearSystem::SetPositionMode() {
 	mode = POSITION;
 	// Reset the controller to zero the integral error.
 	// Change the PID source parameter to position
-	positionController->Reset();
+	positionController->SmoothReset(sc->Get(), encoder->GetDistance());
 	// Reset the controller
 	// Set the target to the current position to be safe
 	//positionController->SetSetpoint(encoder->GetDistance());
@@ -61,15 +59,18 @@ void LinearSystem::SetPositionMode() {
 void LinearSystem::SetRateMode() {
 	mode = RATE;
 	// Reset the controller to zero the integral error.
-	rateController->Reset();
+	rateController->SmoothReset(sc->Get(), encoder->GetRate());
 	// Set the target zero
 	//rateController->SetSetpoint(0.0);
 	rateController->SetMode(cPIDController::ENABLED);
 	positionController->SetMode(cPIDController::OFF);
 }
 
-void LinearSystem::UpdateController(double ff) {
 
+
+void LinearSystem::UpdateController() {
+	EnforceLimits();
+	SetFeedForward();
 	if ( mode == RATE) {
 		rateController->UpdateController(ff);
 		rateController->OutputToDashboard(name);

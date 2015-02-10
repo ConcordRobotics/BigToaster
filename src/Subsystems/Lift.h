@@ -30,7 +30,8 @@ public:
 	Lift();
 	void InitDefaultCommand(void);
 	void EnforceLimits();
-	void UpdateController(double ffIn);
+	void UpdateController();
+	void SetFeedForward ();
 };
 
 #endif

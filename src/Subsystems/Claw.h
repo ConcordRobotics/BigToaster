@@ -27,8 +27,9 @@ private:
 public:
 	Claw();
 	void EnforceLimits();
-	void UpdateController(double ffIn);
+	void UpdateController();
 	void InitDefaultCommand(void);
+	void SetFeedForward();
 };
 
 #endif

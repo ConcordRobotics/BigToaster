@@ -9,6 +9,9 @@
 #include "SmartDashboard/SmartDashboard.h"
 #include <iostream>
 
+double cPIDController::PIDSampleTime = 0.005;
+double cPIDController::setPointAlpha = 0.75;
+
 cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* pSource, PIDOutput* pOutput) {
 	pGain = p;
 	iGain = i;
@@ -69,15 +72,25 @@ double cPIDController::GetSetpoint() {
 	return setPoint[ind];
 }
 void cPIDController::UpdateController(double ff) {
-	if (mode == OFF) return;
+	double t = timer->Get();
+	// Only iterate if we are hitting our sample rate.  Prevents noise
+	// in the derivatives
+	if (t - time[ind] < PIDSampleTime) return;
+
+
+
 	// Advance the index, with mod to loop it
 	unsigned int im1 = ind;
 	ind = (ind+1)%nsave;
 	// Get time step information
-	time[ind] = timer->Get();
+	time[ind] = t;
 	double delT = time[ind] - time[im1];
 	double rDelT = 0.0;
 	if (delT > 0.0) rDelT = 1.0/delT;
+
+	// Smooth the setpoint
+	setPoint[ind] = (1.0 - setPointAlpha)*setPoint[ind] + setPointAlpha*setPoint[im1];
+
 	// Get the sensor value
 	sensVal[ind] = pidSource->PIDGet();
 	double error = setPoint[ind] - sensVal[ind];
@@ -94,32 +107,45 @@ void cPIDController::UpdateController(double ff) {
 	f = fGain*ff;
 	p = pGain*error;
 	i = pGain*intErr/iGain;
-	d = pGain*dGain*dodt[ind];
+	d = - pGain*dGain*dodt[ind];
 	if (mode==ENABLED) {
 		tempOut = f + p + i + d;
+		// Make the output smooth if needed by adjusting the intErr term.
+		if (smoothReset) {
+			i = (tempOut - f -p - d)*iGain/pGain;
+			smoothReset = false;
+		}
 		//std::cout << "PID OUT " << tempOut << "\n";
 	} else if (mode==DIRECT) {
-		tempOut = rangeOutOverIn*setPoint[ind];
+		// Use only the feed forward term
+		tempOut = f;
 		//std::cout << "DIRECT OUT " << tempOut << "\n";
 	}
+    if (mode == OFF) return;
 	// Now check the output
 	if (tempOut > outRange[1]) {
 		if (error > 0 ) intErr = intErrLast;
 		tempOut = outRange[1];
 	} else if (tempOut < outRange[0]) {
-		if (error < 0) {
-			if (error < 0) intErr = intErrLast;
-		}
+		if (error < 0) intErr = intErrLast;
+		tempOut = outRange[0];
 	}
 
 	// Apply the output
 	output[ind] = tempOut;
 	pidOutput->PIDWrite(output[ind]);
 	if (logData) {
-		fprintf(cLogFile, "%f %f %f %f %f %f %f\n",time[ind], sensVal[ind], output[ind], f, p, i, d);
+		fprintf(cLogFile, "%f %f %f %f %f %f %f %f\n",time[ind], setPoint[ind], sensVal[ind], output[ind], f, p, i, d);
 		//logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
 	}
 
+}
+
+void cPIDController::SmoothReset (double out, double set) {
+	smoothReset = true;
+	setPoint[ind] = set;
+	// Save the output into the next iteration
+	output[(ind+1)%nsave] = out;
 }
 
 void cPIDController::Reset() {

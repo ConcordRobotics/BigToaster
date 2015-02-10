@@ -78,6 +78,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	controllers[i]->SetSetpoint(wheelSpeeds[i]*15);
     	controllers[i]->UpdateController(wheelSpeeds[i]);
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
+    	controllers[i]->LogData(true, RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }
     Wait(RobotMap::MotorWaitTime); // wait 5ms to avoid hogging CPU cycles

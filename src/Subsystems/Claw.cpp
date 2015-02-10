@@ -23,21 +23,21 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	name = new char[5];
 	strcpy(name,"Claw");
 	Stop();
+	rateController->LogData(true,"ClawRate");
+	positionController->LogData(true,"ClawPos");
 }
 
-void Claw::UpdateController(double ffIn) {
-	EnforceLimits();
-	double ff = 0.0;
+
+
+void Claw::SetFeedForward() {
 	if (mode == RATE ) {
-		ff = rateController->GetSetpoint();
+		ff = setPoint;
 	}
-	LinearSystem::UpdateController(ff);
 }
-
 void Claw::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 
-	SetDefaultCommand(new LinearSysRate(Robot::claw,Robot::claw,0.0));
+	//SetDefaultCommand(new LinearSysRate(Robot::claw,Robot::claw,0.0));
 
 }
 void Claw::EnforceLimits() {
