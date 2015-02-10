@@ -76,7 +76,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     for (int i = 0; i < 4; i++) {
     	// ToDo hard code the 15.
     	controllers[i]->SetSetpoint(wheelSpeeds[i]*15);
-    	controllers[i]->UpdateController();
+    	controllers[i]->UpdateController(wheelSpeeds[i]);
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }

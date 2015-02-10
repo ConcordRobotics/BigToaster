@@ -22,35 +22,46 @@ Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 	positionController = RobotMap::liftPositionController;
 	rateController = RobotMap::liftRateController;
 	upperSwitch = RobotMap::liftUpperSwitch;
-	lowerSwitch = RobotMap::liftLowerSwitchL;
+	lowerSwitch = RobotMap::liftLowerSwitch;
 	name = new char[5];
 	strcpy(name,"Lift");
+	SmartDashboard::PutNumber("LiftUpper",upperSwitch->Get());
+	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
+	mode = OFF;
+	Stop();
 }
 
-
+void Lift::UpdateController( double ffIn) {
+    std::cout << "In Lift update controllers";
+	EnforceLimits();
+	double ff = 1.0; // To account for gravity
+	LinearSystem::UpdateController(ff);
+}
 void Lift::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 
-	SetDefaultCommand(new LinearSysRate(Robot::lift,Robot::lift,0.0));
+	//SetDefaultCommand(new LinearSysRate(Robot::lift,Robot::lift,0.0));
 
 }
 
 void Lift::EnforceLimits() {
 	// Add something for the limit switch
 	// Don't reset distance to zero since the lift can unwind past zero
-	bool atBottom = false;
-	bool atTop = false;
-	if (lowerSwitch->Get() == CLOSED) {
-		atBottom = true;
-		encoder->Reset();
-	} else if (upperSwitch->Get() == CLOSED) {
-		atTop = true;
-	}
-	// ToDo Create some soft limits
-	double distance = encoder->GetDistance();
-	if (mode == RATE) {
-
-		//if (atBottom and )
-	}
+//	bool atBottom = false;
+//	bool atTop = false;
+	SmartDashboard::PutNumber("LiftUpper",upperSwitch->Get());
+	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
+//	if (lowerSwitch->Get() == CLOSED) {
+//		atBottom = true;
+//		encoder->Reset();
+//	} else if (upperSwitch->Get() == CLOSED) {
+//		atTop = true;
+//	}
+//	// ToDo Create some soft limits
+//	double distance = encoder->GetDistance();
+//	if (mode == RATE) {
+//
+//		//if (atBottom and )
+//	}
 	// Don't do anything for position - we shouldn't be commanding a negative position.
 }

@@ -14,8 +14,6 @@ LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, dou
 	Requires(sysIn);
 	sys = linSys;
 	position = positionIn;
-	sys->SetPositionMode();
-	sys->SetSetpoint(position);
 	// default tolerance will mean the command will hold until another command is requested.
 	tolerance = tol;
 }
@@ -30,14 +28,14 @@ void LinearSysPosition::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void LinearSysPosition::Execute() {
 	sys->SetSetpoint(position);
-	sys->UpdateController();
+	sys->UpdateController(0.0);
 	//ToDo Add limit checks in the Claw class
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool LinearSysPosition::IsFinished() {
-	return false; // Hold this position until told otherwise.
-	//return (sys->PositionError(position) < tolerance);
+	//return false; // Hold this position until told otherwise.
+	return (sys->PositionError(position) < tolerance);
 }
 
 // Called once after isFinished returns true

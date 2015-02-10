@@ -1,6 +1,6 @@
 #include "AutotunePIDv.h"
 #include "Support/cPIDController.h"
-
+#include "Robot.h"
 AutotunePIDv::AutotunePIDv(Subsystem* sysin, double dCenter, double dDelta, double powerIn,
 		cPIDController* cont[4], Encoder* enc[4], char nameIn[4][4])
 {
@@ -15,9 +15,6 @@ AutotunePIDv::AutotunePIDv(Subsystem* sysin, double dCenter, double dDelta, doub
 	for (int i = 0; i < 4; i++) {
 		strcpy(name[i],nameIn[i]);
 		strcat(name[i],".at");
-		encoder[i]->Reset();
-		controller[i]->SetMode(cPIDController::DIRECT);
-		controller[i]->SetSetpoint(power);
 	}
 }
 
@@ -26,6 +23,9 @@ void AutotunePIDv::Initialize()
 {
 	for (int i = 0; i < 4; i++) {
 		controller[i]->LogData(true,name[i]);
+		encoder[i]->Reset();
+		controller[i]->SetMode(cPIDController::DIRECT);
+		controller[i]->SetSetpoint(power);
 	}
 }
 
@@ -38,9 +38,12 @@ void AutotunePIDv::Execute()
 	for (int i = 0; i < 4; i++) {
 		distance = encoder[i]->GetDistance() - center;
 		// Check against upper and lower deltas
-		distance = std::max(distance - delta,0.0);
-		distance = std::min(distance + delta,0.0);
-		if (distance*target > 0.0) reverse = true;
+		if (distance > 0) {
+			distance = std::max(distance - delta,0.0);
+		} else if  (distance < 0) {
+			distance = std::min(distance + delta,0.0);
+		}
+		if (distance*power > 0.0) reverse = true;
 	}
 	// Reverse the target and add one to the count if reversed
 	if (reverse) {
@@ -50,7 +53,7 @@ void AutotunePIDv::Execute()
 	// Update all controllers
 	for (int i = 0; i < 0; i++){
 		controller[i]->SetSetpoint(target);
-		controller[i]->UpdateController();
+		controller[i]->UpdateController(0.0);
 	}
 	Wait(0.004);
 }
@@ -78,4 +81,6 @@ void AutotunePIDv::Interrupted()
 		controller[i]->LogData(false,name[i]);
 		controller[i]->SetMode(cPIDController::OFF);
 	}
+	Robot::driveMotors->Stop();
+
 }

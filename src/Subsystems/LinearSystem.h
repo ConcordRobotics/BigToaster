@@ -45,8 +45,8 @@ protected:
 	void InitDefaultCommand();
 	void SetPositionMode();
 	void SetRateMode();
-	void UpdateController();
-	void EnforceLimits();
+	virtual void UpdateController(double ff);
+	virtual void EnforceLimits();
 	double PositionError(double target);
 };
 

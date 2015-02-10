@@ -11,7 +11,6 @@ private:
 	double delta;
 	double power;
 
-	double target;
 	char* name;
 	unsigned int count = 0;
 	unsigned int countMax = 10;

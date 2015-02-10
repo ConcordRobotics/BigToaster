@@ -48,7 +48,7 @@ public:
 	enum modeType {OFF, ENABLED, DIRECT};
 	double GetSetpoint();
 	void SetSetpoint(double set);
-	void UpdateController();
+	void UpdateController(double ff);
     void OutputToDashboard(std::string controllerName);
     void SetInputRange(float iMin, float iMax);
     void SetOutputRange(float oMin, float oMax);

@@ -72,18 +72,18 @@ OI::OI() {
 	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.0));
 //	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,0.1));
 	char name[] = "liftp.auto";
-	SmartDashboard::PutData("AutotuneLiftPos", new AutotunePID(Robot::lift, 30.0, 10.0, 10.0,
-				RobotMap::liftPositionController, RobotMap::liftEncoder, name ));
-	strcpy(name,"liftr.auto");
-	SmartDashboard::PutData("AutotuneLiftRate", new AutotunePID(Robot::lift, 30.0, 10.0, 10.0,
-				RobotMap::liftRateController, RobotMap::liftEncoder, name ));
-	strcpy(name,"clawp.auto");
-	SmartDashboard::PutData("AutotuneClawPos", new AutotunePID(Robot::claw, 0.5,0.3, 0.5,
-				RobotMap::clawPositionController, RobotMap::clawEncoder, name ));
-	strcpy(name,"clawr.auto");
-	SmartDashboard::PutData("AutotuneClawRate", new AutotunePID(Robot::claw, 0.5,0.3, 0.5,
-				RobotMap::clawRateController, RobotMap::clawEncoder, name ));
-	strcpy(name,"clawr.auto");
+	//SmartDashboard::PutData("AutotuneLiftPos", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
+	//			RobotMap::liftPositionController, RobotMap::liftEncoder, name ));
+//	strcpy(name,"liftr.auto");
+//	SmartDashboard::PutData("AutotuneLiftRate", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
+//				RobotMap::liftRateController, RobotMap::liftEncoder, name ));
+//	strcpy(name,"clawp.auto");
+//	SmartDashboard::PutData("AutotuneClawPos", new AutotunePID(Robot::claw, 0.5,0.3, 0.5,
+//				RobotMap::clawPositionController, RobotMap::clawEncoder, name ));
+//	strcpy(name,"clawr.auto");
+//	SmartDashboard::PutData("AutotuneClawRate", new AutotunePID(Robot::claw, 0.5,0.3, 0.5,
+//				RobotMap::clawRateController, RobotMap::clawEncoder, name ));
+	strcpy(name,"drive.auto");
 	SmartDashboard::PutData("AutotuneDrive", new AutotunePIDv(Robot::driveMotors, 0.0,10.0, 10.0,
 				RobotMap::driveMotorsControllers, RobotMap::driveMotorsEncoders, RobotMap::driveMotorsNames ));
 	SmartDashboard::PutData("Autonomous Command", new AutonomousCommand());

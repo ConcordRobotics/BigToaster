@@ -14,9 +14,6 @@ LinearSysRate::LinearSysRate(Subsystem* sysIn, LinearSystem* linSys, float rateI
 	Requires(sysIn);
 	sys = linSys;
 	rate = rateIn;
-	sys->SetRateMode();
-	sys->SetSetpoint(rate);
-
 }
 
 // Called just before this Command runs the first time
@@ -28,7 +25,7 @@ void LinearSysRate::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void LinearSysRate::Execute() {
 	sys->SetSetpoint(rate);
-	sys->UpdateController();
+	sys->UpdateController(0.0);
 	//ToDo Add limit checks in the Claw class
 }
 
@@ -39,11 +36,13 @@ bool LinearSysRate::IsFinished() {
 
 // Called once after isFinished returns true
 void LinearSysRate::End() {
+	sys->Stop();
 	RobotMap::liftRateController->LogData(false,sys->name);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void LinearSysRate::Interrupted() {
+	sys->Stop();
 	sys->rateController->LogData(false,sys->name);
 }

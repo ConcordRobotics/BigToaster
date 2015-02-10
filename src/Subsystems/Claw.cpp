@@ -22,6 +22,16 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	rateController = RobotMap::clawRateController;
 	name = new char[5];
 	strcpy(name,"Claw");
+	Stop();
+}
+
+void Claw::UpdateController(double ffIn) {
+	EnforceLimits();
+	double ff = 0.0;
+	if (mode == RATE ) {
+		ff = rateController->GetSetpoint();
+	}
+	LinearSystem::UpdateController(ff);
 }
 
 void Claw::InitDefaultCommand() {

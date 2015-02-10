@@ -30,6 +30,7 @@ LinearSystem::LinearSystem(SpeedController* scIn, Encoder* encIn,
 	positionController = pController;
 	rateController = rController;
 	mode = OFF;
+	Stop();
 	// ToDo: Enable PID controller on claw, once tuned.
 	// Need to find the zero position
 }
@@ -52,7 +53,7 @@ void LinearSystem::SetPositionMode() {
 	positionController->Reset();
 	// Reset the controller
 	// Set the target to the current position to be safe
-	positionController->SetSetpoint(encoder->GetDistance());
+	//positionController->SetSetpoint(encoder->GetDistance());
 	positionController->SetMode(cPIDController::ENABLED);
 	rateController->SetMode(cPIDController::OFF);
 }
@@ -62,19 +63,18 @@ void LinearSystem::SetRateMode() {
 	// Reset the controller to zero the integral error.
 	rateController->Reset();
 	// Set the target zero
-	rateController->SetSetpoint(0.0);
+	//rateController->SetSetpoint(0.0);
 	rateController->SetMode(cPIDController::ENABLED);
 	positionController->SetMode(cPIDController::OFF);
 }
 
-void LinearSystem::UpdateController() {
+void LinearSystem::UpdateController(double ff) {
 
-	EnforceLimits();
 	if ( mode == RATE) {
-		rateController->UpdateController();
+		rateController->UpdateController(ff);
 		rateController->OutputToDashboard(name);
 	} else if (mode == POSITION) {
-		positionController->UpdateController();
+		positionController->UpdateController(ff);
 		positionController->OutputToDashboard(name);
 	} else sc->Set(0.0);
 	Wait(RobotMap::MotorWaitTime); // wait 5ms to avoid hogging CPU cycles
@@ -103,6 +103,8 @@ void LinearSystem::SetSetpoint(double setPointIn) {
 
 void LinearSystem::Stop() {
 	mode = OFF;
+	rateController->SetMode(cPIDController::OFF);
+	positionController->SetMode(cPIDController::OFF);
 	sc->Set(0.0);
 }
 

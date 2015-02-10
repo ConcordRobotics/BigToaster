@@ -68,7 +68,7 @@ void cPIDController::SetSetpoint(double set) {
 double cPIDController::GetSetpoint() {
 	return setPoint[ind];
 }
-void cPIDController::UpdateController() {
+void cPIDController::UpdateController(double ff) {
 	if (mode == OFF) return;
 	// Advance the index, with mod to loop it
 	unsigned int im1 = ind;
@@ -85,27 +85,30 @@ void cPIDController::UpdateController() {
 	// Could filter this but better to filter at the sensor level
 	dodt[ind] = rDelT*(sensVal[ind] - sensVal[im1]);
 	// Integrate the error
-	intErr = error*delT;
+	double intErrLast = intErr;
+	intErr = intErr + error*delT;
 
 	// Calculate the target output
 	double tempOut;
 	double f, p, i, d;
-	f = fGain*setPoint[ind];
+	f = fGain*ff;
 	p = pGain*error;
 	i = pGain*intErr/iGain;
 	d = pGain*dGain*dodt[ind];
 	if (mode==ENABLED) {
-		tempOut = rangeOutOverIn*(f + p + i + d);
+		tempOut = f + p + i + d;
+		//std::cout << "PID OUT " << tempOut << "\n";
 	} else if (mode==DIRECT) {
 		tempOut = rangeOutOverIn*setPoint[ind];
+		//std::cout << "DIRECT OUT " << tempOut << "\n";
 	}
 	// Now check the output
 	if (tempOut > outRange[1]) {
-		if (error > 0 ) intErr = intErr - error*delT;
+		if (error > 0 ) intErr = intErrLast;
 		tempOut = outRange[1];
 	} else if (tempOut < outRange[0]) {
 		if (error < 0) {
-			if (error < 0) intErr = intErr - error*delT;
+			if (error < 0) intErr = intErrLast;
 		}
 	}
 
