@@ -57,7 +57,7 @@ cPIDController* RobotMap::clawPositionController = NULL;
 cPIDController* RobotMap::clawRateController = NULL;
 float RobotMap::clawOpenPosition = 1.0;
 float RobotMap::clawClosedPosition = 0.0;
-float RobotMap::clawPositionGains[4] = {1.0, 1.0, 0.0, 0.0};
+float RobotMap::clawPositionGains[4] = {1.0, 0.2, 0.0, 0.0};
 float RobotMap::clawRateGains[4] =  {0.1, 0.2, 0.0, 1.0};
 
 void RobotMap::init() {

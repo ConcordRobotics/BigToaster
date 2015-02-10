@@ -26,6 +26,8 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 }
 
 void Claw::UpdateController(double ffIn) {
+	if(encoder->GetDistance(left<0.0)) encoder->Reset;
+	if(encoder->GetDistance(left>1.1)) encoder->Reset;
 	EnforceLimits();
 	double ff = 0.0;
 	if (mode == RATE ) {
@@ -37,7 +39,7 @@ void Claw::UpdateController(double ffIn) {
 void Claw::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 
-	SetDefaultCommand(new LinearSysRate(Robot::claw,Robot::claw,0.0));
+	//SetDefaultCommand(new LinearSysRate(Robot::claw,Robot::claw,0.0));
 
 }
 void Claw::EnforceLimits() {
