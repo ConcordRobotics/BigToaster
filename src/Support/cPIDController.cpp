@@ -116,7 +116,7 @@ void cPIDController::UpdateController(double ff) {
 	output[ind] = tempOut;
 	pidOutput->PIDWrite(output[ind]);
 	if (logData) {
-		fprintf(cLogFile, "%f %f %f %f %f %f %f\n",time[ind], sensVal[ind], output[ind], f, p, i, d);
+		fprintf(cLogFile, "%f %f %f %f %f %f %f %f\n",time[ind], setPoint[ind], sensVal[ind], output[ind], p, i, d, f);
 		//logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
 	}
 
@@ -153,8 +153,8 @@ void cPIDController::OutputToDashboard(std::string controllerName) {
 }
 
 void cPIDController::LogData(bool active, char* fileName) {
-	char* fname = new char[strlen(fileName) + 20];
-	strcpy(fname,"/home/lvuser/");
+	char* fname = new char[strlen(fileName) + 30];
+	strcpy(fname,"/home/lvuser/plots/");
 	strcat(fname,fileName);
 	std::cout << fname << "opening\n";
 	if (active) {

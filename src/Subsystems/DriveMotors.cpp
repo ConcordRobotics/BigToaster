@@ -27,6 +27,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		controllers[i]->SetMode(cPIDController::ENABLED);
 		controllers[i]->SetSetpoint(0.0);
 		scs[i]->Set(0.0);
+		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 	}
 
 	gyro1 = RobotMap::driveMotorsGyro1;

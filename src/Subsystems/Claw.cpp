@@ -23,11 +23,13 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	name = new char[5];
 	strcpy(name,"Claw");
 	Stop();
+	positionController->LogData(true,"claw.pos");
+	rateController->LogData(true,"claw.rate");
 }
 
 void Claw::UpdateController(double ffIn) {
-	if(encoder->GetDistance(left<0.0)) encoder->Reset;
-	if(encoder->GetDistance(left>1.1)) encoder->Reset;
+	if (encoder->GetDistance() < 0.0) encoder->Reset();
+	if (encoder->GetDistance() > 1.10) encoder->Reset();
 	EnforceLimits();
 	double ff = 0.0;
 	if (mode == RATE ) {
