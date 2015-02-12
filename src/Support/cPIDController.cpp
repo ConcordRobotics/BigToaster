@@ -133,36 +133,36 @@ void cPIDController::SetMode(unsigned int modeIn) {
 
 
 void cPIDController::OutputToDashboard(std::string controllerName) {
-	std::string keyName;
-	keyName = controllerName + "pGain";
-	SmartDashboard::PutNumber(keyName,pGain);
-	keyName = controllerName + "iGain";
-	SmartDashboard::PutNumber(keyName,1.0/iGain);
-	keyName = controllerName + "dGain";
-	SmartDashboard::PutNumber(keyName,dGain);
-	keyName = controllerName + "fGain";
-	SmartDashboard::PutNumber(keyName,fGain);
-	keyName = controllerName + "ind";
-	SmartDashboard::PutNumber(keyName,double(ind));
-	keyName = controllerName + "sens";
-	SmartDashboard::PutNumber(keyName,double(sensVal[ind]));
-	keyName = controllerName + "output";
-	SmartDashboard::PutNumber(keyName,double(output[ind]));
-	keyName = controllerName + "target";
-	SmartDashboard::PutNumber(keyName,double(setPoint[ind]));
+//	std::string keyName;
+//	keyName = controllerName + "pGain";
+//	SmartDashboard::PutNumber(keyName,pGain);
+//	keyName = controllerName + "iGain";
+//	SmartDashboard::PutNumber(keyName,1.0/iGain);
+//	keyName = controllerName + "dGain";
+//	SmartDashboard::PutNumber(keyName,dGain);
+//	keyName = controllerName + "fGain";
+//	SmartDashboard::PutNumber(keyName,fGain);
+//	keyName = controllerName + "ind";
+//	SmartDashboard::PutNumber(keyName,double(ind));
+//	keyName = controllerName + "sens";
+//	SmartDashboard::PutNumber(keyName,double(sensVal[ind]));
+//	keyName = controllerName + "output";
+//	SmartDashboard::PutNumber(keyName,double(output[ind]));
+//	keyName = controllerName + "target";
+//	SmartDashboard::PutNumber(keyName,double(setPoint[ind]));
 }
 
 void cPIDController::LogData(bool active, char* fileName) {
-	char* fname = new char[strlen(fileName) + 30];
-	strcpy(fname,"/home/lvuser/plots/");
-	strcat(fname,fileName);
-	std::cout << fname << "opening\n";
+	//char* fname = new char[strlen(fileName) + 7 ];
+	//strcpy(fname,"plots/");
+	//strcat(fname,fileName);
+	//std::cout << fileName << " opening\n";
 	if (active) {
-		cLogFile = fopen(fname,"w");
-		rewind(cLogFile);
+		cLogFile = fopen(fileName,"w");
+		//rewind(cLogFile);
 	} else if (logData) {
 		fclose(cLogFile);
 	}
 	logData = active;
-	delete(fname);
+	//delete(fname);
 }
