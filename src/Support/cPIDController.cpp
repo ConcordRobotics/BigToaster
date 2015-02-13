@@ -149,6 +149,8 @@ void cPIDController::OutputToDashboard(std::string controllerName) {
 	std::ostringstream buffer;
 	buffer << "s: " << std::fixed << std::setprecision(5) << setPoint[iN];
     buffer << " v: " << std::fixed << std::setprecision(5) << sensVal[iN];
+    buffer << " tR: " << std::fixed << std::setprecision(5) << rate;
+    buffer << " sR " << std::fixed << std::setprecision(4) << dSensDt[iN];
     buffer << " o: " << std::fixed << std::setprecision(4) << output;
     buffer << " p: " << std::fixed << std::setprecision(4) << p;
     buffer << " i: " << std::fixed << std::setprecision(4) << i;
