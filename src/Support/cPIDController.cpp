@@ -128,7 +128,7 @@ double cPIDController::UpdateController(double curOutput) {
 		output = output + delT*(p + i + d);
 	}
 	// Check output limits
-	//output = lim->ApplyOutputLimits(output);
+	output = lim->ApplyOutputLimits(output);
 
 	pidOutput->PIDWrite(output);
 	if (logData) {

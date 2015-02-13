@@ -33,7 +33,7 @@ double ControllerLimits::ApplyPositionLimits(double pos) {
 
 double ControllerLimits::ApplyOutputLimits(double output) {
 	double val = output;
-	if (val > oMax) val = pMin;
+	if (val > oMax) val = oMax;
 	if (val < oMin) val = oMin;
 	return val;
 }
