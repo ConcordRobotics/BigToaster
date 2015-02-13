@@ -45,7 +45,9 @@ void cPIDController::SetRate(double rateIn) {
 void cPIDController::SetSetpoint(double setIn) {
 	// Set the setpoint for the next time
 	double set = setIn;
+	set = lim->ApplyPositionLimits(set);
 	setPoint[(iN+1)%nsave ] = set;
+
 }
 
 void cPIDController::ApplyRate(double delT) {
