@@ -55,6 +55,7 @@ void Lift::InitDefaultCommand() {
 void Lift::EnforceLimits() {
 	// Add something for the limit switch
 	// Don't reset distance to zero since the lift can unwind past zero
+	return;
 	bool atBottom = false;
 	bool atTop = false;
 	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));

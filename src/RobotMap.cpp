@@ -125,8 +125,6 @@ void RobotMap::init() {
 			liftPositionGains = new PIDParams(0.254, 1.1, 0.0, 0.1);
 			liftRateGains = new PIDParams(0.0254, 0.0, 0.0, 0.1);
 			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftSC);
-			liftUpperSwitch = NULL;
-			liftLowerSwitch = NULL;
 			liftLowerSwitch = new DigitalInput(16);
 			liftUpperSwitch = new DigitalInput(24);
 			lw->AddSensor("Lift","UpperSwitch", liftUpperSwitch);
