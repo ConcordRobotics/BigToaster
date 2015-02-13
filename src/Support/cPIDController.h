@@ -60,7 +60,7 @@ public:
     cPIDController(PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput);
     void SetPIDParams(PIDParams* params);
     void Reset();
-    void SetMode(unsigned int modeIn);
+    void SetMode(int modeIn);
     void LogData(bool active, char* fileName);
 };
 #endif

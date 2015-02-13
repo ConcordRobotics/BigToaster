@@ -16,7 +16,7 @@
 
 double Claw::limitRatePercent = 0.02;
 
-Claw::Claw() : LinearSystem(), Subsystem("Claw") {
+Claw::Claw() : Subsystem("Claw") {
 	sc = RobotMap::clawSC;
 	encoder = RobotMap::clawEncoder;
 	controller = RobotMap::clawController;

@@ -91,7 +91,7 @@ double cPIDController::UpdateController(double curOutput) {
 	// Apply the rate to set the position
 	if (mode == RATE) ApplyRate(delT);
 	// Check both the position and rate limits
-	CheckLimits(delT);
+	//CheckLimits(delT);
 
 	// Get the sensor value
 	sensVal[iN] = pidSource->PIDGet();
@@ -141,7 +141,7 @@ double cPIDController::UpdateController(double curOutput) {
     return output;
 }
 
-void cPIDController::SetMode(unsigned int modeIn) {
+void cPIDController::SetMode(int modeIn) {
 	mode = modeIn;
 }
 

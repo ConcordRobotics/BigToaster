@@ -20,7 +20,7 @@
 // of the lift
 double Lift::limitRatePercent = 0.05;
 
-Lift::Lift() : LinearSystem(), Subsystem("Lift") {
+Lift::Lift() : Subsystem("Lift") {
 	sc = RobotMap::liftSC;
 	encoder = RobotMap::liftEncoder;
 	controller = RobotMap::liftController;

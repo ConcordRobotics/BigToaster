@@ -22,6 +22,7 @@ LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, dou
 // Called just before this Command runs the first time
 void LinearSysPosition::Initialize() {
 	sys->SetMode(cPIDController::POSITION);
+	sys->SetSetpoint(position);
 }
 
 // Called repeatedly when this Command is scheduled to run
