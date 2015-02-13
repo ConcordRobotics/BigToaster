@@ -48,29 +48,29 @@ OI::OI() {
 
 	LiftTopPosButton = new JoystickButton(joystick2, 4);
 	LiftTopPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,40.0));
-	//SmartDashboard::PutData("LiftTopPos", new LinearSysPosition(Robot::lift,Robot::lift,30.0));
+	SmartDashboard::PutData("LiftTopPos", new LinearSysPosition(Robot::lift,Robot::lift,30.0));
 
 	LiftBottomPosButton = new JoystickButton(joystick2, 3);
 	LiftBottomPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,10.0));
-	//SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,20.0));
+	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,20.0));
 //
 	OpenClawRateButton = new JoystickButton(joystick2, 5);
 	OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw, 0.2));
-	//SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,Robot::claw, 0.2));
+	SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,Robot::claw, 0.2));
 //
 	CloseClawRateButton = new JoystickButton(joystick2, 6);
 	CloseClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw,-0.2));
-	//SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,Robot::claw,-0.2));
+	SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,Robot::claw,-0.2));
 //
 	ClawOpenPosButton = new JoystickButton(joystick2, 7);
 	// Tolerance should turn motor off when close enough
 	ClawOpenPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw, 0.9, 0.03));
-//	SmartDashboard::PutData("ClawOpenPos", new LinearSysPosition(Robot::claw,0.9));
+	//SmartDashboard::PutData("ClawOpenPos", new LinearSysPosition(Robot::claw,0.9));
 
 	//This should apply some force on holding objects
 	ClawClosedPosButton = new JoystickButton(joystick2, 8);
 	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.0, 0.03));
-//	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,0.1));
+	//SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,0.1));
 	//char name[] = "liftp.auto";
 	//SmartDashboard::PutData("AutotuneLiftPos", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
 	//			RobotMap::liftPositionController, RobotMap::liftEncoder, name ));

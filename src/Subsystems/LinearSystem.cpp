@@ -61,6 +61,8 @@ void LinearSystem::UpdateController() {
 		break;
 	}
 	controller->UpdateController(sc->Get());
+	std::string oName = name;
+	controller->OutputToDashboard(oName);
 	Wait(RobotMap::MotorWaitTime); // wait 5ms to avoid hogging CPU cycles
 
 }
