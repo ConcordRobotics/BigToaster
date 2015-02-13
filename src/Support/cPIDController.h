@@ -5,7 +5,6 @@
 #ifndef CPIDCONTROLLER_H
 #define CPIDCONTROLLER_H
 // The number of past datapoints to save
-#define NSAVE 2
 #include "WPILib.h"
 #include <string.h>
 #include <iostream>
@@ -42,8 +41,11 @@ private:
 	float rangeOutOverIn;
 	void CalcRangeRatio(void);
 	bool logData = false;
-	std::ofstream logFile;
-	_IO_FILE* cLogFile;
+	char* logName = NULL;
+	double p =0.0;
+	double i = 0.0;
+	double d = 0.0;
+	double f = 0.0;
 public:
 	enum modeType {OFF, ENABLED, DIRECT};
 	double GetSetpoint();

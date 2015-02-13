@@ -25,13 +25,14 @@ class LinearSystem {
 protected:
 	int mode;
 	enum modeType {OFF, POSITION, RATE};
-	double limits[2] = {0,1};
+	double pLimits[2] = {0,1};
+	double rLimits[2] = {-1.0,1.0};
 	double range = 1.0;
 	double setPoint = 0.0;
 	double distanceOffset = 0.0;
 	SpeedController* sc;
 	Encoder* encoder;
-
+	virtual void EnforceLimits();
  public:
 	cPIDController* rateController;
 	cPIDController* positionController;
@@ -41,12 +42,12 @@ protected:
 			cPIDController* pController, cPIDController* rController);
 	void Stop();
 	void SetSetpoint(double setSetpoint);
-	void SetLimits(double min, double max);
+	void SetLimits(double minP, double maxP, double minRate, double maxRate);
 	void InitDefaultCommand();
 	void SetPositionMode();
 	void SetRateMode();
 	virtual void UpdateController(double ff);
-	virtual void EnforceLimits();
+	virtual ~LinearSystem() {};
 	double PositionError(double target);
 };
 

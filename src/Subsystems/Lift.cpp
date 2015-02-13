@@ -24,9 +24,9 @@ Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 	upperSwitch = RobotMap::liftUpperSwitch;
 	lowerSwitch = RobotMap::liftLowerSwitch;
 	name = new char[5];
-	strcpy(name,"Lift");
-	SmartDashboard::PutNumber("LiftUpper",upperSwitch->Get());
-	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
+	strcpy(name,"lift");
+	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
+	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 	mode = OFF;
 	Stop();
 	char* logFile = new char[10];
@@ -52,10 +52,10 @@ void Lift::InitDefaultCommand() {
 void Lift::EnforceLimits() {
 	// Add something for the limit switch
 	// Don't reset distance to zero since the lift can unwind past zero
-//	bool atBottom = false;
-//	bool atTop = false;
-	SmartDashboard::PutNumber("LiftUpper",upperSwitch->Get());
-	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
+	bool atBottom = false;
+	bool atTop = false;
+	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
+	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 //	if (lowerSwitch->Get() == CLOSED) {
 //		atBottom = true;
 //		encoder->Reset();
@@ -63,10 +63,11 @@ void Lift::EnforceLimits() {
 //		atTop = true;
 //	}
 //	// ToDo Create some soft limits
-//	double distance = encoder->GetDistance();
-//	if (mode == RATE) {
-//
-//		//if (atBottom and )
-//	}
+	double distance = encoder->GetDistance();
+	if (mode == RATE) {
+		if (distance < 0.0) {
+			if (rateController->GetSetpoint() < 0.0) rateController->SetSetpoint(0.0);
+		}
+	}
 	// Don't do anything for position - we shouldn't be commanding a negative position.
 }

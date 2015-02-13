@@ -22,7 +22,7 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	positionController = RobotMap::clawPositionController;
 	rateController = RobotMap::clawRateController;
 	name = new char[5];
-	strcpy(name,"Claw");
+	strcpy(name,"claw");
 	Stop();
 	char* logFile = new char[9];
 	strcpy(logFile,"claw.pos");

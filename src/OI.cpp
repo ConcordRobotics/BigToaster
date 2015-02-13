@@ -69,9 +69,9 @@ OI::OI() {
 
 	//This should apply some force on holding objects
 	ClawClosedPosButton = new JoystickButton(joystick2, 8);
-	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.0));
+	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.0, 0.03));
 //	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,0.1));
-	char name[] = "liftp.auto";
+	//char name[] = "liftp.auto";
 	//SmartDashboard::PutData("AutotuneLiftPos", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
 	//			RobotMap::liftPositionController, RobotMap::liftEncoder, name ));
 //	strcpy(name,"liftr.auto");
@@ -83,10 +83,10 @@ OI::OI() {
 //	strcpy(name,"clawr.auto");
 //	SmartDashboard::PutData("AutotuneClawRate", new AutotunePID(Robot::claw, 0.5,0.3, 0.5,
 //				RobotMap::clawRateController, RobotMap::clawEncoder, name ));
-	strcpy(name,"drive.auto");
-	SmartDashboard::PutData("AutotuneDrive", new AutotunePIDv(Robot::driveMotors, 0.0,10.0, 10.0,
-				RobotMap::driveMotorsControllers, RobotMap::driveMotorsEncoders, RobotMap::driveMotorsNames ));
-	SmartDashboard::PutData("Autonomous Command", new AutonomousCommand());
+	//strcpy(name,"drive.auto");
+	//SmartDashboard::PutData("AutotuneDrive", new AutotunePIDv(Robot::driveMotors, 0.0,10.0, 10.0,
+	//			RobotMap::driveMotorsControllers, RobotMap::driveMotorsEncoders, RobotMap::driveMotorsNames ));
+	//SmartDashboard::PutData("Autonomous Command", new AutonomousCommand());
 	//SmartDashboard::PutData("DriveInTelop", new DriveInTelop());
     SmartDashboard::PutData("TestDrive", new TestDrive());
 

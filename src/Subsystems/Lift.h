@@ -26,11 +26,11 @@ private:
 	DigitalInput* upperSwitch;
 	DigitalInput* lowerSwitch;
 	enum switchPositions {OPEN, CLOSED};
+	virtual void EnforceLimits();
 public:
 	Lift();
 	void InitDefaultCommand(void);
-	void EnforceLimits();
-	void UpdateController(double ffIn);
+	virtual void UpdateController(double ffIn);
 };
 
 #endif

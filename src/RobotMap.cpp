@@ -130,8 +130,8 @@ void RobotMap::init() {
 					liftPositionEncoder, liftSC);
 			liftPositionController->SetInputRange(0.0,50.0);
 			liftPositionController->SetOutputRange(-1.0,1.0);
-			liftLowerSwitch = new DigitalInput(18);
-			liftUpperSwitch = new DigitalInput(19);
+			liftLowerSwitch = new DigitalInput(16);
+			liftUpperSwitch = new DigitalInput(14);
 			lw->AddSensor("LiftSensors","UpperSwitch", liftUpperSwitch);
 			lw->AddSensor("LiftSensors","LowerSwitch", liftLowerSwitch);
 			std::cout << "Setting Claw Data\n";

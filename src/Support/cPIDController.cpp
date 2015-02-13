@@ -8,6 +8,8 @@
 #include "cPIDController.h"
 #include "SmartDashboard/SmartDashboard.h"
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* pSource, PIDOutput* pOutput) {
 	pGain = p;
@@ -32,7 +34,6 @@ cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* 
 	intErr = 0.0;
 	ind = 0;
 	rangeOutOverIn = 1.0;
-	cLogFile = 0;
 	mode = OFF;
 	// ToDo add ability to set ranges, and scale above accordingly
 };
@@ -90,7 +91,6 @@ void cPIDController::UpdateController(double ff) {
 
 	// Calculate the target output
 	double tempOut;
-	double f, p, i, d;
 	f = fGain*ff;
 	p = pGain*error;
 	i = pGain*intErr/iGain;
@@ -116,8 +116,9 @@ void cPIDController::UpdateController(double ff) {
 	output[ind] = tempOut;
 	pidOutput->PIDWrite(output[ind]);
 	if (logData) {
-		fprintf(cLogFile, "%f %f %f %f %f %f %f %f\n",time[ind], setPoint[ind], sensVal[ind], output[ind], p, i, d, f);
-		//logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
+		std::cout << logName << " " << time[ind] << " " << setPoint[ind] <<
+				" " << sensVal[ind] << " " << output[ind] << " " <<  p
+				<< " " << i << " " << d << " " << f << "\n";
 	}
 
 }
@@ -133,35 +134,21 @@ void cPIDController::SetMode(unsigned int modeIn) {
 
 
 void cPIDController::OutputToDashboard(std::string controllerName) {
-//	std::string keyName;
-//	keyName = controllerName + "pGain";
-//	SmartDashboard::PutNumber(keyName,pGain);
-//	keyName = controllerName + "iGain";
-//	SmartDashboard::PutNumber(keyName,1.0/iGain);
-//	keyName = controllerName + "dGain";
-//	SmartDashboard::PutNumber(keyName,dGain);
-//	keyName = controllerName + "fGain";
-//	SmartDashboard::PutNumber(keyName,fGain);
-//	keyName = controllerName + "ind";
-//	SmartDashboard::PutNumber(keyName,double(ind));
-//	keyName = controllerName + "sens";
-//	SmartDashboard::PutNumber(keyName,double(sensVal[ind]));
-//	keyName = controllerName + "output";
-//	SmartDashboard::PutNumber(keyName,double(output[ind]));
-//	keyName = controllerName + "target";
-//	SmartDashboard::PutNumber(keyName,double(setPoint[ind]));
+
+	std::ostringstream buffer;
+	buffer << "s: " << std::fixed << std::setprecision(5) << setPoint[ind];
+    buffer << " v: " << std::fixed << std::setprecision(5) << sensVal[ind];
+    buffer << " o: " << std::fixed << std::setprecision(4) << output[ind];
+    buffer << " p: " << std::fixed << std::setprecision(4) << p;
+    buffer << " i: " << std::fixed << std::setprecision(4) << i;
+    buffer << " d: " << std::fixed << std::setprecision(4) << d;
+    buffer << " f: " << std::fixed << std::setprecision(4) << f;
+	std::string value = buffer.str();
+	SmartDashboard::PutString(controllerName, value);
 }
 
 void cPIDController::LogData(bool active, char* fileName) {
-	char* fname = new char[strlen(fileName) + 30 ];
-	strcpy(fname,"/home/lvuser/plots/");
-	strcat(fname,fileName);
-	if (active) {
-		cLogFile = fopen(fileName,"w");
-		//rewind(cLogFile);
-	} else if (logData) {
-		fclose(cLogFile);
-	}
+	logName = new char[strlen(fileName) + 1 ];
+	strcpy(logName,fileName);
 	logData = active;
-	delete(fname);
 }

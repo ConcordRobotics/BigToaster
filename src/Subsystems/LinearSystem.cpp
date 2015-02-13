@@ -81,10 +81,12 @@ void LinearSystem::UpdateController(double ff) {
 
 }
 
-void LinearSystem::SetLimits(double min, double max) {
-	limits[0] = min;
-	limits[1] = max;
-	range = max - min;
+void LinearSystem::SetLimits(double minP, double maxP, double minRate, double maxRate) {
+	pLimits[0] = minP;
+	pLimits[1] = maxP;
+	rLimits[0] = minRate;
+	rLimits[1] = maxRate;
+	range = maxP - minP;
 }
 
 double LinearSystem::PositionError(double target) {
