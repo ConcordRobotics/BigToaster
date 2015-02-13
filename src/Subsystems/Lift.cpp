@@ -29,7 +29,9 @@ Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
 	mode = OFF;
 	Stop();
+	std::cout << "Logging lift position\n";
 	positionController->LogData(true,"lift.pos");
+	std::cout << "Logging lift rate\n";	
 	rateController->LogData(true,"lift.rate");
 }
 

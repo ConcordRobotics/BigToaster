@@ -94,7 +94,7 @@ void cPIDController::UpdateController(double ff) {
 	f = fGain*ff;
 	p = pGain*error;
 	i = pGain*intErr/iGain;
-	d = pGain*-dGain*dodt[ind];
+	d = -pGain*dGain*dodt[ind];
 	if (mode==ENABLED) {
 		tempOut = f + p + i + d;
 		//std::cout << "PID OUT " << tempOut << "\n";

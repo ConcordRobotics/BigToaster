@@ -23,7 +23,9 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	name = new char[5];
 	strcpy(name,"Claw");
 	Stop();
+	std::cout << "Logging claw position \n";
 	positionController->LogData(true,"claw.pos");
+	std::cout << "Logging claw rate \n";
 	rateController->LogData(true,"claw.rate");
 }
 
