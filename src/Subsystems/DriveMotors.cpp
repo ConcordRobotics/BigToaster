@@ -24,18 +24,19 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		scs[i] = RobotMap::driveMotorsSCs[i];
 		encoders[i] = RobotMap::driveMotorsEncoders[i];
 		controllers[i] = RobotMap::driveMotorsControllers[i];
-		controllers[i]->SetMode(cPIDController::ENABLED);
-		controllers[i]->SetSetpoint(0.0);
+		controllers[i]->SetMode(cPIDController::RATE);
+		controllers[i]->SetRate(0.0);
 		scs[i]->Set(0.0);
+		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 	}
 
-	gyro1 = RobotMap::driveMotorsGyro1;
+	gyro1 = RobotMap::gyro;
 	gyro1->Reset();
     gyroControlled = false;
 
 	accelerometer = RobotMap::driveMotorsAccelerometer;
 
-	headingCont = RobotMap::driveMotorsGyroController;
+	headingCont = RobotMap::gyroController;
 	Stop();
 }
     
@@ -75,10 +76,9 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     wheelSpeeds[3] = double(x + y - z);
     for (int i = 0; i < 4; i++) {
     	// ToDo hard code the 15.
-    	controllers[i]->SetSetpoint(wheelSpeeds[i]*15);
-    	controllers[i]->UpdateController(wheelSpeeds[i]);
+    	controllers[i]->SetRate(wheelSpeeds[i]*15);
+    	controllers[i]->UpdateController(double(scs[i]->Get()));
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
-    	controllers[i]->LogData(true, RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }
     Wait(RobotMap::MotorWaitTime); // wait 5ms to avoid hogging CPU cycles

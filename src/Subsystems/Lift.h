@@ -26,12 +26,12 @@ private:
 	DigitalInput* upperSwitch;
 	DigitalInput* lowerSwitch;
 	enum switchPositions {OPEN, CLOSED};
+	virtual void EnforceLimits();
+	static double limitRatePercent;
 public:
 	Lift();
 	void InitDefaultCommand(void);
-	void EnforceLimits();
-	void UpdateController();
-	void SetFeedForward ();
+	virtual void SetFeedForward ();
 };
 
 #endif

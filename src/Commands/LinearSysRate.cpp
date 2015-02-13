@@ -8,7 +8,7 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 #include "Commands/LinearSysRate.h"
-
+#include "Support/cPIDController.h"
 LinearSysRate::LinearSysRate(Subsystem* sysIn, LinearSystem* linSys, float rateIn) {
 	// Use requires() here to declare subsystem dependencies
 	Requires(sysIn);
@@ -18,7 +18,7 @@ LinearSysRate::LinearSysRate(Subsystem* sysIn, LinearSystem* linSys, float rateI
 
 // Called just before this Command runs the first time
 void LinearSysRate::Initialize() {
-	sys->SetRateMode();
+	sys->SetMode(cPIDController::RATE);
 
 }
 

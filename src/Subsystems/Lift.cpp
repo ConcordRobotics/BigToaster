@@ -15,34 +15,39 @@
 #include "LiveWindow/LiveWindow.h"
 #include "Commands/LinearSysRate.h"
 
+// This will limit the rate if it gets to
+// within the set percent of the range
+// of the lift
+double Lift::limitRatePercent = 0.05;
 
 Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 	sc = RobotMap::liftSC;
 	encoder = RobotMap::liftEncoder;
-	positionController = RobotMap::liftPositionController;
-	rateController = RobotMap::liftRateController;
+	controller = RobotMap::liftController;
+	lim = RobotMap::liftLimits;
+	positionGains = RobotMap::liftPositionGains;
+	rateGains = RobotMap::liftRateGains;
 	upperSwitch = RobotMap::liftUpperSwitch;
 	lowerSwitch = RobotMap::liftLowerSwitch;
 	name = new char[5];
-	strcpy(name,"Lift");
-	SmartDashboard::PutNumber("LiftUpper",upperSwitch->Get());
-	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
-	mode = OFF;
+	strcpy(name,"lift");
+	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
+	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
+	mode = cPIDController::OFF;
+	controller->LogData(true,name);
 	Stop();
-	rateController->LogData(true,"LiftRate");
-	positionController->LogData(true,"LiftPos");
 }
 
 
 
 void Lift::SetFeedForward ( ) {
 	// Set a constant to help support the weight of the lift
-	ff = 0.2;
+	controller->SetFeedForward(setPoint);
 }
 
 void Lift::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-
+	// ToDo Setup a default command for Lift, perhaps hold position
 	//SetDefaultCommand(new LinearSysRate(Robot::lift,Robot::lift,0.0));
 
 }
@@ -50,10 +55,10 @@ void Lift::InitDefaultCommand() {
 void Lift::EnforceLimits() {
 	// Add something for the limit switch
 	// Don't reset distance to zero since the lift can unwind past zero
-//	bool atBottom = false;
-//	bool atTop = false;
-	SmartDashboard::PutNumber("LiftUpper",upperSwitch->Get());
-	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
+	bool atBottom = false;
+	bool atTop = false;
+	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
+	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 //	if (lowerSwitch->Get() == CLOSED) {
 //		atBottom = true;
 //		encoder->Reset();
@@ -63,18 +68,17 @@ void Lift::EnforceLimits() {
 //	// ToDo Create some soft limits
 	double distance = encoder->GetDistance();
 	double penalty = 1.0;
-	if (mode == RATE) {
+	if (mode == cPIDController::RATE) {
 		if (setPoint > 0.0) {
-			penalty = 20.0*(limits[1] - distance)/range;
+			// Ramp the
+			penalty = (lim->pMax - distance)/lim->pRange/limitRatePercent;
 			penalty = std::max(1.0,penalty);
 			setPoint = setPoint*penalty;
 		} else if (setPoint < 0.0) {
-			penalty = 20.0*(distance - limits[0])/range;
+			penalty = (distance - lim->pMin)/lim->pRange/limitRatePercent;
 			penalty = std::max(1.0,penalty);
 			setPoint = setPoint*penalty;
 		}
-		rateController -> SetSetpoint(setPoint);
-		//if (atBottom and )
 	}
 	// Don't do anything for position - we shouldn't be commanding a negative position.
 }

@@ -19,6 +19,12 @@ void cSpeedController::Set(float speed) {
 	}
 }
 
+float cSpeedController::Get(void) {
+	float output = sc->Get();
+	if (reversed) output = -output;
+	return output;
+
+}
 void cSpeedController::PIDWrite(float speed) {
 	Set(speed);
 }

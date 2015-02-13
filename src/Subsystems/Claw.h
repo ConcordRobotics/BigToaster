@@ -23,11 +23,10 @@
 
 class Claw: public LinearSystem , public Subsystem {
 private:
-
+	virtual void EnforceLimits();
+	static double limitRatePercent;
 public:
 	Claw();
-	void EnforceLimits();
-	void UpdateController();
 	void InitDefaultCommand(void);
 	void SetFeedForward();
 };

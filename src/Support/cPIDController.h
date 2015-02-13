@@ -7,6 +7,7 @@
 // The number of past datapoints to save
 #include "WPILib.h"
 #include "Support/PIDParams.h"
+#include "Support/ControllerLimits.h"
 #include <string.h>
 #include <iostream>
 #include <fstream>
@@ -24,39 +25,40 @@ private:
 	// Gains
 	PIDParams* pidParams;
 	// Limits
-	float setRange[2] = {-1.0, 1.0};
-	float dsdtRange[2] = {-1.0, 1.0};
-	float outRange[2] = {-1.0, 1.0};
+	ControllerLimits* lim;
 	// Time based variables
 	// Use a looping index to prevent having to
 	// copy values over
 	double setPoint[nsave];
-	double output[nsave];
-	double dodt[nsave];
+	double dSensDt[nsave];
 	double sensVal[nsave];
 	double time[nsave];
-	double p =0;
+	double output = 0.0;
+	double p = 0;
 	double i = 0;
 	double d = 0;
-	double f = 0;;
+	double f = 0;
+	double rate = 0.0;
 	PIDSource* pidSource;
 	PIDOutput* pidOutput;
 	Timer* timer;
 	//float rangeOutOverIn;
 	//void CalcRangeRatio(void);
 	bool logData = false;
-	std::ofstream logFile;
-	_IO_FILE* cLogFile;
+	std::string logName;
+    void CheckLimits(double delT);
+    void ApplyRate(double delT);
 public:
-	enum modeType {OFF, ENABLED, DIRECT};
+	enum modeType {OFF, RATE, POSITION, DIRECT};
 	double GetSetpoint();
-	void SetSetpoint(double set);
-	void SmoothReset(double out, double set);
-	void UpdateController(double ff);
+	void SetSetpoint(double setIn);
+	void SetRate(double rateIn);
+	void SetFeedForward(double fIn);
+	void UpdateController(double curOutput);
     void OutputToDashboard(std::string controllerName);
     void SetRanges(float setRangeIn[2], float dsdtRangeIn[2], float outRangeIn[2]);
-    cPIDController(PIDParams* params, PIDSource* pSource, PIDOutput* pOutput);
-    void SetPIDParams(PIDParams* pidParamsIn);
+    cPIDController(PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput);
+    void SetPIDParams(PIDParams* params);
     void Reset();
     void SetMode(unsigned int modeIn);
     void LogData(bool active, char* fileName);

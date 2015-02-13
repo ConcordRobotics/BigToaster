@@ -16,6 +16,7 @@ private:
 public:
 	SpeedController* sc;
 	void Set(float 	speed);
+	float Get(void);
 	void PIDWrite (float speed);
     cSpeedController(SpeedController* scIn, bool reversedIn);
 };

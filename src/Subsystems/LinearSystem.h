@@ -13,6 +13,8 @@
 #define LINEAR_SYSTEM_H
 
 #include "Support/cPIDController.h"
+#include "Support/ControllerLimits.h"
+#include "Support/PIDParams.h"
 #include "WPILib.h"
 
 /**
@@ -24,30 +26,24 @@
 class LinearSystem {
 protected:
 	int mode;
-	enum modeType {OFF, POSITION, RATE};
-	double limits[2] = {0,1};
-	double range = 1.0;
 	double setPoint = 0.0;
-	double distanceOffset = 0.0;
-	double ff = 0.0;
 	SpeedController* sc;
 	Encoder* encoder;
+	PIDParams* positionGains;
+	PIDParams* rateGains;
+	ControllerLimits* lim;
 	virtual void EnforceLimits() {};
-	virtual void SetFeedForward() { ff = 0.0; };
+	virtual void SetFeedForward() {};
  public:
-	cPIDController* rateController;
-	cPIDController* positionController;
+	cPIDController* controller;
 	char* name = NULL;
 	LinearSystem();
-	LinearSystem(SpeedController* scIn, Encoder* encIn,
-			cPIDController* pController, cPIDController* rController);
 	void Stop();
 	void SetSetpoint(double setSetpoint);
-	void SetLimits(double min, double max);
-	void InitDefaultCommand();
-	void SetPositionMode();
-	void SetRateMode();
+	virtual void InitDefaultCommand();
+	void SetMode(int modeIn);
 	void UpdateController();
+	virtual ~LinearSystem() {};
 	double PositionError(double target);
 };
 

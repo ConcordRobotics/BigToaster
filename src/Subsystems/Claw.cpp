@@ -14,35 +14,57 @@
 #include "LiveWindow/LiveWindow.h"
 #include "Commands/LinearSysRate.h"
 
+double Claw::limitRatePercent = 0.02;
 
 Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	sc = RobotMap::clawSC;
 	encoder = RobotMap::clawEncoder;
-	positionController = RobotMap::clawPositionController;
-	rateController = RobotMap::clawRateController;
+	controller = RobotMap::clawController;
+	rateGains = RobotMap::clawRateGains;
+	positionGains = RobotMap::clawPositionGains;
+	lim = RobotMap::clawLimits;
 	name = new char[5];
-	strcpy(name,"Claw");
+	strcpy(name,"claw");
+	controller->LogData(true,name);
 	Stop();
-	rateController->LogData(true,"ClawRate");
-	positionController->LogData(true,"ClawPos");
 }
 
 
 
 void Claw::SetFeedForward() {
-	if (mode == RATE ) {
-		ff = setPoint;
-	}
+	controller->SetFeedForward(setPoint);
 }
+
 void Claw::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-
+    // ToDo Set the default claw command
 	//SetDefaultCommand(new LinearSysRate(Robot::claw,Robot::claw,0.0));
 
 }
 void Claw::EnforceLimits() {
-	// The claw can not physically go below zero, so reset the encoder if it reads negative
-	if (encoder->GetDistance() < 0.0) encoder->Reset();
+	// Set the limits by adjusting the limits based
+	// on the range
+	// Does not enable a hard range limit, but
+	// useful for setting claw positions
+	double distance = encoder->GetDistance();
 
-	// Don't do anything for rate, applying some outward or inward pressure is OK
+	if (distance <= lim->pMin) {
+		lim->pMin = distance;
+		lim->pMax = lim->pMax + lim->pRange;
+	} else if (distance > lim->pMax) {
+		lim->pMax = distance;
+		lim->pMin = lim->pMax - lim->pRange;
+	}
+	double penalty = 1.0;
+	if (mode == cPIDController::RATE) {
+		if (setPoint > 0.0) {
+			penalty = (lim->pMax - distance)/lim->pRange/limitRatePercent;
+			penalty = std::max(1.0,penalty);
+			setPoint = setPoint*penalty;
+		} else if (setPoint < 0.0) {
+			penalty = (distance - lim->pMin)/lim->pRange/limitRatePercent;
+			penalty = std::max(1.0,penalty);
+			setPoint = setPoint*penalty;
+		}
+	}
 }

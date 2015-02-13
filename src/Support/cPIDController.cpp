@@ -8,12 +8,15 @@
 #include "cPIDController.h"
 #include "SmartDashboard/SmartDashboard.h"
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 double cPIDController::PIDSampleTime = 0.005;
 double cPIDController::setPointAlpha = 0.75;
 
-cPIDController::cPIDController (PIDParams* params, PIDSource* pSource, PIDOutput* pOutput) {
+cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput) {
 	pidParams = params;
+	lim = pLim;
 	pidSource = pSource;
 	pidOutput = pOutput;
 	// Initialize default values
@@ -23,159 +26,139 @@ cPIDController::cPIDController (PIDParams* params, PIDSource* pSource, PIDOutput
 	double tempSensor = pidSource->PIDGet();
 	for (unsigned int k = 0; k < nsave; k++) {
 		setPoint[k] = 0.0;
-		output[k] = 0.0;
-		dodt[k] = 0.0;
 		time[k] = tempTime;
 		sensVal[k] = tempSensor;
+		dSensDt[k] = 0.0;
 	}
 	i = 0.0;
 	iNM2 = 0; iNM1 = 1; iN = 2;
-	cLogFile = 0;
+	logName = "";
 	mode = OFF;
-	// ToDo add ability to set ranges, and scale above accordingly
 };
 
-
-void cPIDController::SetRanges(float* setRangeIn, float* dsdtRangeIn, float* outRangeIn); {
-	setRange = setRangeIn;
-	dsdtRange = dsdtRangeIn;
-	outRange = outRangeIn;
+void cPIDController::SetPIDParams(PIDParams* params) {
+	pidParams = params;
 }
-
-void cPIDController::SetOutputRange (float oMin, float oMax) {
-	outRange[0] = oMin;
-	outRange[1] = oMax;
-	CalcRangeRatio();
+void cPIDController::SetRate(double rateIn) {
+	rate = rateIn;
 }
-
-void cPIDController::SetSetpoint(double set) {
+void cPIDController::SetSetpoint(double setIn) {
 	// Set the setpoint for the next time
-	// ToDo add checks on input levels
-	// Filter the setpoint
-	setPoint[(ind+1)%nsave ] = set;
+	double set = setIn;
+	setPoint[(iN+1)%nsave ] = set;
+}
+
+void cPIDController::ApplyRate(double delT) {
+	// Check the rate first
+	rate = lim->ApplyRateLimits(rate);
+	setPoint[iN] = setPoint[iNM1] + delT*rate;
+}
+
+void cPIDController::CheckLimits(double delT) {
+	// Check the position limits first
+	setPoint[iN] = lim->ApplyPositionLimits(setPoint[iN]);
+	// Check rate
+	double tRate = (setPoint[iN] - setPoint[iNM1])/delT;
+	tRate = lim->ApplyRateLimits(tRate);
+	setPoint[iN] = setPoint[iNM1] + delT*rate;
+}
+
+void cPIDController::SetFeedForward(double fIn) {
+	f = (pidParams->fGain)*fIn;
 }
 
 double cPIDController::GetSetpoint() {
-	return setPoint[ind];
+	return setPoint[iN];
 }
-void cPIDController::UpdateController(double ff) {
+void cPIDController::UpdateController(double curOutput) {
 	double t = timer->Get();
 	// Only iterate if we are hitting our sample rate.  Prevents noise
 	// in the derivatives
-	if (t - time[ind] < PIDSampleTime) return;
+	if (t - time[iN] < PIDSampleTime) return;
 
+	// Advance the iNex, with mod to loop it
+	iNM2 = iNM1;
+	iNM1 = iN;
+	iN = (iN+1)%nsave;
 
-
-	// Advance the index, with mod to loop it
-	unsigned int im1 = ind;
-	ind = (ind+1)%nsave;
 	// Get time step information
-	time[ind] = t;
-	double delT = time[ind] - time[im1];
-	double rDelT = 0.0;
-	if (delT > 0.0) rDelT = 1.0/delT;
+	time[iN] = t;
+	double delT = time[iN] - time[iNM1];
 
 	// Smooth the setpoint
-	setPoint[ind] = (1.0 - setPointAlpha)*setPoint[ind] + setPointAlpha*setPoint[im1];
+	//setPoint[iN] = (1.0 - setPointAlpha)*setPoint[iN] + setPointAlpha*setPoint[im1];
+
+	// Apply the rate to set the position
+	if (mode == RATE) ApplyRate(delT);
+	// Check both the position and rate limits
+	CheckLimits(delT);
 
 	// Get the sensor value
-	sensVal[ind] = pidSource->PIDGet();
-	double error = setPoint[ind] - sensVal[ind];
-	// For derivative, use sensor value rather than error to prevent jumps
+	sensVal[iN] = pidSource->PIDGet();
+	// Set the setPoint to the sensor value for direct mode to keep
+	// Controller information current.  I.e. assume it's going exactly where it's supposed to
+	if ( (mode==DIRECT) or (mode==OFF) ) setPoint[iN] = sensVal[iN];
+	// Calculate needed derivatives
+	double error = setPoint[iN] - sensVal[iN];
+	double dSetDt = (setPoint[iN] - setPoint[iNM1])/delT;
+	dSensDt[iN] = (sensVal[iN] - sensVal[iNM1])/delT;
+	// Second derivative of the sensor values
+	double delTMid = 0.5*(time[iN] - time[iNM2]);
+	double ddSensDtsq = (dSensDt[iN] - dSensDt[iNM1])/delTMid;
+	// For derivative term, use sensor value rather than error to prevent jumps
 	// Could filter this but better to filter at the sensor level
-	dodt[ind] = rDelT*(sensVal[ind] - sensVal[im1]);
-	// Integrate the error
-	double intErrLast = intErr;
-	intErr = intErr + error*delT;
 
 	// Calculate the target output
-	double tempOut;
-	double f, p, i, d;
-	f = fGain*ff;
-	p = pGain*error;
-	i = pGain*intErr/iGain;
-	d = - pGain*dGain*dodt[ind];
-	if (mode==ENABLED) {
-		tempOut = f + p + i + d;
-		// Make the output smooth if needed by adjusting the intErr term.
-		if (smoothReset) {
-			i = (tempOut - f -p - d)*iGain/pGain;
-			smoothReset = false;
-		}
-		//std::cout << "PID OUT " << tempOut << "\n";
-	} else if (mode==DIRECT) {
-		// Use only the feed forward term
-		tempOut = f;
-		//std::cout << "DIRECT OUT " << tempOut << "\n";
+	p = pidParams->pGain*(dSetDt - dSensDt[iN]);
+	i = pidParams->pGain*error/pidParams->iGain;
+	// Since derivative term is based on error, which is
+	// (target - sensor), need a negative sign in front of sensor
+	// values.  Derivative of target neglected to prevent jumps due to setpoint
+	// changes
+	d = - (pidParams->pGain)*(pidParams->dGain)*ddSensDtsq;
+	// Now set the output based on the mode
+	if (mode == OFF) return;
+	output = curOutput;
+	if (mode == DIRECT) {
+		// For direct mode, output set directly through feed-forward term;
+		// For setting an avsolute value of power, set curPower to 0.0 when
+		// Calling update controller
+		output = output + f;
+	} else {
+		output = output + delT*(p + i + d);
 	}
-    if (mode == OFF) return;
-	// Now check the output
-	if (tempOut > outRange[1]) {
-		if (error > 0 ) intErr = intErrLast;
-		tempOut = outRange[1];
-	} else if (tempOut < outRange[0]) {
-		if (error < 0) intErr = intErrLast;
-		tempOut = outRange[0];
-	}
+	// Check output limits
+	output = lim->ApplyOutputLimits(output);
 
-	// Apply the output
-	output[ind] = tempOut;
-	pidOutput->PIDWrite(output[ind]);
+	pidOutput->PIDWrite(output);
 	if (logData) {
-		fprintf(cLogFile, "%f %f %f %f %f %f %f %f\n",time[ind], setPoint[ind], sensVal[ind], output[ind], f, p, i, d);
-		//logFile << time[ind] << " " << sensVal[ind] << " " << output[ind] << "\n";
+		std::cout << "CONT " << logName << " " << time[iN] << " " << setPoint[iN] <<
+				" " << sensVal[iN] << " " << output << " " <<  p
+				<< " " << i << " " << d << " " << f << "\n";
 	}
-
-}
-
-void cPIDController::SmoothReset (double out, double set) {
-	smoothReset = true;
-	setPoint[ind] = set;
-	// Save the output into the next iteration
-	output[(ind+1)%nsave] = out;
-}
-
-void cPIDController::Reset() {
-	intErr = 0.0;
+	// Reset the feed forward term
+    f = 0.0;
 }
 
 void cPIDController::SetMode(unsigned int modeIn) {
 	mode = modeIn;
-	intErr = 0.0;
 }
 
 
 void cPIDController::OutputToDashboard(std::string controllerName) {
-	std::string keyName;
-	keyName = controllerName + "pGain";
-	SmartDashboard::PutNumber(keyName,pGain);
-	keyName = controllerName + "iGain";
-	SmartDashboard::PutNumber(keyName,1.0/iGain);
-	keyName = controllerName + "dGain";
-	SmartDashboard::PutNumber(keyName,dGain);
-	keyName = controllerName + "fGain";
-	SmartDashboard::PutNumber(keyName,fGain);
-	keyName = controllerName + "ind";
-	SmartDashboard::PutNumber(keyName,double(ind));
-	keyName = controllerName + "sens";
-	SmartDashboard::PutNumber(keyName,double(sensVal[ind]));
-	keyName = controllerName + "output";
-	SmartDashboard::PutNumber(keyName,double(output[ind]));
-	keyName = controllerName + "target";
-	SmartDashboard::PutNumber(keyName,double(setPoint[ind]));
+	std::ostringstream buffer;
+	buffer << "s: " << std::fixed << std::setprecision(5) << setPoint[iN];
+    buffer << " v: " << std::fixed << std::setprecision(5) << sensVal[iN];
+    buffer << " o: " << std::fixed << std::setprecision(4) << output;
+    buffer << " p: " << std::fixed << std::setprecision(4) << p;
+    buffer << " i: " << std::fixed << std::setprecision(4) << i;
+    buffer << " d: " << std::fixed << std::setprecision(4) << d;
+    buffer << " f: " << std::fixed << std::setprecision(4) << f;
+	std::string value = buffer.str();
+	SmartDashboard::PutString(controllerName, value);
 }
 
-void cPIDController::LogData(bool active, char* fileName) {
-	char* fname = new char[strlen(fileName) + 20];
-	strcpy(fname,"/home/lvuser/");
-	strcat(fname,fileName);
-	std::cout << fname << "opening\n";
-	if (active) {
-		cLogFile = fopen(fname,"w");
-		rewind(cLogFile);
-	} else if (logData) {
-		fclose(cLogFile);
-	}
+void cPIDController::LogData(bool active, char* logNameIn) {
+	logName = logNameIn;
 	logData = active;
-	delete(fname);
 }

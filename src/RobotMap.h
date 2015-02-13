@@ -16,6 +16,7 @@
 #include "Support/cEncoder.h"
 #include "Support/cSpeedController.h"
 #include "Support/cPIDController.h"
+#include "Support/ControllerLimits.h"
 
 
 /**
@@ -35,13 +36,8 @@ public:
 	static SpeedController *dmSCs[4];
 	static Encoder *driveMotorsEncoders[4];
 	static cPIDController *driveMotorsControllers[4];
-	static cPIDController* driveMotorsGyroController;
-	static Gyro* driveMotorsGyro1;
-	static BuiltInAccelerometer* driveMotorsAccelerometer;
-	static float driveMotorsGains[4];
-	static float gyroRateGains[4];
-	static float driveMotorEncoderLimits[2];
-	static float driveMotorSCLimits[2];
+	static PIDParams* driveMotorsRateGains;
+	static ControllerLimits* driveMotorsLimits;
 	static unsigned int driveMotorsPWMs[4];
 	static unsigned int driveMotorsPIOs[4][2];
 	static bool driveMotorsSCReversed[4];
@@ -49,27 +45,34 @@ public:
 	static float driveMotorsDPP[4];
 	static char driveMotorsNames[4][4];
 
+    // Gyro parameters
+	static Gyro* gyro;
+	static cPIDController* gyroController;
+	static ControllerLimits* gyroLimits;
+	static PIDParams* gyroRateGains;
+	static PIDParams* gyroPositionGains;
+
+	// Accelerometer
+	static BuiltInAccelerometer* driveMotorsAccelerometer;
+
 	// Data for Lift system
 	static SpeedController* liftSC;
 	static Encoder* liftEncoder;
-	static cEncoder* liftPositionEncoder;
-	static cPIDController* liftRateController;
-    static cPIDController* liftPositionController;
-	static void init();
- 	static float liftPositionGains[4];
- 	static float liftRateGains[4];
+	static cPIDController* liftController;
+	static ControllerLimits* liftLimits;
+ 	static PIDParams* liftPositionGains;
+ 	static PIDParams* liftRateGains;
  	static DigitalInput* liftUpperSwitch;
  	static DigitalInput* liftLowerSwitch;
 
 	// Data for the Claw Not enabled in telop yet
 	static SpeedController* clawSC;
 	static Encoder* clawEncoder;
-	static cEncoder* clawPositionEncoder;
-	static cPIDController* clawRateController;
- 	static cPIDController* clawPositionController;
- 	static float clawOpenPosition;
- 	static float clawClosedPosition;
- 	static float clawPositionGains[4];
- 	static float clawRateGains[4];
+	static cPIDController* clawController;
+	static ControllerLimits* clawLimits;
+ 	static PIDParams* clawPositionGains;
+ 	static PIDParams* clawRateGains;
+
+	static void init();
 };
 #endif
