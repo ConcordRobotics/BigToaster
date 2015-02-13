@@ -12,12 +12,8 @@
 double cPIDController::PIDSampleTime = 0.005;
 double cPIDController::setPointAlpha = 0.75;
 
-cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* pSource, PIDOutput* pOutput) {
-	pGain = p;
-	iGain = i;
-	if (iGain < 1.0E-6) iGain = 1.0E30;
-	dGain = d;
-	fGain = f;
+cPIDController::cPIDController (PIDParams* params, PIDSource* pSource, PIDOutput* pOutput) {
+	pidParams = params;
 	pidSource = pSource;
 	pidOutput = pOutput;
 	// Initialize default values
@@ -32,27 +28,18 @@ cPIDController::cPIDController (float p, float i,  float d, float f, PIDSource* 
 		time[k] = tempTime;
 		sensVal[k] = tempSensor;
 	}
-	intErr = 0.0;
-	ind = 0;
-	rangeOutOverIn = 1.0;
+	i = 0.0;
+	iNM2 = 0; iNM1 = 1; iN = 2;
 	cLogFile = 0;
 	mode = OFF;
 	// ToDo add ability to set ranges, and scale above accordingly
 };
 
-void cPIDController::CalcRangeRatio (void) {
-	float rOut, rIn;
-	rOut = outRange[1] - outRange[0];
-	rIn = inRange[1] - inRange[0];
-	if (rIn > 0) {
-		rangeOutOverIn = rOut/rIn;
-	} else rangeOutOverIn = 1.0;
-}
 
-void cPIDController::SetInputRange (float iMin, float iMax) {
-	inRange[0] = iMin;
-	inRange[1] = iMax;
-	CalcRangeRatio();
+void cPIDController::SetRanges(float* setRangeIn, float* dsdtRangeIn, float* outRangeIn); {
+	setRange = setRangeIn;
+	dsdtRange = dsdtRangeIn;
+	outRange = outRangeIn;
 }
 
 void cPIDController::SetOutputRange (float oMin, float oMax) {
