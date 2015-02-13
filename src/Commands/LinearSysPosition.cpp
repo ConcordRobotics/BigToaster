@@ -34,7 +34,7 @@ void LinearSysPosition::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool LinearSysPosition::IsFinished() {
 	//return false; // Hold this position until told otherwise.
-	return (sys->PositionError(position) < tolerance);
+	return false; //return (sys->PositionError(position) < tolerance);
 }
 
 // Called once after isFinished returns true
