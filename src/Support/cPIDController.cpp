@@ -153,10 +153,9 @@ void cPIDController::OutputToDashboard(std::string controllerName) {
 }
 
 void cPIDController::LogData(bool active, char* fileName) {
-	//char* fname = new char[strlen(fileName) + 7 ];
-	//strcpy(fname,"plots/");
-	//strcat(fname,fileName);
-	//std::cout << fileName << " opening\n";
+	char* fname = new char[strlen(fileName) + 30 ];
+	strcpy(fname,"/home/lvuser/plots/");
+	strcat(fname,fileName);
 	if (active) {
 		cLogFile = fopen(fileName,"w");
 		//rewind(cLogFile);
@@ -164,5 +163,5 @@ void cPIDController::LogData(bool active, char* fileName) {
 		fclose(cLogFile);
 	}
 	logData = active;
-	//delete(fname);
+	delete(fname);
 }

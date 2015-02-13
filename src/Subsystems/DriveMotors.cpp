@@ -27,7 +27,6 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		controllers[i]->SetMode(cPIDController::ENABLED);
 		controllers[i]->SetSetpoint(0.0);
 		scs[i]->Set(0.0);
-		std::cout << "logging " << driveMotorsNames[i] << "\n";
 		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 	}
 

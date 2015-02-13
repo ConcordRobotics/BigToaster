@@ -29,10 +29,11 @@ Lift::Lift() : LinearSystem(), Subsystem("Lift") {
 	SmartDashboard::PutNumber("LiftLower",lowerSwitch->Get());
 	mode = OFF;
 	Stop();
-	std::cout << "Logging lift position\n";
-	positionController->LogData(true,"lift.pos");
-	std::cout << "Logging lift rate\n";	
-	rateController->LogData(true,"lift.rate");
+	char* logFile = new char[10];
+	strcpy(logFile,"lift.pos");
+	positionController->LogData(true,logFile);
+	strcpy(logFile,"lift.rate");
+	rateController->LogData(true,logFile);
 }
 
 void Lift::UpdateController( double ffIn) {

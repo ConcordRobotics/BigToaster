@@ -13,6 +13,7 @@
 #include "../RobotMap.h"
 #include "LiveWindow/LiveWindow.h"
 #include "Commands/LinearSysRate.h"
+#include <string.h>
 
 
 Claw::Claw() : LinearSystem(), Subsystem("Claw") {
@@ -23,10 +24,11 @@ Claw::Claw() : LinearSystem(), Subsystem("Claw") {
 	name = new char[5];
 	strcpy(name,"Claw");
 	Stop();
-	std::cout << "Logging claw position \n";
-	positionController->LogData(true,"claw.pos");
-	std::cout << "Logging claw rate \n";
-	rateController->LogData(true,"claw.rate");
+	char* logFile = new char[9];
+	strcpy(logFile,"claw.pos");
+	positionController->LogData(true, logFile);
+	strcpy(logFile,"claw.rate");
+	rateController->LogData(true,logFile);
 }
 
 void Claw::UpdateController(double ffIn) {
