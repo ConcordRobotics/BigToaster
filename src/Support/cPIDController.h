@@ -54,7 +54,7 @@ public:
 	void SetSetpoint(double setIn);
 	void SetRate(double rateIn);
 	void SetFeedForward(double fIn);
-	void UpdateController(double curOutput);
+	double UpdateController(double curOutput);
     void OutputToDashboard(std::string controllerName);
     void SetRanges(float setRangeIn[2], float dsdtRangeIn[2], float outRangeIn[2]);
     cPIDController(PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput);

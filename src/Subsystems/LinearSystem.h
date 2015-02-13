@@ -27,6 +27,7 @@ class LinearSystem {
 protected:
 	int mode;
 	double setPoint = 0.0;
+	double output = 0.0;
 	SpeedController* sc;
 	Encoder* encoder;
 	PIDParams* positionGains;

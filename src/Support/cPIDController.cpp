@@ -70,11 +70,11 @@ void cPIDController::SetFeedForward(double fIn) {
 double cPIDController::GetSetpoint() {
 	return setPoint[iN];
 }
-void cPIDController::UpdateController(double curOutput) {
+double cPIDController::UpdateController(double curOutput) {
 	double t = timer->Get();
 	// Only iterate if we are hitting our sample rate.  Prevents noise
 	// in the derivatives
-	if (t - time[iN] < PIDSampleTime) return;
+	if (t - time[iN] < PIDSampleTime) return curOutput;
 
 	// Advance the iNex, with mod to loop it
 	iNM2 = iNM1;
@@ -117,7 +117,7 @@ void cPIDController::UpdateController(double curOutput) {
 	// changes
 	d = - (pidParams->pGain)*(pidParams->dGain)*ddSensDtsq;
 	// Now set the output based on the mode
-	if (mode == OFF) return;
+	if (mode == OFF) return 0.0;
 	output = curOutput;
 	if (mode == DIRECT) {
 		// For direct mode, output set directly through feed-forward term;
@@ -128,7 +128,7 @@ void cPIDController::UpdateController(double curOutput) {
 		output = output + delT*(p + i + d);
 	}
 	// Check output limits
-	output = lim->ApplyOutputLimits(output);
+	//output = lim->ApplyOutputLimits(output);
 
 	pidOutput->PIDWrite(output);
 	if (logData) {
@@ -138,6 +138,7 @@ void cPIDController::UpdateController(double curOutput) {
 	}
 	// Reset the feed forward term
     f = 0.0;
+    return output;
 }
 
 void cPIDController::SetMode(unsigned int modeIn) {
