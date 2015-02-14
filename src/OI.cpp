@@ -44,7 +44,7 @@ OI::OI() {
 
 	LowerLiftRateButton = new JoystickButton(joystick2, 2);
 	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -10.0));
-	//SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
+	SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
 
 	LiftTopPosButton = new JoystickButton(joystick2, 4);
 	LiftTopPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,40.0));
@@ -65,12 +65,12 @@ OI::OI() {
 	ClawOpenPosButton = new JoystickButton(joystick2, 7);
 	// Tolerance should turn motor off when close enough
 	ClawOpenPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw, 0.9, 0.03));
-	//SmartDashboard::PutData("ClawOpenPos", new LinearSysPosition(Robot::claw,0.9));
+	SmartDashboard::PutData("ClawOpenPos", new LinearSysPosition(Robot::claw,0.9, 0.03));
 
 	//This should apply some force on holding objects
 	ClawClosedPosButton = new JoystickButton(joystick2, 8);
 	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.0, 0.03));
-	//SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,0.1));
+	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,0.05, 0.03));
 	//char name[] = "liftp.auto";
 	//SmartDashboard::PutData("AutotuneLiftPos", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
 	//			RobotMap::liftPositionController, RobotMap::liftEncoder, name ));
