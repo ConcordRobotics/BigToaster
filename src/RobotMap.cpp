@@ -143,7 +143,7 @@ void RobotMap::init() {
 				// The controller
 				clawLimits = new ControllerLimits(0.0, 1.0, -0.5, 0.5, -1.0, 1.0);
 				clawPositionGains = new PIDParams(0.5, 0.2, 0.0, 1.0);
-				clawRateGains = new PIDParams(0.5, 0.2, 0.0, 1.0);
+				clawRateGains = new PIDParams(0.5, 0.0, 0.0, 1.0);
 				clawController = new cPIDController(clawPositionGains, clawLimits, clawEncoder, clawSC);
 
 				// ToDo Try enabling derivative term on all controllers
