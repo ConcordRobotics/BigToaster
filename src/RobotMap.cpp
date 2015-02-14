@@ -141,7 +141,7 @@ void RobotMap::init() {
 				clawEncoder->SetDistancePerPulse(0.01612);
 				clawEncoder->SetPIDSourceParameter(Encoder::kDistance);
 				// The controller
-				clawLimits = new ControllerLimits(0.0, 1.0, -0.5, 0.5, -1.0, 1.0);
+				clawLimits = new ControllerLimits(-0.1, 1.1, -0.5, 0.5, -1.0, 1.0);
 				clawPositionGains = new PIDParams(0.5, 0.2, 0.0, 1.0);
 				clawRateGains = new PIDParams(0.5, 0.2, 0.0, 1.0);
 				clawController = new cPIDController(clawPositionGains, clawLimits, clawEncoder, clawSC);

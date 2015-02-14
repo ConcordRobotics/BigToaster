@@ -50,11 +50,11 @@ void Claw::EnforceLimits() {
 
 	if (distance <= lim->pMin) {
 		encoder->Reset();
-		lim->pMin = 0.0;
-		lim->pMax = 1.0;
+		lim->pMin = -0.1;
+		lim->pMax = 1.1;
 	} else if (distance > lim->pMax) {
 		lim->pMax = distance;
-		lim->pMin = lim->pMax - 1.0;
+		lim->pMin = lim->pMax - 1.2;
 	}
 	return;
 	double penalty = 1.0;
