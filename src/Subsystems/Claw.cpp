@@ -13,6 +13,7 @@
 #include "../RobotMap.h"
 #include "LiveWindow/LiveWindow.h"
 #include "Commands/LinearSysRate.h"
+#include "Commands/LinearHoldPosition.h"
 
 double Claw::limitRatePercent = 0.02;
 
@@ -38,7 +39,7 @@ void Claw::SetFeedForward() {
 void Claw::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
     // ToDo Set the default claw command
-	//SetDefaultCommand(new LinearSysRate(Robot::claw,Robot::claw,0.0));
+	SetDefaultCommand(new LinearHoldPosition(Robot::claw,Robot::claw));
 
 }
 void Claw::EnforceLimits() {

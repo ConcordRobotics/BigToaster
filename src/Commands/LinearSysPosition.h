@@ -21,7 +21,7 @@
  * @author ExampleAuthor
  */
 class LinearSysPosition: public Command {
-private:
+protected:
 	double position;
 	LinearSystem* sys;
 	double tolerance; // percent tolerance to find position

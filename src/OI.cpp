@@ -87,7 +87,8 @@ OI::OI() {
 //	SmartDashboard::PutData("AutotuneDrive", new AutotunePIDv(Robot::driveMotors, 0.0,10.0, 10.0,
 //				RobotMap::driveMotorsControllers, RobotMap::driveMotorsEncoders, RobotMap::driveMotorsNames ));
 //	SmartDashboard::PutData("Autonomous Command", new AutonomousCommand());
-//	//SmartDashboard::PutData("DriveInTelop", new DriveInTelop());
+	SmartDashboard::PutData("DriveInTelopGyroOff", new DriveInTelop(cPIDController::DIRECT));
+	SmartDashboard::PutData("DriveInTelopGyroRate", new DriveInTelop(cPIDController::RATE));
     SmartDashboard::PutData("TestDrive", new TestDrive());
 
 

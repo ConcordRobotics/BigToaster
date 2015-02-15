@@ -37,8 +37,9 @@ float RobotMap::driveMotorsDPP[4] = {0.00419, 0.00433, 0.004019, 0.0028};
 Gyro* RobotMap::gyro = NULL;
 cPIDController* RobotMap::gyroController = NULL;
 ControllerLimits* RobotMap::gyroLimits = NULL;
-PIDParams* RobotMap::gyroRateGains;
-PIDParams* RobotMap::gyroPositionGains;
+PIDParams* RobotMap::gyroRateGains = NULL;
+PIDParams* RobotMap::gyroPositionGains = NULL;
+cPIDOutput* RobotMap::gyroControllerOutput = NULL;
 
 // Accelerometer
 BuiltInAccelerometer* RobotMap::driveMotorsAccelerometer = NULL;
@@ -74,7 +75,7 @@ void RobotMap::init() {
 
 	std::cout << "Setting drive data\n";
 
-	driveMotorsRateGains = new PIDParams(0.1, 0.0, 0.0, 1.0);
+	driveMotorsRateGains = new PIDParams(0.05, 0.0, 1.0, 1.0);
 	// Set large position limits since there is no real limit
 	driveMotorsLimits = new ControllerLimits(-1.0E30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 	// Loop over motors to initialize Drive Motor data
@@ -101,8 +102,8 @@ void RobotMap::init() {
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -10.0, 10.0, -1.0, 1.0);
 		gyroRateGains = new PIDParams(0.02, 0.0, 0.0, 1.0);
 		gyroPositionGains = new PIDParams(0.02, 1.0, 0.0, 1.0);
-		// ToDo Create gyro output class
-		//gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroPIDOutput);
+		gyroControllerOutput = new cPIDOutput();
+		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 
 		// ToDo Add Accelerometer
 		//driveMotorsAccelerometer = new BuiltInAccelerometer();
@@ -123,7 +124,7 @@ void RobotMap::init() {
 		// The Controller
 			liftLimits = new ControllerLimits(0.0, 50.0, -10.0, 10.0, -1.0, 1.0);
 			liftPositionGains = new PIDParams(0.0254, 1.1, 0.0, 0.1);
-			liftRateGains = new PIDParams(0.0254, 0.0, 0.0, 0.1);
+			liftRateGains = new PIDParams(0.0254, 1.1, 0.0, 0.1);
 			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftSC);
 			liftLowerSwitch = new DigitalInput(16);
 			liftUpperSwitch = new DigitalInput(24);

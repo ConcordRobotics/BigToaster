@@ -9,28 +9,21 @@
 // it from being updated in the future.
 
 
-#ifndef LIFT_H
-#define LIFT_H
-#include "Subsystems/LinearSystem.h"
-#include "Support/cPIDController.h"
-#include "WPILib.h"
+#ifndef LINEARHOLDPOSITION_H
+#define LINEARHOLDPOSITION_H
+
+#include "../Robot.h"
+#include "Commands/LinearSysPosition.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-
-class Lift: public LinearSystem , public Subsystem {
-private:
-	DigitalInput* upperSwitch;
-	DigitalInput* lowerSwitch;
-	virtual void EnforceLimits();
-	static double limitRatePercent;
+class LinearHoldPosition: public LinearSysPosition {
 public:
-	Lift();
-	void InitDefaultCommand(void);
-	virtual void SetFeedForward ();
+	LinearHoldPosition(Subsystem* sysIn,  LinearSystem* linSys);
+	virtual void Initialize();
 };
 
 #endif

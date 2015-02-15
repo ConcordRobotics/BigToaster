@@ -17,6 +17,7 @@
 #include "Support/cSpeedController.h"
 #include "Support/cPIDController.h"
 #include "Support/ControllerLimits.h"
+#include "Support/cPIDOutput.h"
 
 
 /**
@@ -51,6 +52,7 @@ public:
 	static ControllerLimits* gyroLimits;
 	static PIDParams* gyroRateGains;
 	static PIDParams* gyroPositionGains;
+	static cPIDOutput* gyroControllerOutput;
 
 	// Accelerometer
 	static BuiltInAccelerometer* driveMotorsAccelerometer;

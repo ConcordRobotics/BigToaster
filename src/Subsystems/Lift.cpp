@@ -14,6 +14,7 @@
 #include "Robot.h"
 #include "LiveWindow/LiveWindow.h"
 #include "Commands/LinearSysRate.h"
+#include "Commands/LinearHoldPosition.h"
 
 // This will limit the rate if it gets to
 // within the set percent of the range
@@ -49,29 +50,31 @@ void Lift::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	// ToDo Setup a default command for Lift, perhaps hold position
 	//SetDefaultCommand(new LinearSysRate(Robot::lift,Robot::lift,0.0));
-
+    SetDefaultCommand(new LinearHoldPosition(Robot::lift, Robot::lift));
 }
 
 void Lift::EnforceLimits() {
 	// Add something for the limit switch
 	// Don't reset distance to zero since the lift can unwind past zero
 	return;
-	bool atBottom = false;
-	bool atTop = false;
+	bool atBottom = lowerSwitch->Get();
+	bool atTop = upperSwitch->Get();
 	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
 	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
-//	if (lowerSwitch->Get() == CLOSED) {
-//		atBottom = true;
-//		encoder->Reset();
-//	} else if (upperSwitch->Get() == CLOSED) {
-//		atTop = true;
-//	}
-//	// ToDo Create some soft limits
+	// Reset the encoder if it has hit the bottom
+	if (atBottom) encoder->Reset();
 	double distance = encoder->GetDistance();
+	if (atTop) {
+		// If at the top update the limits
+		lim->pMax = distance;
+		lim->pRange = lim->pMax;
+	}
+
+	//Create some soft limits for the rate controller - slow it as it approaches the top limit
 	double penalty = 1.0;
 	if (mode == cPIDController::RATE) {
 		if (setPoint > 0.0) {
-			// Ramp the
+			// Ramp the rate down as you get closer
 			penalty = (lim->pMax - distance)/lim->pRange/limitRatePercent;
 			penalty = std::max(1.0,penalty);
 			setPoint = setPoint*penalty;

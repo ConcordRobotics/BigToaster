@@ -39,9 +39,11 @@ cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSo
 void cPIDController::SetPIDParams(PIDParams* params) {
 	pidParams = params;
 }
+
 void cPIDController::SetRate(double rateIn) {
 	rate = rateIn;
 }
+
 void cPIDController::SetSetpoint(double setIn) {
 	// Set the setpoint for the next time
 	double set = setIn;

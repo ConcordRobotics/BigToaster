@@ -15,6 +15,7 @@
 
 #include "Commands/Subsystem.h"
 #include "../Robot.h"
+#include "Support/cPIDController.h"
 
 /**
  *
@@ -22,8 +23,10 @@
  * @author ExampleAuthor
  */
 class DriveInTelop: public Command {
+private:
+	int gyroMode;
 public:
-	DriveInTelop();
+	DriveInTelop(int mode);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
