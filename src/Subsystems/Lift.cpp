@@ -79,6 +79,7 @@ void Lift::EnforceLimits() {
 	}
 
 	//Create some soft limits for the rate controller - slow it as it approaches the top limit
+	return;
 	double penalty = 1.0;
 	if (mode == cPIDController::RATE) {
 		if (setPoint > 0.0) {
