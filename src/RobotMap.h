@@ -55,7 +55,7 @@ public:
 	static cPIDOutput* gyroControllerOutput;
 
 	// Accelerometer
-	static BuiltInAccelerometer* driveMotorsAccelerometer;
+	//static BuiltInAccelerometer* driveMotorsAccelerometer;
 
 	// Data for Lift system
 	static SpeedController* liftSC;

@@ -42,7 +42,7 @@ PIDParams* RobotMap::gyroPositionGains = NULL;
 cPIDOutput* RobotMap::gyroControllerOutput = NULL;
 
 // Accelerometer
-BuiltInAccelerometer* RobotMap::driveMotorsAccelerometer = NULL;
+//BuiltInAccelerometer* RobotMap::driveMotorsAccelerometer = NULL;
 
 
 // Data for lift system

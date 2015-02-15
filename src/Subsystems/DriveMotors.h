@@ -40,7 +40,7 @@ public:
 	int gyroMode;
 	cPIDController* headingCont;
 
-	BuiltInAccelerometer* accelerometer;
+	//BuiltInAccelerometer* accelerometer;
 	DriveMotors();
 	void ArcadeDrive(float dx, float dy, float dz);
 	void InitDefaultCommand();
