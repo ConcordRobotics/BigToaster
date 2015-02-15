@@ -62,12 +62,15 @@ void Lift::EnforceLimits() {
 	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
 	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 	// Reset the encoder if it has hit the bottom
-	if (atBottom) encoder->Reset();
+	if (atBottom) {
+		encoder->Reset();
+		lim->pMax = lim->pRange;
+	}
 	double distance = encoder->GetDistance();
 	if (atTop) {
 		// If at the top update the limits
 		lim->pMax = distance;
-		lim->pRange = lim->pMax;
+		lim->pMin = lim->pMax - lim->pRange;
 	}
 
 	//Create some soft limits for the rate controller - slow it as it approaches the top limit
