@@ -44,7 +44,7 @@ protected:
 	void SetSetpoint(double setSetpoint);
 	virtual void InitDefaultCommand();
 	void SetMode(int modeIn);
-	void UpdateController();
+	virtual void UpdateController();
 	virtual ~LinearSystem() {};
 	double PositionError(double target);
 };

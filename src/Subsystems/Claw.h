@@ -27,6 +27,7 @@ private:
 	static double limitRatePercent;
 public:
 	Claw();
+	void UpdateController(void);
 	void InitDefaultCommand(void);
 	void SetFeedForward();
 };

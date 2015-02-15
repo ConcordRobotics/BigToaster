@@ -36,10 +36,15 @@ void Claw::SetFeedForward() {
 	controller->SetFeedForward(setPoint);
 }
 
+void Claw::UpdateController() {
+	EnforceLimits();
+	LinearSystem::UpdateController();
+}
+
 void Claw::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
     // ToDo Set the default claw command
-	SetDefaultCommand(new LinearHoldPosition(Robot::claw,Robot::claw));
+	//SetDefaultCommand(new LinearHoldPosition(Robot::claw,Robot::claw));
 
 }
 void Claw::EnforceLimits() {

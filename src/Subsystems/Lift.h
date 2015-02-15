@@ -29,6 +29,7 @@ private:
 	static double limitRatePercent;
 public:
 	Lift();
+	void UpdateController();
 	void InitDefaultCommand(void);
 	virtual void SetFeedForward ();
 };

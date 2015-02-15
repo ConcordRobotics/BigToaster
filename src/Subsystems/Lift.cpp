@@ -50,7 +50,12 @@ void Lift::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	// ToDo Setup a default command for Lift, perhaps hold position
 	//SetDefaultCommand(new LinearSysRate(Robot::lift,Robot::lift,0.0));
-    SetDefaultCommand(new LinearHoldPosition(Robot::lift, Robot::lift));
+    //SetDefaultCommand(new LinearHoldPosition(Robot::lift, Robot::lift));
+}
+
+void Lift::UpdateController() {
+		EnforceLimits();
+		LinearSystem::UpdateController();
 }
 
 void Lift::EnforceLimits() {
