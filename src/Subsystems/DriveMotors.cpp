@@ -93,8 +93,8 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 		 if (delHeading > 180.0) delHeading = delHeading - 360.0;
 		 headingCont->SetSetpoint(curHeading + delHeading);
 		 headingCont->UpdateController(gyroOutput->Get());
-	 } else {
-		 headingCont->SetSetpoint(z);
+	 } else if (gyroMode == cPIDController::DIRECT){
+		 headingCont->SetFeedForward(z);
 		 headingCont->UpdateController(0.0);
 	 }
 	 // Get the output from the controller
