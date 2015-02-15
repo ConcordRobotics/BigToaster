@@ -37,15 +37,15 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 	std::cout << "Get gyro pointer done\n";
 	gyro->Reset();
 	std::cout << "Reset gyro done\n";
+	headingCont = RobotMap::gyroController;
     gyroMode = cPIDController::DIRECT;
-
     SetGyroMode(cPIDController::DIRECT);
 	std::cout << "Setting gyro mode done\n";
     gyroOutput = RobotMap::gyroControllerOutput;
 	std::cout << "Done with DM gyros\n";
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
 
-	headingCont = RobotMap::gyroController;
+
 	Stop();
 	std::cout << "Done Init Drive motors\n";
 }
