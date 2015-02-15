@@ -138,8 +138,8 @@ double cPIDController::UpdateController(double curOutput) {
 	pidOutput->PIDWrite(output);
 	if (logData) {
 		std::cout << "CONT " << logName << " " << time[iN] << " " << setPoint[iN] <<
-				" " << sensVal[iN] << " " << output << " " <<  p
-				<< " " << i << " " << d << " " << f << "\n";
+				" " << sensVal[iN] << " " << rate << " " << dSensDt[iN] << " " <<
+				output << " " <<  p << " " << i << " " << d << " " << f << "\n";
 	}
 	// Reset the feed forward term
     f = 0.0;
