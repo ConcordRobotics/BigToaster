@@ -12,7 +12,7 @@
 #include <iomanip>
 
 double cPIDController::PIDSampleTime = 0.001;
-double cPIDController::setPointAlpha = 0.75;
+double cPIDController::sensAlpha = 0.75;
 
 cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput) {
 	pidParams = params;
