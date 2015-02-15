@@ -75,7 +75,7 @@ void RobotMap::init() {
 
 	std::cout << "Setting drive data\n";
 
-	driveMotorsRateGains = new PIDParams(0.4, 0.0, 0.0, 1.0);
+	driveMotorsRateGains = new PIDParams(1.0, 0.0, 0.0, 1.0);
 	// Set large position limits since there is no real limit
 	driveMotorsLimits = new ControllerLimits(-1.0E30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 	// Loop over motors to initialize Drive Motor data
