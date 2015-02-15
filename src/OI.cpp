@@ -34,7 +34,7 @@ OI::OI() {
 	// May be best to adjust when Jim in NH
 	// We may want to add two modes the driver - fast vs. precise.
     float deadband[3] = {0.1, 0.1, 0.1};
-    float eGain[3] = {0.25, 0.25, 0.0};
+    float eGain[3] = {0.25, 0.25, 0.25};
 	joystick1 = new AdvancedJoystick(0, deadband, eGain);
 	joystick2 = new Joystick(1);
 	std::cout << "Starting OI\n";
