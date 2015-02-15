@@ -21,7 +21,7 @@
 
 
 DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
-
+	std::cout << "Begun init drive motors\n";
 	for (int i=0; i < 4; i++) {
 		scs[i] = RobotMap::driveMotorsSCs[i];
 		encoders[i] = RobotMap::driveMotorsEncoders[i];
@@ -32,16 +32,18 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 		output[i] = 0.0;
 	}
-
+	std::cout << "Done loop  drive motors\n";
 	gyro = RobotMap::gyro;
 	gyro->Reset();
     gyroMode = cPIDController::DIRECT;
     SetGyroMode(cPIDController::DIRECT);
     gyroOutput = RobotMap::gyroControllerOutput;
+	std::cout << "Done with DM gyros\n";
 	accelerometer = RobotMap::driveMotorsAccelerometer;
 
 	headingCont = RobotMap::gyroController;
 	Stop();
+	std::cout << "Done Init Drive motors\n";
 }
 
 void DriveMotors::SetGyroMode(int modeIn) {
@@ -55,8 +57,9 @@ void DriveMotors::SetGyroMode(int modeIn) {
 }
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-
+	std::cout << "DM Init default command\n";
 	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT));
+	std::cout << "Done DM init default command \n";
 
 }
 
