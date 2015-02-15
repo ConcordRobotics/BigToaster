@@ -43,6 +43,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 	std::cout << "Setting gyro mode done\n";
     gyroOutput = RobotMap::gyroControllerOutput;
 	std::cout << "Done with DM gyros\n";
+	headingCont->LogData(true,"gyro");
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
 
 
