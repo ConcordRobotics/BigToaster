@@ -62,8 +62,8 @@ void cPIDController::CheckLimits(double delT) {
 	// Check the position limits first
 	setPoint[iN] = lim->ApplyPositionLimits(setPoint[iN]);
 	// Check rate
-	double tRate = (setPoint[iN] - setPoint[iNM1])/delT;
-	tRate = lim->ApplyRateLimits(tRate);
+	rate = (setPoint[iN] - setPoint[iNM1])/delT;
+	rate = lim->ApplyRateLimits(rate);
 	setPoint[iN] = setPoint[iNM1] + delT*rate;
 	setPoint[iN] = lim->ApplyPositionLimits(setPoint[iN]);
 }
