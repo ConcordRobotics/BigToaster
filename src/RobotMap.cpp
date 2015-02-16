@@ -23,7 +23,8 @@ Encoder *RobotMap::driveMotorsEncoders[4] = {NULL, NULL, NULL, NULL};
 cPIDController* RobotMap::driveMotorsControllers[4] = {NULL, NULL, NULL, NULL};
 PIDParams* RobotMap::driveMotorsRateGains = NULL;
 ControllerLimits* RobotMap::driveMotorsLimits = NULL;
-
+// ToDo Calibrate distance per rev
+double RobotMap::distPerRev = 1.0;
 
 // Ports for speed controllers
 unsigned int RobotMap::driveMotorsPWMs[4] = {1,3,2,0};

@@ -32,23 +32,15 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 		output[i] = 0.0;
 	}
-	std::cout << "Done loop  drive motors\n";
 	gyro = RobotMap::gyro;
-	std::cout << "Get gyro pointer done\n";
 	gyro->Reset();
-	std::cout << "Reset gyro done\n";
 	headingCont = RobotMap::gyroController;
     gyroMode = cPIDController::DIRECT;
     SetGyroMode(cPIDController::DIRECT);
-	std::cout << "Setting gyro mode done\n";
     gyroOutput = RobotMap::gyroControllerOutput;
-	std::cout << "Done with DM gyros\n";
 	headingCont->LogData(true,"gyro");
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
-
-
 	Stop();
-	std::cout << "Done Init Drive motors\n";
 }
 
 void DriveMotors::SetGyroMode(int modeIn) {
@@ -62,9 +54,7 @@ void DriveMotors::SetGyroMode(int modeIn) {
 }
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	std::cout << "DM Init default command\n";
-	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT));
-	std::cout << "Done DM init default command \n";
+	SetDefaultCommand(new DriveInTelop(cPIDController::RATE));
 
 }
 
@@ -77,8 +67,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 	x = dx;
 	y = dy;
 	z = dz;
-	// Negate the y-axis for joystick
-    y = -y;
+
 
 	 if (gyroMode == cPIDController::RATE) {
 		 headingCont->SetRate(z*RobotMap::gyroLimits->rMax);
@@ -101,8 +90,6 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 	 // Get the output from the controller
 	 z = gyroOutput->Get();
 	 headingCont->OutputToDashboard("gyro");
-
-
 
     double wheelSpeeds[4];
     wheelSpeeds[0] = double(x + y + z);

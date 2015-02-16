@@ -45,6 +45,7 @@ public:
 	static bool driveMotorsEncReversed[4];
 	static float driveMotorsDPP[4];
 	static char driveMotorsNames[4][4];
+	static double distPerRev;
 
     // Gyro parameters
 	static Gyro* gyro;
