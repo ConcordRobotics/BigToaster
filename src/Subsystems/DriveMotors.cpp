@@ -54,7 +54,7 @@ void DriveMotors::SetGyroMode(int modeIn) {
 }
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new DriveInTelop(cPIDController::RATE));
+	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT));
 
 }
 
