@@ -150,6 +150,9 @@ void cPIDController::SetMode(int modeIn) {
 	mode = modeIn;
 }
 
+double cPIDController::GetRate(void) {
+	return dSensDt[iN];
+}
 
 void cPIDController::OutputToDashboard(std::string controllerName) {
 	std::ostringstream buffer;

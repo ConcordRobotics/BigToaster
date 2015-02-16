@@ -51,6 +51,7 @@ private:
 public:
 	enum modeType {OFF, RATE, POSITION, DIRECT};
 	double GetSetpoint();
+	double GetRate(void);
 	void SetSetpoint(double setIn);
 	void SetRate(double rateIn);
 	void SetFeedForward(double fIn);
