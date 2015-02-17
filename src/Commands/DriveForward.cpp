@@ -36,6 +36,9 @@ void DriveForward::Initialize() {
     for (int i = 0; i < 4; i++) {
     	wheelStart[i] = Robot::driveMotors->encoders[i]->GetDistance();
     }
+	for (int i = 0; i < 4; i++) {
+		Robot::driveMotors->controllers[i]->Reset(Robot::driveMotors->encoders[i]->GetDistance());
+	}
 	std::cout << "COM START " << "drive " << " Forward " << RobotMap::timer->Get() << "\n";
 }
 
