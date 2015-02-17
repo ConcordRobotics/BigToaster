@@ -19,7 +19,7 @@
 // This will limit the rate if it gets to
 // within the set percent of the range
 // of the lift
-double Lift::limitRatePercent = 0.05;
+double Lift::limitRatePercent = 0.10;
 
 Lift::Lift() : Subsystem("Lift") {
 	sc = RobotMap::liftSC;
@@ -50,7 +50,7 @@ void Lift::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	// ToDo Setup a default command for Lift, perhaps hold position
 	//SetDefaultCommand(new LinearSysRate(Robot::lift,Robot::lift,0.0));
-    //SetDefaultCommand(new LinearHoldPosition(Robot::lift, Robot::lift));
+	SetDefaultCommand(new LinearHoldPosition(Robot::lift, Robot::lift));
 }
 
 void Lift::UpdateController() {
@@ -61,20 +61,19 @@ void Lift::UpdateController() {
 void Lift::EnforceLimits() {
 	// Add something for the limit switch
 	// Don't reset distance to zero since the lift can unwind past zero
-	bool atBottom = lowerSwitch->Get();
-	bool atTop = upperSwitch->Get();
+	int atBottom = lowerSwitch->Get();
+	int atTop = upperSwitch->Get();
 	
 	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
 	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 	// Reset the encoder if it has hit the bottom
 
 	double distance = encoder->GetDistance();
-	if (distance < 0) atTop = true;
-	if (atBottom) {
+	if ( (atBottom == 1) or (distance < 0.0)) {
 		encoder->Reset();
-		lim->pMax = lim->pRange;
+		lim->pMax = lim->pRange - 1.0;
 	}
-	double distance = encoder->GetDistance();
+
 	if (atTop) {
 		// If at the top update the limits
 		lim->pMax = distance;
@@ -82,20 +81,21 @@ void Lift::EnforceLimits() {
 	}
 
 	//Create some soft limits for the rate controller - slow it as it approaches the top limit
-	double penalty = 1.0;
+
 	if (mode == cPIDController::RATE) {
+		double penalty = 1.0;
 		if (setPoint > 0.0) {
 			// Ramp the rate down as you get closer
 			penalty = (lim->pMax - distance)/lim->pRange/limitRatePercent;
 			penalty = std::max(1.0,penalty);
-			if(penalty < 0.1) penalty = 0.1;
-			setPoint = setPoint*penalty;
+			if (penalty < 0.1) penalty = 0.1;
 		} else if (setPoint < 0.0) {
 			penalty = (distance - lim->pMin)/lim->pRange/limitRatePercent;
 			penalty = std::max(1.0,penalty);
 			if(penalty < 0.1) penalty = 0.1;
-			setPoint = setPoint*penalty;
+
 		}
+		setPoint = setPoint*penalty;
 	}
 	// Don't do anything for position - we shouldn't be commanding a negative position.
 }

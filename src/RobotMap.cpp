@@ -14,7 +14,7 @@
 #include "LiveWindow/LiveWindow.h"
 
 // Global data
-float RobotMap::MotorWaitTime = 0.001; // 5ms
+float RobotMap::MotorWaitTime = 0.002; // 5ms
 
 // Data for Robot Drive system
 SpeedController *RobotMap::dmSCs[4] = {NULL, NULL, NULL, NULL};

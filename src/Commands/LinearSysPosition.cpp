@@ -9,11 +9,12 @@
 // it from being updated in the future.
 #include "Commands/LinearSysPosition.h"
 
-LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, double positionIn, double tol) {
+LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, double percentIn, double tol) {
 	// Use requires() here to declare subsystem dependencies
 	Requires(sysIn);
 	sys = linSys;
-	position = positionIn;
+	percentRange = percentIn;
+	position = percentRange*(sys->lim->pRange) + sys->lim->pMin;
 	// default tolerance will mean the command will hold until another command is requested.
 	tolerance = tol;
 }
@@ -21,6 +22,7 @@ LinearSysPosition::LinearSysPosition(Subsystem* sysIn, LinearSystem* linSys, dou
 
 // Called just before this Command runs the first time
 void LinearSysPosition::Initialize() {
+	position = percentRange*(sys->lim->pRange) + sys->lim->pMin;
 	sys->SetMode(cPIDController::POSITION);
 	sys->controller->Reset(sys->encoder->GetDistance());
 	sys->SetSetpoint(position);

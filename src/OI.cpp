@@ -38,21 +38,24 @@ OI::OI() {
 	joystick1 = new AdvancedJoystick(0, deadband, eGain);
 	joystick2 = new Joystick(1);
 	std::cout << "Starting OI\n";
+
+	// Positions for lift and claw are in a percent of the total range in case the ranges
+	// shift due to encoder error, or bad initial starting position
 	RaiseLiftRateButton = new JoystickButton(joystick2, 1);
-	RaiseLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, 10.0));
+	RaiseLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -5.0));
 	//SmartDashboard::PutData("RaiseLiftRate", new LinearSysRate(Robot::lift,Robot::lift, 10.0));
 
 	LowerLiftRateButton = new JoystickButton(joystick2, 2);
-	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -10.0));
+	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -5.0));
 	SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
 
 	LiftTopPosButton = new JoystickButton(joystick2, 4);
-	LiftTopPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,40.0));
-	SmartDashboard::PutData("LiftTopPos", new LinearSysPosition(Robot::lift,Robot::lift,30.0));
+	LiftTopPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,0.75));
+	SmartDashboard::PutData("LiftTopPos", new LinearSysPosition(Robot::lift,Robot::lift,0.75));
 
 	LiftBottomPosButton = new JoystickButton(joystick2, 3);
-	LiftBottomPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,10.0));
-	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,20.0));
+	LiftBottomPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,0.25));
+	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,0.25));
 //
 	OpenClawRateButton = new JoystickButton(joystick2, 5);
 	OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw, 0.2));
@@ -69,8 +72,8 @@ OI::OI() {
 
 	//This should apply some force on holding objects
 	ClawClosedPosButton = new JoystickButton(joystick2, 8);
-	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.0, 0.03));
-	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,Robot::claw,0.02, 0.03));
+	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.1, 0.03));
+	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,Robot::claw,0.1, 0.03));
 	//char name[] = "liftp.auto";
 	//SmartDashboard::PutData("AutotuneLiftPos", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
 	//			RobotMap::liftPositionController, RobotMap::liftEncoder, name ));

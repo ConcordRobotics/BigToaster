@@ -22,6 +22,7 @@
  */
 class LinearSysPosition: public Command {
 protected:
+	double percentRange;
 	double position;
 	LinearSystem* sys;
 	double tolerance; // percent tolerance to find position

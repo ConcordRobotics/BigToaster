@@ -29,13 +29,12 @@ protected:
 	double setPoint = 0.0;
 	double output = 0.0;
 	SpeedController* sc;
-
 	PIDParams* positionGains;
 	PIDParams* rateGains;
-	ControllerLimits* lim;
 	virtual void EnforceLimits() {};
 	virtual void SetFeedForward() {};
  public:
+	ControllerLimits* lim;
 	Encoder* encoder;
 	cPIDController* controller;
 	char* name = NULL;

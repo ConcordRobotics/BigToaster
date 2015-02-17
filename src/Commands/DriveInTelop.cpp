@@ -12,6 +12,9 @@
 #include "DriveInTelop.h"
 #include <tgmath.h>
 #include "Support/AdvancedJoystick.h"
+#include "Support/cPIDController.h"
+#include "RobotMap.h"
+
 DriveInTelop::DriveInTelop(int mode) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
@@ -24,7 +27,8 @@ DriveInTelop::DriveInTelop(int mode) {
 // Called just before this Command runs the first time
 void DriveInTelop::Initialize() {
 	Robot::driveMotors->SetGyroMode(gyroMode);
-	RobotMap::gyroController->Reset(RobotMap::gyro->GetAngle());
+	double angle = RobotMap::gyro->GetAngle();
+	RobotMap::gyroController->Reset(angle);
 }
 
 // Called repeatedly when this Command is scheduled to run

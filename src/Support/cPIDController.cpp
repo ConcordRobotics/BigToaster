@@ -11,8 +11,9 @@
 #include <sstream>
 #include <iomanip>
 
-double cPIDController::PIDSampleTime = 0.001;
+double cPIDController::PIDSampleTime = 0.002;
 double cPIDController::sensAlpha = 0.75;
+double cPIDController::setAlpha = 0.75;
 
 cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput) {
 	pidParams = params;
@@ -92,7 +93,7 @@ double cPIDController::UpdateController(double curOutput) {
 	double delT = time[iN] - time[iNM1];
 
 	// Smooth the setpoint
-	//setPoint[iN] = (1.0 - setPointAlpha)*setPoint[iN] + setPointAlpha*setPoint[im1];
+	setPoint[iN] = (1.0 - setAlpha)*setPoint[iN] + setAlpha*setPoint[iNM1];
 
 	// Apply the rate to set the position
 	if (mode == RATE) ApplyRate(delT);
@@ -101,6 +102,8 @@ double cPIDController::UpdateController(double curOutput) {
 
 	// Get the sensor value
 	sensVal[iN] = pidSource->PIDGet();
+	// Filter the sensor values
+	sensVal[iN] = (1.0 - sensAlpha)*sensVal[iN] + sensAlpha*sensVal[iNM1];
 	// Set the setPoint to the sensor value for direct mode to keep
 	// Controller information current.  I.e. assume it's going exactly where it's supposed to
 	if ( (mode==DIRECT) or (mode==OFF) ) setPoint[iN] = sensVal[iN];

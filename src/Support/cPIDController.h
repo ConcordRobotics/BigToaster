@@ -20,6 +20,7 @@ private:
 	// for methods that implement subsystem capabilities
 	static double PIDSampleTime;
 	static double sensAlpha;
+	static double setAlpha;
 	unsigned int mode;
 	unsigned int iN, iNM1, iNM2;
 	// Gains
