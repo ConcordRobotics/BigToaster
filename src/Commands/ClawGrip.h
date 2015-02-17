@@ -24,6 +24,7 @@
 class ClawGrip: public LinearSysPosition {
 private:
 	Timer* timer;
+	double startTime;
 	double rTol;
 public:
 	ClawGrip(double rateTol);

@@ -15,6 +15,7 @@
 
 // Global data
 float RobotMap::MotorWaitTime = 0.002; // 5ms
+Timer* RobotMap::timer = NULL;
 
 // Data for Robot Drive system
 SpeedController *RobotMap::dmSCs[4] = {NULL, NULL, NULL, NULL};
@@ -75,8 +76,10 @@ void RobotMap::init() {
 
 
 	std::cout << "Setting drive data\n";
+	timer = new Timer();
+	timer->Start();
 
-	driveMotorsRateGains = new PIDParams(1.0, 0.0, 0.1, 1.0);
+	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.1, 1.0);
 	// Set large position limits since there is no real limit
 	driveMotorsLimits = new ControllerLimits(-1.0E30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 	// Loop over motors to initialize Drive Motor data
@@ -104,8 +107,8 @@ void RobotMap::init() {
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -10.0, 10.0, -1.0, 1.0);
-		gyroRateGains = new PIDParams(0.02, 0.0, 0.0, 0.25);
-		gyroPositionGains = new PIDParams(0.02, 1.0, 0.0, 0.25);
+		gyroRateGains = new PIDParams(0.02, 0.0, 1.0, 0.25);
+		gyroPositionGains = new PIDParams(0.02, 1.0, 1.0, 0.25);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 
@@ -146,7 +149,7 @@ void RobotMap::init() {
 				clawEncoder->SetDistancePerPulse(0.01612);
 				clawEncoder->SetPIDSourceParameter(Encoder::kDistance);
 				// The controller
-				clawLimits = new ControllerLimits(-0.1, 1.1, -0.5, 0.5, -1.0, 1.0);
+				clawLimits = new ControllerLimits(-1.1, 0.1, -1.0, 1.0, -1.0, 1.0);
 				clawPositionGains = new PIDParams(0.5, 0.2, 0.0, 1.0);
 				clawRateGains = new PIDParams(0.5, 0.2, 0.0, 1.0);
 				clawController = new cPIDController(clawPositionGains, clawLimits, clawEncoder, clawSC);

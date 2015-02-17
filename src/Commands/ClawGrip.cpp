@@ -10,17 +10,17 @@
 #include "Commands/ClawGrip.h"
 #include "RobotMap.h"
 
-ClawGrip::ClawGrip(double tolIn) : LinearSysPosition (Robot::claw, Robot::claw, -1.0, -1.0) {
+ClawGrip::ClawGrip(double tolIn) : LinearSysPosition (Robot::claw, Robot::claw, -1.1, -1.0) {
 	rTol = tolIn;
-	timer = new Timer();
-	timer->Start();
+	timer = RobotMap::timer;
+	startTime = timer->Get();
 }
 
 
 // Make this return true when this Command no longer needs to run execute()
 bool ClawGrip::IsFinished() {
 	bool finished = false;
-	if (timer->Get() > 1.0) {
+	if (timer->Get() - startTime > 3.0) {
 		if (std::abs(RobotMap::clawController->GetRate() < rTol)) finished = true;
 	}
 	return finished;

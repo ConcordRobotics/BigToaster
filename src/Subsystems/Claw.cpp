@@ -55,14 +55,15 @@ void Claw::EnforceLimits() {
 	double distance = encoder->GetDistance();
 
 	if (distance <= lim->pMin) {
+		lim->pMin = distance - 0.1;
+		lim->pMax = lim->pMin + lim->pRange;
+	} else if (distance > 0.0) {
 		encoder->Reset();
-		lim->pMin = -0.1;
-		lim->pMax = 1.1;
-	} else if (distance > lim->pMax) {
-		lim->pMax = distance;
-		lim->pMin = lim->pMax - 1.2;
+		lim->pMax = 0.1;
+		lim->pMin = lim->pMax - lim->pRange;
 	}
 	return;
+	// Following code not active
 	double penalty = 1.0;
 	if (mode == cPIDController::RATE) {
 		if (setPoint > 0.0) {

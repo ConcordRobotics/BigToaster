@@ -58,22 +58,22 @@ OI::OI() {
 	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,0.25));
 //
 	OpenClawRateButton = new JoystickButton(joystick2, 5);
-	OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw, 0.2));
-	SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,Robot::claw, 0.2));
+	OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw, 0.5));
+	SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,Robot::claw, 0.5));
 //
 	CloseClawRateButton = new JoystickButton(joystick2, 6);
-	CloseClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw,-0.2));
-	SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,Robot::claw,-0.2));
+	CloseClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw,-0.5));
+	SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,Robot::claw,-0.5));
 //
 	ClawOpenPosButton = new JoystickButton(joystick2, 7);
 	// Tolerance should turn motor off when close enough
-	ClawOpenPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw, 0.9, 0.03));
-	SmartDashboard::PutData("ClawOpenPos", new LinearSysPosition(Robot::claw,Robot::claw,0.9, 0.03));
+	ClawOpenPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw, 0.95, 0.1));
+	SmartDashboard::PutData("ClawOpenPos", new LinearSysPosition(Robot::claw,Robot::claw,0.95, 0.1));
 
 	//This should apply some force on holding objects
 	ClawClosedPosButton = new JoystickButton(joystick2, 8);
-	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.1, 0.03));
-	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,Robot::claw,0.1, 0.03));
+	ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.05, 0.1));
+	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,Robot::claw,0.05, 0.1));
 	//char name[] = "liftp.auto";
 	//SmartDashboard::PutData("AutotuneLiftPos", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
 	//			RobotMap::liftPositionController, RobotMap::liftEncoder, name ));

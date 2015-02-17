@@ -26,6 +26,9 @@ protected:
 	double position;
 	LinearSystem* sys;
 	double tolerance; // percent tolerance to find position
+	Timer* timer;
+	double startTime = 0.0;
+	bool inPosition = false;
 public:
 	LinearSysPosition(Subsystem* sysIn,  LinearSystem* linSys, double position, double tol = -1.0);
 	virtual void Initialize();

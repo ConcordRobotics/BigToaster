@@ -30,6 +30,7 @@ class RobotMap {
 public:
 	// Some global constants
 	static float MotorWaitTime;
+	static Timer* timer;
 	// Data for Drive Motors
 	static enum {fl,fr,bl,br} motorPosition;
 	// Declare all as arrays of pointers

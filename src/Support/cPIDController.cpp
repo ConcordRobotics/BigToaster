@@ -7,6 +7,7 @@
 
 #include "cPIDController.h"
 #include "SmartDashboard/SmartDashboard.h"
+#include "RobotMap.h"
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -21,8 +22,7 @@ cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSo
 	pidSource = pSource;
 	pidOutput = pOutput;
 	// Initialize default values
-	timer = new Timer();
-	timer->Start();
+	timer = RobotMap::timer;
 	double tempTime = timer->Get();
 	double tempSensor = pidSource->PIDGet();
 	for (unsigned int k = 0; k < nsave; k++) {

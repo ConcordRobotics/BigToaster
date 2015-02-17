@@ -41,6 +41,10 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
     gyroOutput = RobotMap::gyroControllerOutput;
 	headingCont->LogData(true,"gyro");
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
+	lim = RobotMap::driveMotorsLimits;
+	// Since mecanum drive can have x=1, y=1, z=1
+	// scale the rate to be < 1/3 of the max rate
+	rateScale = 0.3*lim->rMax;
 	Stop();
 }
 
@@ -53,6 +57,7 @@ void DriveMotors::SetGyroMode(int modeIn) {
 		headingCont->SetPIDParams(RobotMap::gyroPositionGains);
 	}
 }
+
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new DriveInTelop(cPIDController::RATE));
@@ -93,10 +98,10 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 	 headingCont->OutputToDashboard("gyro");
 
     double wheelSpeeds[4];
-    wheelSpeeds[0] = 15.0*double(x + y + z);
-    wheelSpeeds[1] = 15.0*double(-x + y - z);
-    wheelSpeeds[2] = 15.0*double(-x + y + z);
-    wheelSpeeds[3] = 15.0*double(x + y - z);
+    wheelSpeeds[0] = rateScale*double(x + y + z);
+    wheelSpeeds[1] = rateScale*double(-x + y - z);
+    wheelSpeeds[2] = rateScale*double(-x + y + z);
+    wheelSpeeds[3] = rateScale*double(x + y - z);
     for (int i = 0; i < 4; i++) {
     	// ToDo hard code the 15.
     	controllers[i]->SetRate(wheelSpeeds[i]);
@@ -106,12 +111,11 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     }
     bool inDeadband = true;
     for (int i = 0; i < 4; i++) {
-    	// ToDo hard code the 15.
     	if (std::abs(controllers[i]->GetRate()) > rateDeadband) inDeadband = false;
     	if (std::abs(wheelSpeeds[i]) > rateDeadband) inDeadband = false;
     }
     if (inDeadband) Stop();
-    Wait(RobotMap::MotorWaitTime); // wait 5ms to avoid hogging CPU cycles
+    Wait(RobotMap::MotorWaitTime); // wait to avoid hogging CPU cycles
     //Stop();
 }
 
