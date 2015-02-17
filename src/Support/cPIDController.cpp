@@ -118,13 +118,13 @@ double cPIDController::UpdateController(double curOutput) {
 	// Could filter this but better to filter at the sensor level
 
 	// Calculate the target output
-	p = pidParams->pGain*(dSetDt - dSensDt[iN]);
-	i = pidParams->pGain*error/pidParams->iGain;
+	p = delT*pidParams->pGain*(dSetDt - dSensDt[iN]);
+	i = delT*pidParams->pGain*error/pidParams->iGain;
 	// Since derivative term is based on error, which is
 	// (target - sensor), need a negative sign in front of sensor
 	// values.  Derivative of target neglected to prevent jumps due to setpoint
 	// changes
-	d = - (pidParams->pGain)*(pidParams->dGain)*ddSensDtsq;
+	d = - delT*(pidParams->pGain)*(pidParams->dGain)*ddSensDtsq;
 	// Now set the output based on the mode
 	if (mode == OFF) return 0.0;
 	output = curOutput;
@@ -134,7 +134,7 @@ double cPIDController::UpdateController(double curOutput) {
 		// Calling update controller
 		output = output + f;
 	} else {
-		output = output + delT*(p + i + d);
+		output = output + p + i + d;
 	}
 	// Check output limits
 	output = lim->ApplyOutputLimits(output);
