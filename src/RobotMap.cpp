@@ -126,7 +126,7 @@ void RobotMap::init() {
 			liftEncoder->SetPIDSourceParameter(Encoder::kDistance);
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 		// The Controller
-			liftLimits = new ControllerLimits(0.0, 50.0, -10.0, 10.0, -1.0, 1.0);
+			liftLimits = new ControllerLimits(-1.0, 50.0, -10.0, 10.0, -1.0, 1.0);
 			liftPositionGains = new PIDParams(0.0254, 1.1, 0.0, 0.1);
 			liftRateGains = new PIDParams(0.0254, 1.1, 0.0, 0.1);
 			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftSC);

@@ -61,13 +61,15 @@ void Lift::UpdateController() {
 void Lift::EnforceLimits() {
 	// Add something for the limit switch
 	// Don't reset distance to zero since the lift can unwind past zero
-	return;
 	bool atBottom = lowerSwitch->Get();
 	bool atTop = upperSwitch->Get();
+	
 	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
 	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 	// Reset the encoder if it has hit the bottom
 
+	double distance = encoder->GetDistance();
+	if (distance < 0) atTop = true;
 	if (atBottom) {
 		encoder->Reset();
 		lim->pMax = lim->pRange;
@@ -76,7 +78,7 @@ void Lift::EnforceLimits() {
 	if (atTop) {
 		// If at the top update the limits
 		lim->pMax = distance;
-		lim->pMin = lim->pMax - lim->pRange;
+		//lim->pMin = lim->pMax - lim->pRange;
 	}
 
 	//Create some soft limits for the rate controller - slow it as it approaches the top limit
@@ -86,10 +88,12 @@ void Lift::EnforceLimits() {
 			// Ramp the rate down as you get closer
 			penalty = (lim->pMax - distance)/lim->pRange/limitRatePercent;
 			penalty = std::max(1.0,penalty);
+			if(penalty < 0.1) penalty = 0.1;
 			setPoint = setPoint*penalty;
 		} else if (setPoint < 0.0) {
 			penalty = (distance - lim->pMin)/lim->pRange/limitRatePercent;
 			penalty = std::max(1.0,penalty);
+			if(penalty < 0.1) penalty = 0.1;
 			setPoint = setPoint*penalty;
 		}
 	}
