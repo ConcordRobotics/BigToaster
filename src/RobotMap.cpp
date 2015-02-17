@@ -24,7 +24,7 @@ cPIDController* RobotMap::driveMotorsControllers[4] = {NULL, NULL, NULL, NULL};
 PIDParams* RobotMap::driveMotorsRateGains = NULL;
 ControllerLimits* RobotMap::driveMotorsLimits = NULL;
 // ToDo Calibrate distance per rev
-double RobotMap::distPerRev = 1.0;
+double RobotMap::distPerRev = 3.14159*8.0/12.0; // 8" wheels
 
 // Ports for speed controllers
 unsigned int RobotMap::driveMotorsPWMs[4] = {1,3,2,0};
@@ -99,11 +99,13 @@ void RobotMap::init() {
 		gyro = new Gyro(0);
 		lw->AddSensor("Gyros", "Gyro", gyro);
 		gyro->SetSensitivity(0.007);
+		gyro->InitGyro();
+		gyro->Reset();
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -10.0, 10.0, -1.0, 1.0);
-		gyroRateGains = new PIDParams(0.02, 0.0, 0.0, 1.0);
-		gyroPositionGains = new PIDParams(0.02, 1.0, 0.0, 1.0);
+		gyroRateGains = new PIDParams(0.02, 0.0, 0.0, 0.25);
+		gyroPositionGains = new PIDParams(0.02, 1.0, 0.0, 0.25);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 

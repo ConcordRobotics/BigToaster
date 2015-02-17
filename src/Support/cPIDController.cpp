@@ -75,6 +75,7 @@ void cPIDController::SetFeedForward(double fIn) {
 double cPIDController::GetSetpoint() {
 	return setPoint[iN];
 }
+
 double cPIDController::UpdateController(double curOutput) {
 	double t = timer->Get();
 	// Only iterate if we are hitting our sample rate.  Prevents noise
@@ -144,6 +145,18 @@ double cPIDController::UpdateController(double curOutput) {
 	// Reset the feed forward term
     f = 0.0;
     return output;
+}
+
+void cPIDController::Reset( double setIn) {
+	double tSensVal = pidSource->PIDGet();
+	for (unsigned int k = 0; k < nsave; k++) {
+		setPoint[k] = setIn;
+		sensVal[k] = tSensVal;
+		dSensDt[k] = 0.0;
+	}
+	time[iN] = timer->Get();
+	time[iNM1] = time[iN] - PIDSampleTime;
+	time[iNM2] = time[iNM1] - PIDSampleTime;
 }
 
 void cPIDController::SetMode(int modeIn) {

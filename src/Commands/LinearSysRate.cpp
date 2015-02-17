@@ -19,7 +19,9 @@ LinearSysRate::LinearSysRate(Subsystem* sysIn, LinearSystem* linSys, float rateI
 // Called just before this Command runs the first time
 void LinearSysRate::Initialize() {
 	sys->SetMode(cPIDController::RATE);
-
+	// Reset the controller to target the current position
+	sys->controller->Reset(sys->encoder->GetDistance());
+	sys->SetSetpoint(rate);
 }
 
 // Called repeatedly when this Command is scheduled to run

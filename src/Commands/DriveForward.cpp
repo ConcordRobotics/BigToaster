@@ -29,8 +29,10 @@ DriveForward::DriveForward(float rateIn, double disIn, double tolIn) {
 void DriveForward::Initialize() {
 	// Tell the drive system to hold the current angle
 	Robot::driveMotors->SetGyroMode(cPIDController::POSITION);
+	float angle = RobotMap::gyro->GetAngle();
+	RobotMap::gyroController->Reset(angle);
 	// Set the target angle to the current angle
-	Robot::driveMotors->SetHeadingTarget(RobotMap::gyro->GetAngle());
+	Robot::driveMotors->SetHeadingTarget(angle);
     for (int i = 0; i < 4; i++) {
     	wheelStart[i] = Robot::driveMotors->encoders[i]->GetDistance();
     }

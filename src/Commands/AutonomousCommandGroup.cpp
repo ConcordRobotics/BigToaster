@@ -9,6 +9,7 @@
 
 AutonomousCommandGroup::AutonomousCommandGroup()
 {
+	RobotMap::gyro->Reset();
 	// Grip the container
 	AddSequential(new ClawGrip(0.01));
 	// Once it is gripped, continue to hold the grip

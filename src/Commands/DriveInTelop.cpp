@@ -24,6 +24,7 @@ DriveInTelop::DriveInTelop(int mode) {
 // Called just before this Command runs the first time
 void DriveInTelop::Initialize() {
 	Robot::driveMotors->SetGyroMode(gyroMode);
+	RobotMap::gyroController->Reset(RobotMap::gyro->GetAngle());
 }
 
 // Called repeatedly when this Command is scheduled to run

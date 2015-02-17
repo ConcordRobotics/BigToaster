@@ -27,6 +27,7 @@ void DriveToHeading::Initialize() {
 	// Tell the drive system to hold the current angle
 	Robot::driveMotors->SetGyroMode(cPIDController::POSITION);
 	// Set the target angle to the current angle
+	RobotMap::gyroController->Reset(RobotMap::gyro->GetAngle());
 	Robot::driveMotors->SetHeadingTarget(heading);
 }
 

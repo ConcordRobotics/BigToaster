@@ -60,7 +60,7 @@ public:
     void SetRanges(float setRangeIn[2], float dsdtRangeIn[2], float outRangeIn[2]);
     cPIDController(PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput);
     void SetPIDParams(PIDParams* params);
-    void Reset();
+    void Reset(double setIn);
     void SetMode(int modeIn);
     void LogData(bool active, char* fileName);
 };

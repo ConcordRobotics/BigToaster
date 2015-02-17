@@ -18,5 +18,6 @@ LinearHoldPosition::LinearHoldPosition(Subsystem* sysIn, LinearSystem* linSys)
 void LinearHoldPosition::Initialize() {
 	sys->SetMode(cPIDController::POSITION);
 	position = sys->encoder->GetDistance();
+	sys->controller->Reset(position);
 	sys->SetSetpoint(position);
 }
