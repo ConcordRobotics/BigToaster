@@ -20,4 +20,5 @@ void LinearHoldPosition::Initialize() {
 	position = sys->encoder->GetDistance();
 	sys->controller->Reset(position);
 	sys->SetSetpoint(position);
+	std::cout << "COM START " << sys->name << " Hold " << RobotMap::timer->Get() << "\n";
 }

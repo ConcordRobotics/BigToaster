@@ -36,6 +36,7 @@ void DriveForward::Initialize() {
     for (int i = 0; i < 4; i++) {
     	wheelStart[i] = Robot::driveMotors->encoders[i]->GetDistance();
     }
+	std::cout << "COM START " << "drive " << " Forward " << RobotMap::timer->Get() << "\n";
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -64,6 +65,7 @@ bool DriveForward::IsFinished() {
 void DriveForward::End() {
 	// Kill the motors
 	Robot::driveMotors->Stop();
+	std::cout << "COM END " << "drive " << " Forward " << RobotMap::timer->Get() << "\n";
 }
 
 // Called when another command which requires one or more of the same
@@ -71,4 +73,5 @@ void DriveForward::End() {
 void DriveForward::Interrupted() {
 	// Kill the motors
 	Robot::driveMotors->Stop();
+	std::cout << "COM INT " << "drive " << " Forward " << RobotMap::timer->Get() << "\n";
 }
