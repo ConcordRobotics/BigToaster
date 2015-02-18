@@ -33,6 +33,8 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 		output[i] = 0.0;
 	}
+	// ToDo remove once encoder enabled
+	controllers[2]->SetMode(cPIDController::DIRECT);
 	gyro = RobotMap::gyro;
 	gyro->Reset();
 	headingCont = RobotMap::gyroController;
@@ -102,9 +104,12 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     wheelSpeeds[1] = rateScale*double(-x + y - z);
     wheelSpeeds[2] = rateScale*double(-x + y + z);
     wheelSpeeds[3] = rateScale*double(x + y - z);
+
     for (int i = 0; i < 4; i++) {
     	// ToDo hard code the 15.
     	controllers[i]->SetRate(wheelSpeeds[i]);
+    	// ToDo Remove once encoders enable
+    	if (i==2) controllers[i]->SetFeedForward(wheelSpeeds[2]/rateScale);
     	output[i]=controllers[i]->UpdateController(output[i]);
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
