@@ -79,7 +79,7 @@ void RobotMap::init() {
 	timer = new Timer();
 	timer->Start();
 
-	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.0, 0.25);
+	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.0, 0.2);
 	// Set large position limits since there is no real limit
 	driveMotorsLimits = new ControllerLimits(-1.0E30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 	// Loop over motors to initialize Drive Motor data

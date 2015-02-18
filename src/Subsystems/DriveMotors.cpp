@@ -62,7 +62,7 @@ void DriveMotors::SetGyroMode(int modeIn) {
 
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT));
+	SetDefaultCommand(new DriveInTelop(cPIDController::RATE));
 
 }
 
@@ -109,7 +109,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	// ToDo hard code the 15.
     	controllers[i]->SetRate(wheelSpeeds[i]);
     	// ToDo Remove once encoders enable
-    	if (i==2) controllers[i]->SetFeedForward(wheelSpeeds[2]/rateScale);
+    	if (i==2) controllers[i]->SetFeedForward(wheelSpeeds[2]);
     	output[i]=controllers[i]->UpdateController(output[i]);
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
