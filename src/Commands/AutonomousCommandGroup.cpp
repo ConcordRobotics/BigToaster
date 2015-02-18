@@ -15,14 +15,14 @@ AutonomousCommandGroup::AutonomousCommandGroup()
 	// Once it is gripped, continue to hold the grip
 	AddParallel(new LinearSysPosition(Robot::claw, Robot::claw, -1.0, -1.0));
 	// Lift the container
-	AddSequential( new LinearSysPosition(Robot::lift, Robot::lift, 30.0, 3.0));
+	AddSequential( new LinearSysPosition(Robot::lift, Robot::lift, 0.50, 0.03));
 	AddParallel(new LinearHoldPosition(Robot::lift, Robot::lift));
-	AddSequential(new DriveForward(5.0, -3.0, 0.1));
+	AddSequential(new DriveForward(2.0, -3.0, 0.1));
 	AddSequential(new DriveToHeading(90.0, 1.0));
 	AddSequential(new DriveToHeading(180.0, 1.0));
-	AddSequential(new DriveForward(5.0, 10.0, 0.1));
-	AddSequential(new LinearSysPosition(Robot::lift, Robot::lift, 10.0, 3.0));
+	AddSequential(new DriveForward(2.0, 3.0, 0.1));
+	AddSequential(new LinearSysPosition(Robot::lift, Robot::lift, 0.1, 0.03));
 	AddSequential(new LinearSysPosition(Robot::claw, Robot::claw, 1.0, 0.05));
-	AddSequential(new DriveForward(5.0, -3.0, 0.1));
+	AddSequential(new DriveForward(2.0, -1.0, 0.1));
 
 }
