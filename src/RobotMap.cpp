@@ -33,7 +33,7 @@ unsigned int RobotMap:: driveMotorsPIOs[4][2] = { {2,3}, {6,7}, {4,5}, {0,1} };
 bool RobotMap::driveMotorsSCReversed[4] = {true, false, true, false};
 bool RobotMap::driveMotorsEncReversed[4] = {true, false, true, false};
 char RobotMap::driveMotorsNames[4][4] = {"fl","fr","bl","br"};
-float RobotMap::driveMotorsDPP[4] = {0.00419, 0.00433, 0.004019, 0.0028};
+float RobotMap::driveMotorsDPP[4] = {0.00419, 0.00433, 0.004019, 0.004};
 
 // Gyro
 Gyro* RobotMap::gyro = NULL;
