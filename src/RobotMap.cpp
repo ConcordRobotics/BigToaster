@@ -76,7 +76,7 @@ void RobotMap::init() {
 	LiveWindow* lw = LiveWindow::GetInstance();
 
 
-	std::cout << "Setting drive data\n";
+	//std::cout << "Setting drive data\n";
 	timer = new Timer();
 	timer->Start();
 
@@ -97,7 +97,7 @@ void RobotMap::init() {
 			lw->AddActuator(driveMotorsNames[i], "SpeedController", (Talon*) dmSCs[i]);
 			lw->AddSensor(driveMotorsNames[i], "Encoders", driveMotorsEncoders[i]);
 	}
-	std::cout << "Setting GyroData\n";
+	//std::cout << "Setting GyroData\n";
 
 	// Add the gyro and accelerometer
 		gyro = new Gyro(0);
@@ -108,8 +108,8 @@ void RobotMap::init() {
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -30.0, 30.0, -1.0, 1.0);
-		gyroRateGains = new PIDParams(0.02, 0.0, 1.0, 0.5);
-		gyroPositionGains = new PIDParams(0.02, 1.0, 1.0, 0.5);
+		gyroRateGains = new PIDParams(0.02, 0.0, 1.0, 1.0);
+		gyroPositionGains = new PIDParams(0.02, 1.0, 1.0, 1.0);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 
@@ -118,7 +118,7 @@ void RobotMap::init() {
 		//lw->AddSensor("Gyros", "Accelerometer", driveMotorsAccelerometer);
 
 
-	std::cout << "Setting Lift Data\n";
+	//std::cout << "Setting Lift Data\n";
 	// Set Lift Data
 		// Speed Controller
 			liftSC = new Victor(4);
@@ -131,16 +131,16 @@ void RobotMap::init() {
 			liftEncoder->SetPIDSourceParameter(Encoder::kDistance);
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 		// The Controller
-			liftLimits = new ControllerLimits(-1.0, 50.0, -5.0, 5.0, -1.0, 1.0);
-			liftPositionGains = new PIDParams(0.1, 1.1, 0.0, 0.1);
-			liftRateGains = new PIDParams(0.1, 0.0, 0.0, 0.1);
+			liftLimits = new ControllerLimits(-1.0, 50.0, -10.0, 10.0, -1.0, 1.0);
+			liftPositionGains = new PIDParams(0.1, 1.1, 0.2, 0.1);
+			liftRateGains = new PIDParams(0.1, 0.0, 0.2, 0.1);
 			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftCSC);
 			liftLowerSwitch = new DigitalInput(16);
 			liftUpperSwitch = new DigitalInput(24);
 			lw->AddSensor("Lift","UpperSwitch", liftUpperSwitch);
 			lw->AddSensor("Lift","LowerSwitch", liftLowerSwitch);
 
-			std::cout << "Setting Claw Data\n";
+			//std::cout << "Setting Claw Data\n";
 	 // Set Claw data
 			// Speed Controller
 				clawSC = new Victor(5);
@@ -157,6 +157,6 @@ void RobotMap::init() {
 				clawController = new cPIDController(clawPositionGains, clawLimits, clawEncoder, clawSC);
 
 				// ToDo Try enabling derivative term on all controllers
-				std::cout << "RobotMap complete\n";
+				//std::cout << "RobotMap complete\n";
 
 }

@@ -68,20 +68,21 @@ void Lift::EnforceLimits() {
 	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 	// Reset the encoder if it has hit the bottom
 // To Do Re-enable Reset once limit switches verified.
-	double distance = encoder->GetDistance();
+	/*
+	*double distance = encoder->GetDistance();
 	if ( (atBottom == 1) or (distance < 0.0)) {
 		encoder->Reset();
 		lim->pMin = 0.0;
 		lim->pMax = lim->pRange - 1.0;
 	}
 //
-	/*
+
 	if (atTop) {
 		// If at the top update the limits
 		lim->pMax = distance;
-		//lim->pMin = lim->pMax - lim->pRange;
+		lim->pMin = lim->pMax - lim->pRange;
 	}
-*/
+ */
 	//Create some soft limits for the rate controller - slow it as it approaches the top limit
 /* ToDo enable soft limits once encoder verified, and positions of switches
 	if (mode == cPIDController::RATE) {

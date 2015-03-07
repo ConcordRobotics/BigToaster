@@ -30,7 +30,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		controllers[i]->SetMode(cPIDController::RATE);
 		controllers[i]->SetRate(0.0);
 		scs[i]->Set(0.0);
-		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
+		//controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 		output[i] = 0.0;
 	}
 	gyro = RobotMap::gyro;
@@ -40,7 +40,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
     driveMode = cPIDController::DIRECT;
     SetGyroMode(cPIDController::DIRECT);
     gyroOutput = RobotMap::gyroControllerOutput;
-	headingCont->LogData(true,"gyro");
+	//headingCont->LogData(true,"gyro");
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
 	lim = RobotMap::driveMotorsLimits;
 	// Since mecanum drive can have x=1, y=1, z=1
