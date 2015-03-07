@@ -42,6 +42,7 @@ public:
 	ControllerLimits* lim;
 
 	int gyroMode;
+	int driveMode;
 	cPIDController* headingCont;
 
 	//BuiltInAccelerometer* accelerometer;
@@ -49,6 +50,7 @@ public:
 	void ArcadeDrive(float dx, float dy, float dz);
 	void InitDefaultCommand();
 	void SetGyroMode(int modeIn);
+	void SetDriveMode(int modeIn);
 	void SetHeadingTarget(float headingTargetIn);
 	void Stop();
 };

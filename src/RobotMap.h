@@ -61,6 +61,7 @@ public:
 
 	// Data for Lift system
 	static SpeedController* liftSC;
+	static cSpeedController *liftCSC;
 	static Encoder* liftEncoder;
 	static cPIDController* liftController;
 	static ControllerLimits* liftLimits;

@@ -33,7 +33,7 @@ unsigned int RobotMap:: driveMotorsPIOs[4][2] = { {2,3}, {6,7}, {4,5}, {0,1} };
 bool RobotMap::driveMotorsSCReversed[4] = {false, true, false, true};
 bool RobotMap::driveMotorsEncReversed[4] = {true, false, true, false};
 char RobotMap::driveMotorsNames[4][4] = {"fl","fr","bl","br"};
-float RobotMap::driveMotorsDPP[4] = {0.00419, 0.00433, 0.004019, 0.004};
+float RobotMap::driveMotorsDPP[4] = {0.00419, 0.00433, 0.004, 0.004};
 
 // Gyro
 Gyro* RobotMap::gyro = NULL;
@@ -49,6 +49,7 @@ cPIDOutput* RobotMap::gyroControllerOutput = NULL;
 
 // Data for lift system
 SpeedController* RobotMap::liftSC = NULL;
+cSpeedController* RobotMap::liftCSC = NULL;
 Encoder* RobotMap::liftEncoder = NULL;
 cPIDController* RobotMap::liftController = NULL;
 ControllerLimits* RobotMap::liftLimits = NULL;
@@ -79,7 +80,7 @@ void RobotMap::init() {
 	timer = new Timer();
 	timer->Start();
 
-	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.0, 0.2);
+	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.2, 0.1);
 	// Set large position limits since there is no real limit
 	driveMotorsLimits = new ControllerLimits(-1.0E30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 	// Loop over motors to initialize Drive Motor data
@@ -107,7 +108,7 @@ void RobotMap::init() {
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -10.0, 10.0, -1.0, 1.0);
-		gyroRateGains = new PIDParams(0.02, 0.0, 0.0, 0.25);
+		gyroRateGains = new PIDParams(0.02, 0.0, 1.0, 0.25);
 		gyroPositionGains = new PIDParams(0.02, 1.0, 1.0, 0.25);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
@@ -121,18 +122,19 @@ void RobotMap::init() {
 	// Set Lift Data
 		// Speed Controller
 			liftSC = new Victor(4);
+			liftCSC = new cSpeedController(liftSC,true);
 			lw->AddActuator("Lift", "LiftMotor", (Victor*) liftSC);
 		// The Encoder
-			liftEncoder = new Encoder(8, 9, false, Encoder::k4X);
+			liftEncoder = new Encoder(8, 9, true, Encoder::k4X);
 			// Use inches for lift encoder
 			liftEncoder->SetDistancePerPulse(0.0348);
 			liftEncoder->SetPIDSourceParameter(Encoder::kDistance);
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 		// The Controller
-			liftLimits = new ControllerLimits(-1.0, 50.0, -10.0, 10.0, -1.0, 1.0);
-			liftPositionGains = new PIDParams(0.0254, 1.1, 0.0, 0.1);
-			liftRateGains = new PIDParams(0.0254, 1.1, 0.0, 0.1);
-			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftSC);
+			liftLimits = new ControllerLimits(-1.0, 50.0, -5.0, 5.0, -1.0, 1.0);
+			liftPositionGains = new PIDParams(0.05, 1.1, 0.0, 0.1);
+			liftRateGains = new PIDParams(0.05, 0.0, 0.0, 0.1);
+			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftCSC);
 			liftLowerSwitch = new DigitalInput(16);
 			liftUpperSwitch = new DigitalInput(24);
 			lw->AddSensor("Lift","UpperSwitch", liftUpperSwitch);

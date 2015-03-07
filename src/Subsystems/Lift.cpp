@@ -50,7 +50,7 @@ void Lift::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	// ToDo Setup a default command for Lift, perhaps hold position
 	//SetDefaultCommand(new LinearSysRate(Robot::lift,Robot::lift,0.0));
-	SetDefaultCommand(new LinearHoldPosition(Robot::lift, Robot::lift));
+	//SetDefaultCommand(new LinearHoldPosition(Robot::lift, Robot::lift));
 }
 
 void Lift::UpdateController() {
@@ -67,7 +67,7 @@ void Lift::EnforceLimits() {
 	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
 	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 	// Reset the encoder if it has hit the bottom
-
+/* To Do Re-enable Reset once limit switches verified.
 	double distance = encoder->GetDistance();
 	if ( (atBottom == 1) or (distance < 0.0)) {
 		encoder->Reset();
@@ -79,9 +79,9 @@ void Lift::EnforceLimits() {
 		lim->pMax = distance;
 		//lim->pMin = lim->pMax - lim->pRange;
 	}
-
+*/
 	//Create some soft limits for the rate controller - slow it as it approaches the top limit
-
+/* ToDo enable soft limits once encoder verified, and positions of switches
 	if (mode == cPIDController::RATE) {
 		double penalty = 1.0;
 		if (setPoint > 0.0) {
@@ -97,5 +97,6 @@ void Lift::EnforceLimits() {
 		}
 		setPoint = setPoint*penalty;
 	}
+	*/
 	// Don't do anything for position - we shouldn't be commanding a negative position.
 }

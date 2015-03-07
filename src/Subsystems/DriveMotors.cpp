@@ -33,12 +33,11 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 		output[i] = 0.0;
 	}
-	// ToDo remove once encoder enabled
-	controllers[2]->SetMode(cPIDController::DIRECT);
 	gyro = RobotMap::gyro;
 	gyro->Reset();
 	headingCont = RobotMap::gyroController;
     gyroMode = cPIDController::DIRECT;
+    driveMode = cPIDController::DIRECT;
     SetGyroMode(cPIDController::DIRECT);
     gyroOutput = RobotMap::gyroControllerOutput;
 	headingCont->LogData(true,"gyro");
@@ -60,9 +59,16 @@ void DriveMotors::SetGyroMode(int modeIn) {
 	}
 }
 
+void DriveMotors::SetDriveMode(int modeIn) {
+	driveMode = modeIn;
+	for (int i=0; i < 4; i++) {
+		controllers[i]->SetMode(modeIn);
+	}
+}
+
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new DriveInTelop(cPIDController::RATE));
+	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT, cPIDController::DIRECT));
 
 }
 
@@ -109,8 +115,12 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	// ToDo hard code the 15.
     	controllers[i]->SetRate(wheelSpeeds[i]);
     	// ToDo Remove once encoders enable
-    	if (i==2) controllers[i]->SetFeedForward(wheelSpeeds[2]);
-    	output[i]=controllers[i]->UpdateController(output[i]);
+    	if (driveMode==cPIDController::DIRECT) {
+    		controllers[i]->SetFeedForward(wheelSpeeds[i]);
+    		output[i]=controllers[i]->UpdateController(0.0);
+    	} else {
+    		output[i]=controllers[i]->UpdateController(output[i]);
+    	}
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }

@@ -25,8 +25,9 @@
 class DriveInTelop: public Command {
 private:
 	int gyroMode;
+	int driveMode;
 public:
-	DriveInTelop(int mode);
+	DriveInTelop(int gyroModeIn, int driveModeIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
