@@ -67,13 +67,15 @@ void Lift::EnforceLimits() {
 	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
 	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
 	// Reset the encoder if it has hit the bottom
-/* To Do Re-enable Reset once limit switches verified.
+// To Do Re-enable Reset once limit switches verified.
 	double distance = encoder->GetDistance();
 	if ( (atBottom == 1) or (distance < 0.0)) {
 		encoder->Reset();
+		lim->pMin = 0.0;
 		lim->pMax = lim->pRange - 1.0;
 	}
-
+//
+	/*
 	if (atTop) {
 		// If at the top update the limits
 		lim->pMax = distance;

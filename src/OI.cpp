@@ -42,11 +42,11 @@ OI::OI() {
 	// Positions for lift and claw are in a percent of the total range in case the ranges
 	// shift due to encoder error, or bad initial starting position
 	RaiseLiftRateButton = new JoystickButton(joystick2, 1);
-	RaiseLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -5.0));
+	RaiseLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -10.0));
 	//SmartDashboard::PutData("RaiseLiftRate", new LinearSysRate(Robot::lift,Robot::lift, 10.0));
 
 	LowerLiftRateButton = new JoystickButton(joystick2, 2);
-	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -5.0));
+	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -10.0));
 	SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
 
 	LiftTopPosButton = new JoystickButton(joystick2, 4);

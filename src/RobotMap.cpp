@@ -107,9 +107,9 @@ void RobotMap::init() {
 		gyro->Reset();
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
-		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -10.0, 10.0, -1.0, 1.0);
-		gyroRateGains = new PIDParams(0.02, 0.0, 1.0, 0.25);
-		gyroPositionGains = new PIDParams(0.02, 1.0, 1.0, 0.25);
+		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -30.0, 30.0, -1.0, 1.0);
+		gyroRateGains = new PIDParams(0.02, 0.0, 1.0, 0.5);
+		gyroPositionGains = new PIDParams(0.02, 1.0, 1.0, 0.5);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 
@@ -132,8 +132,8 @@ void RobotMap::init() {
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 		// The Controller
 			liftLimits = new ControllerLimits(-1.0, 50.0, -5.0, 5.0, -1.0, 1.0);
-			liftPositionGains = new PIDParams(0.05, 1.1, 0.0, 0.1);
-			liftRateGains = new PIDParams(0.05, 0.0, 0.0, 0.1);
+			liftPositionGains = new PIDParams(0.1, 1.1, 0.0, 0.1);
+			liftRateGains = new PIDParams(0.1, 0.0, 0.0, 0.1);
 			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftCSC);
 			liftLowerSwitch = new DigitalInput(16);
 			liftUpperSwitch = new DigitalInput(24);
@@ -153,7 +153,7 @@ void RobotMap::init() {
 				// The controller
 				clawLimits = new ControllerLimits(-1.1, 0.1, -1.0, 1.0, -1.0, 1.0);
 				clawPositionGains = new PIDParams(0.5, 0.2, 0.0, 1.0);
-				clawRateGains = new PIDParams(0.5, 0.2, 0.0, 1.0);
+				clawRateGains = new PIDParams(0.5, 0.0, 0.0, 1.0);
 				clawController = new cPIDController(clawPositionGains, clawLimits, clawEncoder, clawSC);
 
 				// ToDo Try enabling derivative term on all controllers
