@@ -59,13 +59,13 @@ OI::OI() {
 	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,0.1));
 //
 	OpenClawRateButton = new JoystickButton(joystick2, 5);
-	OpenClawRateButton->WhileHeld(new ClawRate(1.0));
+	OpenClawRateButton->WhileHeld(new ClawRate(0.8));
 
 	//OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw, 0.5));
 	SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,Robot::claw, 0.5));
 //
 	CloseClawRateButton = new JoystickButton(joystick2, 6);
-	CloseClawRateButton->WhileHeld(new ClawRate(-1.0));
+	CloseClawRateButton->WhileHeld(new ClawRate(-0.8));
 	//CloseClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw,-0.5));
 	SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,Robot::claw,-0.5));
 //

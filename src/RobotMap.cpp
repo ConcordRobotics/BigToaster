@@ -108,8 +108,8 @@ void RobotMap::init() {
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -20.0, 20.0, -0.6, 0.6);
-		gyroRateGains = new PIDParams(0.05, 0.0, 0.0, 1.0);
-		gyroPositionGains = new PIDParams(0.05, 1.0, 0.0, 1.0);
+		gyroRateGains = new PIDParams(0.1, 0.0, 0.2, 1.0);
+		gyroPositionGains = new PIDParams(0.1, 1.0, 0.2, 1.0);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 

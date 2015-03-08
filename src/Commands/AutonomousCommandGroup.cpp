@@ -11,6 +11,7 @@
 
 AutonomousCommandGroup::AutonomousCommandGroup()
 {
+	double heading = 0.0;
 	RobotMap::gyro->Reset();
 	// Grip the container
 	//AddSequential(new ClawGrip(0.01));
@@ -19,14 +20,17 @@ AutonomousCommandGroup::AutonomousCommandGroup()
 	// Lift the container
 	AddSequential( new LinearSysPosition(Robot::lift, Robot::lift, 0.30, 0.10));
 	//AddParallel(new LinearHoldPosition(Robot::lift, Robot::lift));
-	AddSequential(new DriveToHeading(90.0, 1.0));
-	AddSequential(new DriveForward(1.0, 10.0, 0.1));
-	AddSequential(new DriveToHeading(0.0, 1.0));
-	//AddSequential(new DriveToHeading(180.0, 1.0));
-	//AddSequential(new DriveForward(8.0, 5.0, 0.1));
+	AddParallel(new ClawRate(-0.2));
+	heading = 90.0;
+	AddSequential(new DriveToHeading(heading, 5.0));
+	AddSequential(new DriveForward(1.0, 10.0, 0.5, heading));
+	AddSequential(new DriveToHeading(0.0, 5.0));
+	heading = 180.0;
+	AddSequential(new DriveToHeading(heading, 1.0));
+	AddSequential(new DriveForward(8.0, 5.0, 0.5, heading));
 	AddSequential(new LinearSysPosition(Robot::lift, Robot::lift, 0.15, 0.10));
 	AddParallel(new ClawRate(1.0));
-	AddSequential(new DriveForward(0.6, -2.0, 0.1));
-	AddSequential(new ClawRate(1.0));
+	AddSequential(new DriveForward(0.6, -1.0, 0.5, heading));
+	AddSequential(new ClawRate(0.0));
 
 }
