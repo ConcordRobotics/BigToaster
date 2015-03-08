@@ -80,7 +80,7 @@ void RobotMap::init() {
 	timer = new Timer();
 	timer->Start();
 
-	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.2, 0.1);
+	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.0, 0.1);
 	// Set large position limits since there is no real limit
 	driveMotorsLimits = new ControllerLimits(-1.0E30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 	// Loop over motors to initialize Drive Motor data
@@ -107,9 +107,9 @@ void RobotMap::init() {
 		gyro->Reset();
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
-		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -30.0, 30.0, -1.0, 1.0);
-		gyroRateGains = new PIDParams(0.02, 0.0, 1.0, 1.0);
-		gyroPositionGains = new PIDParams(0.02, 1.0, 1.0, 1.0);
+		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -20.0, 20.0, -0.6, 0.6);
+		gyroRateGains = new PIDParams(0.05, 0.0, 0.0, 1.0);
+		gyroPositionGains = new PIDParams(0.05, 1.0, 0.0, 1.0);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 

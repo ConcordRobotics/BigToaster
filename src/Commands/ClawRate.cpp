@@ -39,6 +39,7 @@ bool ClawRate::IsFinished() {
 
 // Called once after isFinished returns true
 void ClawRate::End() {
+	sys->sc->Set(0.0);
 	sys->Stop();
 	//std::cout << "COM END " << sys->name << " Rate " << RobotMap::timer->Get() << "\n";
 }
@@ -46,6 +47,7 @@ void ClawRate::End() {
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void ClawRate::Interrupted() {
+	sys->sc->Set(0.0);
 	sys->Stop();
 	//std::cout << "COM INT " << sys->name << " Rate " << RobotMap::timer->Get() << "\n";
 }

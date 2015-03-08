@@ -71,13 +71,13 @@ OI::OI() {
 //
 	ClawOpenPosButton = new JoystickButton(joystick2, 7);
 	// Tolerance should turn motor off when close enough
-	ClawOpenPosButton->WhenPressed(new ClawRate(1.0));
+	ClawOpenPosButton->WhileHeld(new ClawRate(1.0));
 	//ClawOpenPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw, 0.95, 0.1));
 	SmartDashboard::PutData("ClawOpenPos", new LinearSysPosition(Robot::claw,Robot::claw,0.95, 0.1));
 
 	//This should apply some force on holding objects
 	ClawClosedPosButton = new JoystickButton(joystick2, 8);
-	ClawClosedPosButton->WhenPressed(new ClawRate(-1.0));
+	ClawClosedPosButton->WhileHeld(new ClawRate(-1.0));
 	//ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.05, 0.1));
 	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,Robot::claw,0.05, 0.1));
 
