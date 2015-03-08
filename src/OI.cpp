@@ -48,16 +48,18 @@ OI::OI() {
 
 	LowerLiftRateButton = new JoystickButton(joystick2, 2);
 	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -10.0));
-	SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
+	//SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
 
-	LiftTopPosButton = new JoystickButton(joystick2, 4);
-	LiftTopPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,0.90));
-	SmartDashboard::PutData("LiftTopPos", new LinearSysPosition(Robot::lift,Robot::lift,0.90));
+	// Positions for lift and claw are in a percent of the total range in case the ranges
+	// shift due to encoder error, or bad initial starting position
+	RaiseLiftFastRateButton = new JoystickButton(joystick2, 4);
+	RaiseLiftFastRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, 20.0));
+	//SmartDashboard::PutData("RaiseLiftRate", new LinearSysRate(Robot::lift,Robot::lift, 10.0));
 
-	LiftBottomPosButton = new JoystickButton(joystick2, 3);
-	LiftBottomPosButton->WhenPressed(new LinearSysPosition(Robot::lift,Robot::lift,0.10));
-	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,0.1));
-//
+	LowerLiftFastRateButton = new JoystickButton(joystick2, 3);
+	LowerLiftFastRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -20.0));
+	//SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
+
 	OpenClawRateButton = new JoystickButton(joystick2, 5);
 	OpenClawRateButton->WhileHeld(new ClawRate(0.8));
 

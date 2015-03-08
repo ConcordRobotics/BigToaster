@@ -21,8 +21,8 @@ private:
 	Joystick* joystick2;
 	JoystickButton* RaiseLiftRateButton;
 	JoystickButton* LowerLiftRateButton;
-	JoystickButton* LiftTopPosButton;
-	JoystickButton* LiftBottomPosButton;
+	JoystickButton* RaiseLiftFastRateButton;
+	JoystickButton* LowerLiftFastRateButton;
 	JoystickButton* OpenClawRateButton;
 	JoystickButton* CloseClawRateButton;
 	JoystickButton* ClawOpenPosButton;
