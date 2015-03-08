@@ -59,13 +59,13 @@ OI::OI() {
 	SmartDashboard::PutData("LiftBottomPos", new LinearSysPosition(Robot::lift,Robot::lift,0.1));
 //
 	OpenClawRateButton = new JoystickButton(joystick2, 5);
-	OpenClawRateButton->WhileHeld(new ClawRate(1.0));
+	OpenClawRateButton->WhileHeld(new ClawRate(0.8));
 
 	//OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw, 0.5));
 	SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,Robot::claw, 0.5));
 //
 	CloseClawRateButton = new JoystickButton(joystick2, 6);
-	CloseClawRateButton->WhileHeld(new ClawRate(-1.0));
+	CloseClawRateButton->WhileHeld(new ClawRate(-0.8));
 	//CloseClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw,-0.5));
 	SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,Robot::claw,-0.5));
 //
@@ -83,16 +83,16 @@ OI::OI() {
 
 	// Setting Drive motor mode M=Manual, P=PID, First value is gyro, second is drive motors
 	MMDriveButton = new JoystickButton(joystick1, 5);
-	MMDriveButton->WhenPressed(new DriveInTelop(cPIDController::DIRECT, cPIDController::DIRECT));
+	MMDriveButton->WhenPressed(new DriveInTelop(cPIDController::DIRECT, cPIDController::DIRECT, 5.0));
 
 	MPDriveButton = new JoystickButton(joystick1, 6);
-	MPDriveButton->WhenPressed(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE));
+	MPDriveButton->WhenPressed(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE, 2.0));
 
 	PMDriveButton = new JoystickButton(joystick1, 3);
-	PMDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::DIRECT));
+	PMDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::DIRECT, 5.0));
 
 	PPDriveButton = new JoystickButton(joystick1, 4);
-	PPDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::RATE));
+	PPDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::RATE, 2.0));
 
 
 	//char name[] = "liftp.auto";

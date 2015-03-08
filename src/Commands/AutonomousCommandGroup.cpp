@@ -20,13 +20,13 @@ AutonomousCommandGroup::AutonomousCommandGroup()
 	AddSequential( new LinearSysPosition(Robot::lift, Robot::lift, 0.30, 0.10));
 	//AddParallel(new LinearHoldPosition(Robot::lift, Robot::lift));
 	AddSequential(new DriveToHeading(90.0, 1.0));
-	AddSequential(new DriveForward(1.0, 10.0, 0.1));
-	AddSequential(new DriveToHeading(0.0, 1.0));
+	AddSequential(new DriveForward(0.6, 7.0, 0.1));
+	AddSequential(new DriveToHeading(180.0, 1.0));
 	//AddSequential(new DriveToHeading(180.0, 1.0));
 	//AddSequential(new DriveForward(8.0, 5.0, 0.1));
 	AddSequential(new LinearSysPosition(Robot::lift, Robot::lift, 0.15, 0.10));
 	AddParallel(new ClawRate(1.0));
-	AddSequential(new DriveForward(0.6, -2.0, 0.1));
+	AddSequential(new DriveForward(0.6, -1.0, 0.1));
 	AddSequential(new ClawRate(1.0));
 
 }

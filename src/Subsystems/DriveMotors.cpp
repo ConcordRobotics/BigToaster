@@ -59,8 +59,9 @@ void DriveMotors::SetGyroMode(int modeIn) {
 	}
 }
 
-void DriveMotors::SetDriveMode(int modeIn) {
+void DriveMotors::SetDriveMode(int modeIn, float topRateIn) {
 	driveMode = modeIn;
+	rateScale = topRateIn;
 	for (int i=0; i < 4; i++) {
 		controllers[i]->SetMode(modeIn);
 	}
@@ -68,7 +69,7 @@ void DriveMotors::SetDriveMode(int modeIn) {
 
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT, cPIDController::DIRECT));
+	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT, cPIDController::DIRECT, 5.0));
 
 }
 
@@ -87,7 +88,7 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 		 headingCont->SetRate(z*RobotMap::gyroLimits->rMax);
 		 headingCont->UpdateController(gyroOutput->Get());
 	 } else if (gyroMode == cPIDController::POSITION) {
-		 float curHeading = gyro->GetAngle();
+		 /*float curHeading = gyro->GetAngle();
 		 // Calculate the closes direction to get to the desired angle since the angles wrap 360 degrees
 		 float delHeading = headingTarget - curHeading;
 		 // Get the change in heading to lie in range 0 to 360
@@ -95,7 +96,8 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 		 // Transform deltaHeading to go from -180 to +180 to get closest path
 		 // May need to tweak this to knock it off 180
 		 if (delHeading > 180.0) delHeading = delHeading - 360.0;
-		 headingCont->SetSetpoint(curHeading + delHeading);
+		 headingCont->SetSetpoint(curHeading + delHeading);*/
+		 headingCont->SetSetpoint(headingTarget);
 		 headingCont->UpdateController(gyroOutput->Get());
 	 } else if (gyroMode == cPIDController::DIRECT){
 		 headingCont->SetFeedForward(z);

@@ -50,7 +50,7 @@ public:
 	void ArcadeDrive(float dx, float dy, float dz);
 	void InitDefaultCommand();
 	void SetGyroMode(int modeIn);
-	void SetDriveMode(int modeIn);
+	void SetDriveMode(int modeIn, float topRateIn);
 	void SetHeadingTarget(float headingTargetIn);
 	void Stop();
 };
