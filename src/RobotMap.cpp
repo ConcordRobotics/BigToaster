@@ -107,9 +107,9 @@ void RobotMap::init() {
 		gyro->Reset();
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
-		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -20.0, 20.0, -0.6, 0.6);
-		gyroRateGains = new PIDParams(0.05, 0.0, 0.2, 0.5);
-		gyroPositionGains = new PIDParams(0.05, 0.5, 0.2, 0.5);
+		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -15.0, 15.0, -0.6, 0.6);
+		gyroRateGains = new PIDParams(0.1, 0.0, 0.3, 0.5);
+		gyroPositionGains = new PIDParams(0.1, 2.0, 0.3, 0.5);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 
@@ -131,8 +131,8 @@ void RobotMap::init() {
 			liftEncoder->SetPIDSourceParameter(Encoder::kDistance);
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 		// The Controller
-			liftLimits = new ControllerLimits(-1.0, 50.0, -20.0, 20.0, -1.0, 1.0);
-			liftPositionGains = new PIDParams(0.1, 1.1, 0.2, 0.1);
+			liftLimits = new ControllerLimits(-1.0, 55.0, -20.0, 20.0, -1.0, 1.0);
+			liftPositionGains = new PIDParams(0.2, 1.0, 0.2, 0.1);
 			liftRateGains = new PIDParams(0.1, 0.0, 0.2, 0.1);
 			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftCSC);
 			liftLowerSwitch = new DigitalInput(16);

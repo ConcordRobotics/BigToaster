@@ -22,13 +22,13 @@ AutonomousCommandGroup::AutonomousCommandGroup()
 	//AddParallel(new LinearHoldPosition(Robot::lift, Robot::lift));
 	angle = 90.0;
 	AddSequential(new DriveToHeading(angle, 3.0));
-	AddSequential(new DriveForward(0.6, 5.0, 0.5, angle));
+	AddSequential(new DriveForward(0.4, 5.0, 0.5, angle));
 
 	angle = 180.0;
 	AddSequential(new DriveToHeading(angle, 3.0));
 	AddSequential(new LinearSysPosition(Robot::lift, Robot::lift, 0.0, 0.15));
 	AddParallel(new ClawRate(1.0));
-	AddSequential(new DriveForward(0.6, -1.0, 0.1, angle));
+	AddSequential(new DriveForward(0.4, -1.0, 0.1, angle));
 	AddSequential(new ClawRate(0.0));
 
 }
