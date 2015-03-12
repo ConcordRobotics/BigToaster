@@ -13,14 +13,14 @@
 #define LINEARHOLDPOSITION_H
 
 #include "../Robot.h"
-#include "Commands/LinearSysPosition.h"
+#include "Commands/LinearSysRate.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class LinearHoldPosition: public LinearSysPosition {
+class LinearHoldPosition: public LinearSysRate {
 public:
 	LinearHoldPosition(Subsystem* sysIn,  LinearSystem* linSys);
 	virtual void Initialize();

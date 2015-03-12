@@ -10,15 +10,14 @@
 #include "Commands/LinearHoldPosition.h"
 
 LinearHoldPosition::LinearHoldPosition(Subsystem* sysIn, LinearSystem* linSys)
-                  : LinearSysPosition(sysIn, linSys, 0.0, -1.0) {
+                  : LinearSysRate(sysIn, linSys, 0.0) {
+
 }
 
 
 // Called just before this Command runs the first time
 void LinearHoldPosition::Initialize() {
-	sys->SetMode(cPIDController::POSITION);
-	position = sys->encoder->GetDistance();
-	sys->controller->Reset(position);
-	sys->SetSetpoint(position);
-	std::cout << "COM START " << sys->name << " Hold " << RobotMap::timer->Get() << "\n";
+	sys->SetMode(cPIDController::RATE);
+	sys->SetSetpoint(0.0);
+	//std::cout << "COM START " << sys->name << " Hold " << RobotMap::timer->Get() << "\n";
 }

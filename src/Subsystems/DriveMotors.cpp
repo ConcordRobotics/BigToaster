@@ -88,15 +88,25 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 		 headingCont->SetRate(z*RobotMap::gyroLimits->rMax);
 		 headingCont->UpdateController(gyroOutput->Get());
 	 } else if (gyroMode == cPIDController::POSITION) {
+<<<<<<< HEAD
 		 /*float curHeading = gyro->GetAngle();
+=======
+		 //float curHeading = gyro->GetAngle();
+>>>>>>> refs/remotes/origin/DeltaPID2
 		 // Calculate the closes direction to get to the desired angle since the angles wrap 360 degrees
-		 float delHeading = headingTarget - curHeading;
+		// float delHeading = headingTarget - curHeading;
 		 // Get the change in heading to lie in range 0 to 360
-		 delHeading = delHeading - 360.0*floor(delHeading/360.0);
+		/*  delHeading = delHeading - 360.0*floor(delHeading/360.0);
 		 // Transform deltaHeading to go from -180 to +180 to get closest path
 		 // May need to tweak this to knock it off 180
 		 if (delHeading > 180.0) delHeading = delHeading - 360.0;
+<<<<<<< HEAD
 		 headingCont->SetSetpoint(curHeading + delHeading);*/
+=======
+
+		 headingCont->SetSetpoint(curHeading + delHeading);
+		 */
+>>>>>>> refs/remotes/origin/DeltaPID2
 		 headingCont->SetSetpoint(headingTarget);
 		 headingCont->UpdateController(gyroOutput->Get());
 	 } else if (gyroMode == cPIDController::DIRECT){
@@ -126,13 +136,14 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
     	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }
+    /*
     bool inDeadband = true;
     for (int i = 0; i < 4; i++) {
     	if (std::abs(controllers[i]->GetRate()) > rateDeadband) inDeadband = false;
     	if (std::abs(wheelSpeeds[i]) > rateDeadband) inDeadband = false;
     }
-    if (inDeadband) Stop();
-    Wait(RobotMap::MotorWaitTime); // wait to avoid hogging CPU cycles
+    if (inDeadband) Stop(); */
+    //Wait(RobotMap::MotorWaitTime); // wait to avoid hogging CPU cycles
     //Stop();
 }
 

@@ -36,6 +36,7 @@ void LinearSystem::InitDefaultCommand() {
 
 void LinearSystem::SetMode(int modeIn) {
 	mode = modeIn;
+	controller->SetPIDParams(rateGains);
 	if (mode == cPIDController::RATE) {
 		controller->SetPIDParams(rateGains);
 	} else if (mode == cPIDController::POSITION) {
@@ -48,7 +49,7 @@ void LinearSystem::UpdateController() {
 	EnforceLimits();
 	switch (mode) {
 	case cPIDController::OFF:
-		Stop();
+		controller->SetFeedForward(setPoint);
 		break;
 	case cPIDController::DIRECT:
 		SetFeedForward();
@@ -60,7 +61,12 @@ void LinearSystem::UpdateController() {
 		controller->SetSetpoint(setPoint);
 		break;
 	}
-	output = controller->UpdateController(output);
+	if (mode == cPIDController::DIRECT) {
+		output = controller->UpdateController(0.0);
+	} else {
+		output = controller->UpdateController(output);
+	}
+
 	std::string oName = name;
 	controller->OutputToDashboard(oName);
 	Wait(RobotMap::MotorWaitTime); // wait 5ms to avoid hogging CPU cycles
@@ -68,7 +74,7 @@ void LinearSystem::UpdateController() {
 }
 
 double LinearSystem::PositionError(double target) {
-	return (std::abs(controller->GetSetpoint() - encoder->GetDistance())/lim->pRange);
+	return (std::abs(target - encoder->GetDistance())/lim->pRange);
 }
 
 void LinearSystem::SetSetpoint(double setPointIn) {

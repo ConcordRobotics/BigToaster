@@ -107,9 +107,15 @@ void RobotMap::init() {
 		gyro->Reset();
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
+<<<<<<< HEAD
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -15.0, 15.0, -0.6, 0.6);
 		gyroRateGains = new PIDParams(0.1, 0.0, 0.3, 0.5);
 		gyroPositionGains = new PIDParams(0.1, 2.0, 0.3, 0.5);
+=======
+		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -20.0, 20.0, -0.6, 0.6);
+		gyroRateGains = new PIDParams(0.1, 0.0, 0.2, 1.0);
+		gyroPositionGains = new PIDParams(0.1, 1.0, 0.2, 1.0);
+>>>>>>> refs/remotes/origin/DeltaPID2
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 

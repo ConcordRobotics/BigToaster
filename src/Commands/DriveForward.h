@@ -31,9 +31,10 @@ private:
 	double tol;
 	float rate;
 	double totDist = 0.0;
-	double pGain = 1.0;
+	double pGain;
+	double angle;
 public:
-	DriveForward(float rateIn, double disIn, double tolIn);
+	DriveForward(float rateIn, double disIn, double tolIn, double angleIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

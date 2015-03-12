@@ -29,7 +29,7 @@ void DriveToHeading::Initialize() {
 	// Set the target angle to the current angle
 	RobotMap::gyroController->Reset(RobotMap::gyro->GetAngle());
 	Robot::driveMotors->SetHeadingTarget(heading);
-	std::cout << "COM START " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
+	//std::cout << "COM START " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -50,7 +50,7 @@ bool DriveToHeading::IsFinished() {
 void DriveToHeading::End() {
 	// Kill the motors
 	Robot::driveMotors->Stop();
-	std::cout << "COM END " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
+	//std::cout << "COM END " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
 }
 
 // Called when another command which requires one or more of the same
@@ -58,5 +58,5 @@ void DriveToHeading::End() {
 void DriveToHeading::Interrupted() {
 	// Kill the motors
 	Robot::driveMotors->Stop();
-	std::cout << "COM END " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
+	//std::cout << "COM END " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
 }

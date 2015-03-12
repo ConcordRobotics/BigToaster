@@ -21,7 +21,7 @@
  * @author ExampleAuthor
  */
 class LinearSysRate: public Command {
-private:
+protected:
 	double rate;
 	LinearSystem* sys;
 public:

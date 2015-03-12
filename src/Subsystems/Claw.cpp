@@ -26,7 +26,7 @@ Claw::Claw() : Subsystem("Claw") {
 	lim = RobotMap::clawLimits;
 	name = new char[5];
 	strcpy(name,"claw");
-	controller->LogData(true,name);
+	//controller->LogData(true,name);
 	Stop();
 }
 
