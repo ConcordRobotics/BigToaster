@@ -27,8 +27,10 @@ class DriveToHeading: public Command {
 private:
 	float heading;
 	double tol;
+	float maxTwist;
+	float maxRate;
 public:
-	DriveToHeading(double headingIn, double tolIn);
+	DriveToHeading(double headingIn, float maxTwistIn, float maxRateIn, double tolIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

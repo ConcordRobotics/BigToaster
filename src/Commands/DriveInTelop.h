@@ -27,8 +27,9 @@ private:
 	int gyroMode;
 	int driveMode;
 	float topRate;
+	float topTwist;
 public:
-	DriveInTelop(int gyroModeIn, int driveModeIn, float topRateIn);
+	DriveInTelop( int driveModeIn, float topRateIn, int gyroModeIn, float topTwistIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

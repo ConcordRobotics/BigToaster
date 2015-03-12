@@ -38,19 +38,21 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 	headingCont = RobotMap::gyroController;
     gyroMode = cPIDController::DIRECT;
     driveMode = cPIDController::DIRECT;
-    SetGyroMode(cPIDController::DIRECT);
+	// Since mecanum drive can have x=1, y=1, z=1
+	// scale the rate to be < 1/3 of the max rate
+    SetDriveMode(cPIDController::DIRECT, 0.3*lim->rMax);
+    SetGyroMode(cPIDController::DIRECT, 0.5*RobotMap::gyroLimits->rMax);
     gyroOutput = RobotMap::gyroControllerOutput;
 	headingCont->LogData(true,"gyro");
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
 	lim = RobotMap::driveMotorsLimits;
-	// Since mecanum drive can have x=1, y=1, z=1
-	// scale the rate to be < 1/3 of the max rate
-	rateScale = 0.3*lim->rMax;
 	Stop();
 }
 
-void DriveMotors::SetGyroMode(int modeIn) {
+void DriveMotors::SetGyroMode(int modeIn, float maxTwistIn) {
+	headingCont->ReadPIDParams("heading.pid");
 	gyroMode = modeIn;
+	twistScale = maxTwistIn;
 	headingCont->SetMode(gyroMode);
 	if (gyroMode == cPIDController::RATE) {
 		headingCont->SetPIDParams(RobotMap::gyroRateGains);
@@ -60,16 +62,18 @@ void DriveMotors::SetGyroMode(int modeIn) {
 }
 
 void DriveMotors::SetDriveMode(int modeIn, float topRateIn) {
+
 	driveMode = modeIn;
 	rateScale = topRateIn;
 	for (int i=0; i < 4; i++) {
+		controllers[i]->ReadPIDParams("drive.pid");
 		controllers[i]->SetMode(modeIn);
 	}
 }
 
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE, 2.0));
+	SetDefaultCommand(new DriveInTelop(cPIDController::RATE, 2.0, cPIDController::RATE, 5.0));
 
 }
 
@@ -85,14 +89,12 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 
 
 	 if (gyroMode == cPIDController::RATE) {
-		 headingCont->SetRate(z*RobotMap::gyroLimits->rMax);
+		 headingCont->SetRate(z*twistScale);
 		 headingCont->UpdateController(gyroOutput->Get());
 	 } else if (gyroMode == cPIDController::POSITION) {
-<<<<<<< HEAD
+
 		 /*float curHeading = gyro->GetAngle();
-=======
-		 //float curHeading = gyro->GetAngle();
->>>>>>> refs/remotes/origin/DeltaPID2
+
 		 // Calculate the closes direction to get to the desired angle since the angles wrap 360 degrees
 		// float delHeading = headingTarget - curHeading;
 		 // Get the change in heading to lie in range 0 to 360
@@ -100,17 +102,14 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 		 // Transform deltaHeading to go from -180 to +180 to get closest path
 		 // May need to tweak this to knock it off 180
 		 if (delHeading > 180.0) delHeading = delHeading - 360.0;
-<<<<<<< HEAD
-		 headingCont->SetSetpoint(curHeading + delHeading);*/
-=======
 
-		 headingCont->SetSetpoint(curHeading + delHeading);
-		 */
->>>>>>> refs/remotes/origin/DeltaPID2
+		 headingCont->SetSetpoint(curHeading + delHeading);*/
+
 		 headingCont->SetSetpoint(headingTarget);
 		 headingCont->UpdateController(gyroOutput->Get());
+		 // ToDo Do we need to limit the gyro output here
 	 } else if (gyroMode == cPIDController::DIRECT){
-		 headingCont->SetFeedForward(z);
+		 headingCont->SetFeedForward(z*twistScale/headingCont->lim->rMax);
 		 headingCont->UpdateController(0.0);
 	 }
 	 // Get the output from the controller
@@ -124,7 +123,6 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     wheelSpeeds[3] = rateScale*double(x + y - z);
 
     for (int i = 0; i < 4; i++) {
-    	// ToDo hard code the 15.
     	controllers[i]->SetRate(wheelSpeeds[i]);
     	// ToDo Remove once encoders enable
     	if (driveMode==cPIDController::DIRECT) {
@@ -143,12 +141,13 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	if (std::abs(wheelSpeeds[i]) > rateDeadband) inDeadband = false;
     }
     if (inDeadband) Stop(); */
-    //Wait(RobotMap::MotorWaitTime); // wait to avoid hogging CPU cycles
+    Wait(RobotMap::MotorWaitTime); // wait to avoid hogging CPU cycles
     //Stop();
 }
 
 void DriveMotors::Stop() {
 	for (int i = 0; i < 4; i++) {
 		scs[i]->Set(0.0);  // Could go back to inherited
+		output[i] = 0.0;
 	}
 }

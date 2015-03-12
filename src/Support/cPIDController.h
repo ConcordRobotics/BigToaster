@@ -25,8 +25,7 @@ private:
 	unsigned int iN, iNM1, iNM2;
 	// Gains
 	PIDParams* pidParams;
-	// Limits
-	ControllerLimits* lim;
+
 	// Time based variables
 	// Use a looping index to prevent having to
 	// copy values over
@@ -50,7 +49,10 @@ private:
     void CheckLimits(double delT);
     void ApplyRate(double delT);
 public:
+	// Limits
+	ControllerLimits* lim;
 	enum modeType {OFF, RATE, POSITION, DIRECT};
+	void ReadPIDParams(char * fileName);
 	double GetSetpoint();
 	double GetRate(void);
 	void SetSetpoint(double setIn);

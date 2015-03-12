@@ -29,7 +29,6 @@ void LinearSysRate::Initialize() {
 void LinearSysRate::Execute() {
 	sys->SetSetpoint(rate);
 	sys->UpdateController();
-	//ToDo Add limit checks in the Claw class
 }
 
 // Make this return true when this Command no longer needs to run execute()

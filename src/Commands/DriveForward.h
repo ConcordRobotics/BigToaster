@@ -30,11 +30,12 @@ private:
 	double wheelStart[4] = {0.0, 0.0, 0.0, 0.0};
 	double tol;
 	float rate;
+	float maxTwist;
 	double totDist = 0.0;
 	double pGain;
 	double angle;
 public:
-	DriveForward(float rateIn, double disIn, double tolIn, double angleIn);
+	DriveForward(float rateIn, float maxTwistIn, double disIn, double tolIn, double angleIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

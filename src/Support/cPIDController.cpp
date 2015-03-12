@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <cstdio>
 
 double cPIDController::PIDSampleTime = 0.002;
 double cPIDController::sensAlpha = 0.75;
@@ -130,7 +131,7 @@ double cPIDController::UpdateController(double curOutput) {
 	output = curOutput;
 	if (mode == DIRECT) {
 		// For direct mode, output set directly through feed-forward term;
-		// For setting an avsolute value of power, set curPower to 0.0 when
+		// For setting an absolute value of power, set curPower to 0.0 when
 		// Calling update controller
 		output = output + f;
 	} else {
@@ -148,6 +149,22 @@ double cPIDController::UpdateController(double curOutput) {
 	// Reset the feed forward term
     f = 0.0;
     return output;
+}
+
+void cPIDController::ReadPIDParams(char* fileName){
+	FILE* file;
+	file = fopen(fileName, "r");
+	if (file != NULL) {
+		fscanf(file, "%f", &pidParams->pGain);
+		fscanf(file, "%f", &pidParams->iGain);
+		fscanf(file, "%f", &pidParams->dGain);
+		fscanf(file, "%f", &pidParams->fGain);
+	}
+	fclose(file);
+	std::cout << "PID" << logName << " " << pidParams->pGain <<
+			" " << pidParams->iGain <<
+			" " << pidParams->dGain <<
+			" " << pidParams->fGain << "\n";
 }
 
 void cPIDController::Reset( double setIn) {

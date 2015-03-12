@@ -37,7 +37,6 @@ void LinearSysPosition::Execute() {
 	position = percentRange*(sys->lim->pRange) + sys->lim->pMin;
 	sys->SetSetpoint(position);
 	sys->UpdateController();
-	//ToDo Add limit checks in the Claw class
 	bool inP = (sys->PositionError(position) < tolerance);
 	if (inPosition) {
 		// Has previously been flagged as being in position.
@@ -52,7 +51,7 @@ void LinearSysPosition::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool LinearSysPosition::IsFinished() {
 	// Require it to be in position for one second before it is flagged as done
-	return (inPosition and (timer->Get() - startTime > 1.0));
+	return (inPosition and (timer->Get() - startTime > 0.2));
 }
 
 // Called once after isFinished returns true
