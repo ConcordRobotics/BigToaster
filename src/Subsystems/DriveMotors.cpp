@@ -50,7 +50,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 }
 
 void DriveMotors::SetGyroMode(int modeIn, float maxTwistIn) {
-	headingCont->ReadPIDParams("heading.pid");
+//	headingCont->ReadPIDParams("heading.pid");
 	gyroMode = modeIn;
 	twistScale = maxTwistIn;
 	headingCont->SetMode(gyroMode);
@@ -66,7 +66,7 @@ void DriveMotors::SetDriveMode(int modeIn, float topRateIn) {
 	driveMode = modeIn;
 	rateScale = topRateIn;
 	for (int i=0; i < 4; i++) {
-		controllers[i]->ReadPIDParams("drive.pid");
+		//controllers[i]->ReadPIDParams("drive.pid");
 		controllers[i]->SetMode(modeIn);
 	}
 }
