@@ -76,7 +76,7 @@ void DriveMotors::SetDriveMode(int modeIn) {
 
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE));
+	SetDefaultCommand(new DriveInTelop());
 
 }
 
