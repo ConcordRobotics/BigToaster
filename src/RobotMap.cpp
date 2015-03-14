@@ -93,7 +93,8 @@ void RobotMap::init() {
 					driveMotorsEncReversed[i], Encoder::k4X);
 			driveMotorsEncoders[i]->SetDistancePerPulse(driveMotorsDPP[i]);
 			driveMotorsEncoders[i]->SetPIDSourceParameter(Encoder::kDistance);
-			driveMotorsEncoders[i]->SetSamplesToAverage(127);
+			// ToDo should the encoder have less averaging?
+			driveMotorsEncoders[i]->SetSamplesToAverage(16);
 			driveMotorsControllers[i] = new cPIDController(driveMotorsRateGains, driveMotorsLimits,
 					driveMotorsEncoders[i], driveMotorsSCs[i]);
 			lw->AddActuator(driveMotorsNames[i], "SpeedController", (Talon*) dmSCs[i]);
