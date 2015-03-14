@@ -136,7 +136,8 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
     	if (std::abs(wheelSpeeds[i]) > rateDeadband) inDeadband = false;
     }
     if (inDeadband) Stop();
-    Wait(RobotMap::MotorWaitTime); // wait to avoid hogging CPU cycles
+    // This should not be necessary for a command based robot?
+    //Wait(RobotMap::MotorWaitTime); // wait to avoid hogging CPU cycles
     //Stop();
 }
 
