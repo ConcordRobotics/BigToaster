@@ -29,7 +29,9 @@ void DriveToHeading::Initialize() {
 	// Set the target angle to the current angle
 	RobotMap::gyroController->Reset(RobotMap::gyro->GetAngle());
 	Robot::driveMotors->SetHeadingTarget(heading);
+#ifdef OUTPUT
 	std::cout << "COM START " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
+#endif
 }
 
 // Called repeatedly when this Command is scheduled to run

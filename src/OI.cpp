@@ -79,16 +79,16 @@ OI::OI() {
 
 	// Setting Drive motor mode M=Manual, P=PID, First value is gyro, second is drive motors
 	MMDriveButton = new JoystickButton(joystick1, 5);
-	MMDriveButton->WhenPressed(new DriveInTelop(cPIDController::DIRECT, cPIDController::DIRECT, 5.0));
+	MMDriveButton->WhenPressed(new DriveInTelop(cPIDController::DIRECT, cPIDController::DIRECT));
 
 	MPDriveButton = new JoystickButton(joystick1, 6);
-	MPDriveButton->WhenPressed(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE, 2.0));
+	MPDriveButton->WhenPressed(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE));
 
 	PMDriveButton = new JoystickButton(joystick1, 3);
-	PMDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::DIRECT, 5.0));
+	PMDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::DIRECT));
 
 	PPDriveButton = new JoystickButton(joystick1, 4);
-	PPDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::RATE, 2.0));
+	PPDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::RATE));
 
 #ifdef DEBUG
 	std::cout << "OI init complete\n";

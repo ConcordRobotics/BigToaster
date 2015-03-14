@@ -63,9 +63,8 @@ void DriveMotors::SetGyroMode(int modeIn) {
 	}
 }
 
-void DriveMotors::SetDriveMode(int modeIn, float topRateIn) {
+void DriveMotors::SetDriveMode(int modeIn) {
 	driveMode = modeIn;
-	rateScale = topRateIn;
 	for (int i=0; i < 4; i++) {
 		controllers[i]->SetMode(modeIn);
 	}
@@ -73,7 +72,7 @@ void DriveMotors::SetDriveMode(int modeIn, float topRateIn) {
 
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE, 2.0));
+	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE));
 
 }
 
