@@ -43,6 +43,7 @@ public:
 	static cPIDController *driveMotorsControllers[4];
 	static PIDParams* driveMotorsRateGains;
 	static ControllerLimits* driveMotorsLimits;
+	static ControllerLimits* driveMotorsAbsLimits;
 	static unsigned int driveMotorsPWMs[4];
 	static unsigned int driveMotorsPIOs[4][2];
 	static bool driveMotorsSCReversed[4];
@@ -50,11 +51,14 @@ public:
 	static float driveMotorsDPP[4];
 	static char driveMotorsNames[4][4];
 	static double distPerRev;
+	static float driveMotorsDrivePower;
+	static float driveMotorsGyroPower;
 
     // Gyro parameters
 	static Gyro* gyro;
 	static cPIDController* gyroController;
 	static ControllerLimits* gyroLimits;
+	static ControllerLimits* gyroAbsLimits;
 	static PIDParams* gyroRateGains;
 	static PIDParams* gyroPositionGains;
 	static cPIDOutput* gyroControllerOutput;

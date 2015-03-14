@@ -91,7 +91,7 @@ double cPIDController::UpdateController(double curOutput) {
 	// Get time step information
 	time[iN] = t;
 	double delT = time[iN] - time[iNM1];
-
+    delT = period;
 	// Smooth the setpoint
 	setPoint[iN] = (1.0 - setAlpha)*setPoint[iN] + setAlpha*setPoint[iNM1];
 
@@ -112,8 +112,8 @@ double cPIDController::UpdateController(double curOutput) {
 	double dSetDt = (setPoint[iN] - setPoint[iNM1])/delT;
 	dSensDt[iN] = (sensVal[iN] - sensVal[iNM1])/delT;
 	// Second derivative of the sensor values
-	double delTMid = 0.5*(time[iN] - time[iNM2]);
-	double ddSensDtsq = (dSensDt[iN] - dSensDt[iNM1])/delTMid;
+	//double delTMid = 0.5*(time[iN] - time[iNM2]);
+	double ddSensDtsq = (dSensDt[iN] - dSensDt[iNM1])/period;
 	// For derivative term, use sensor value rather than error to prevent jumps
 	// Could filter this but better to filter at the sensor level
 
@@ -126,7 +126,10 @@ double cPIDController::UpdateController(double curOutput) {
 	// changes
 	d = - delT*(pidParams->pGain)*(pidParams->dGain)*ddSensDtsq;
 	// Now set the output based on the mode
-	if (mode == OFF) return 0.0;
+	if (mode == OFF) {
+		output = 0.0;
+	    return output;
+	}
 	output = curOutput;
 	if (mode == DIRECT) {
 		// For direct mode, output set directly through feed-forward term;
