@@ -26,7 +26,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 		scs[i] = RobotMap::driveMotorsSCs[i];
 		encoders[i] = RobotMap::driveMotorsEncoders[i];
 		controllers[i] = RobotMap::driveMotorsControllers[i];
-		controllers[i]->SetMode(cPIDController::RATE);
+		controllers[i]->SetMode(cPIDController::DIRECT);
 		controllers[i]->SetRate(0.0);
 		scs[i]->Set(0.0);
 #ifdef OUTPUT
