@@ -52,7 +52,9 @@ bool DriveToHeading::IsFinished() {
 void DriveToHeading::End() {
 	// Kill the motors
 	Robot::driveMotors->Stop();
+#ifdef OUTPUT
 	std::cout << "COM END " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
+#endif
 }
 
 // Called when another command which requires one or more of the same
@@ -60,5 +62,7 @@ void DriveToHeading::End() {
 void DriveToHeading::Interrupted() {
 	// Kill the motors
 	Robot::driveMotors->Stop();
+#ifdef OUTPUT
 	std::cout << "COM END " << "drive " << " Heading " << RobotMap::timer->Get() << "\n";
+#endif
 }

@@ -22,7 +22,6 @@
 
 
 DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
-	std::cout << "Begun init drive motors\n";
 	for (int i=0; i < 4; i++) {
 		scs[i] = RobotMap::driveMotorsSCs[i];
 		encoders[i] = RobotMap::driveMotorsEncoders[i];
@@ -42,8 +41,10 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
     driveMode = cPIDController::DIRECT;
     SetGyroMode(cPIDController::DIRECT);
     gyroOutput = RobotMap::gyroControllerOutput;
+    gyroName = new char[5];
+	strcpy(gyroName,"gyro");
 #ifdef OUTPUT
-	headingCont->LogData(true,"gyro");
+	headingCont->LogData(true,gyroName);
 #endif
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
 	lim = RobotMap::driveMotorsLimits;

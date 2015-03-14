@@ -29,7 +29,9 @@ void LinearSysPosition::Initialize() {
 	sys->controller->Reset(sys->encoder->GetDistance());
 	sys->SetSetpoint(position);
 	inPosition = false;
+#ifdef OUTPUT
 	std::cout << "COM START " << sys->name << " Pos " << RobotMap::timer->Get() << "\n";
+#endif
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -58,12 +60,16 @@ bool LinearSysPosition::IsFinished() {
 // Called once after isFinished returns true
 void LinearSysPosition::End() {
 	sys->Stop();
+#ifdef OUTPUT
 	std::cout << "COM END " << sys->name << " Pos " << RobotMap::timer->Get() << "\n";
+#endif
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void LinearSysPosition::Interrupted() {
 	sys->Stop();
-	std::cout << "COM INT " << sys->name << " Pos " << RobotMap::timer->Get() << "\n";
+#ifdef OUTPUT
+	std::cout << "COM END " << sys->name << " Pos " << RobotMap::timer->Get() << "\n";
+#endif
 }

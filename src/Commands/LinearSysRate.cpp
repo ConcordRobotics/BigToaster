@@ -22,7 +22,9 @@ void LinearSysRate::Initialize() {
 	// Reset the controller to target the current position
 	sys->controller->Reset(sys->encoder->GetDistance());
 	sys->SetSetpoint(rate);
+#ifdef OUTPUT
 	std::cout << "COM START " << sys->name << " Rate " << RobotMap::timer->Get() << "\n";
+#endif
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -40,12 +42,16 @@ bool LinearSysRate::IsFinished() {
 // Called once after isFinished returns true
 void LinearSysRate::End() {
 	sys->Stop();
+#ifdef OUTPUT
 	std::cout << "COM END " << sys->name << " Rate " << RobotMap::timer->Get() << "\n";
+#endif
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void LinearSysRate::Interrupted() {
 	sys->Stop();
-	std::cout << "COM INT " << sys->name << " Rate " << RobotMap::timer->Get() << "\n";
+#ifdef OUTPUT
+	std::cout << "COM END " << sys->name << " Rate " << RobotMap::timer->Get() << "\n";
+#endif
 }
