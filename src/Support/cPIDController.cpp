@@ -12,8 +12,8 @@
 #include <sstream>
 #include <iomanip>
 
-double cPIDController::sensAlpha = 0.75;
-double cPIDController::setAlpha = 0.75;
+double cPIDController::sensAlpha = 0.0;
+double cPIDController::setAlpha = 0.0;
 
 cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput, float periodIn) {
 	pidParams = params;
