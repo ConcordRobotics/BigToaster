@@ -101,11 +101,11 @@ OI::OI() {
 	gyroMedButton->WhenPressed(new SetGyroPower(0.6));
 	gyroHighButton = new JoystickButton(joystick1, 8);
 	gyroHighButton->WhenPressed(new SetGyroPower(1.0));
-	driveLoButton = new JoystickButton(joystick1, 12);
+	driveLoButton = new JoystickButton(joystick1, 11);
 	driveLoButton->WhenPressed(new SetDrivePower(0.3));
-	driveMedButton = new JoystickButton(joystick1, 10);
+	driveMedButton = new JoystickButton(joystick1, 9);
 	driveMedButton->WhenPressed(new SetDrivePower(0.6));
-	driveHighButton = new JoystickButton(joystick1, 8);
+	driveHighButton = new JoystickButton(joystick1, 7);
 	driveHighButton->WhenPressed(new SetDrivePower(1.0));
 
 #ifdef DEBUG
