@@ -64,8 +64,8 @@ void Lift::EnforceLimits() {
 	int atBottom = lowerSwitch->Get();
 	int atTop = upperSwitch->Get();
 	
-	SmartDashboard::PutNumber("LiftUpper",double(upperSwitch->Get()));
-	SmartDashboard::PutNumber("LiftLower",double(lowerSwitch->Get()));
+	SmartDashboard::PutNumber("LiftUpper",double(atTop));
+	SmartDashboard::PutNumber("LiftLower",double(atBottom));
 	// Reset the encoder if it has hit the bottom
 // To Do Re-enable Reset once limit switches verified.
 	/*

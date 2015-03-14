@@ -38,50 +38,44 @@ OI::OI() {
     float eGain[3] = {0.25, 0.25, 0.25};
 	joystick1 = new AdvancedJoystick(0, deadband, eGain);
 	joystick2 = new Joystick(1);
-	//std::cout << "Starting OI\n";
+#ifdef DEBUG
+	std::cout << "Starting OI\n";
+#endif
 
 	// Positions for lift and claw are in a percent of the total range in case the ranges
 	// shift due to encoder error, or bad initial starting position
 	RaiseLiftRateButton = new JoystickButton(joystick2, 1);
 	RaiseLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, 10.0));
-	//SmartDashboard::PutData("RaiseLiftRate", new LinearSysRate(Robot::lift,Robot::lift, 10.0));
+
 
 	LowerLiftRateButton = new JoystickButton(joystick2, 2);
 	LowerLiftRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -10.0));
-	//SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
+
 
 	// Positions for lift and claw are in a percent of the total range in case the ranges
 	// shift due to encoder error, or bad initial starting position
 	RaiseLiftFastRateButton = new JoystickButton(joystick2, 4);
 	RaiseLiftFastRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, 20.0));
-	//SmartDashboard::PutData("RaiseLiftRate", new LinearSysRate(Robot::lift,Robot::lift, 10.0));
+	SmartDashboard::PutData("RaiseLiftFast", new LinearSysRate(Robot::lift,Robot::lift, 20.0));
 
 	LowerLiftFastRateButton = new JoystickButton(joystick2, 3);
 	LowerLiftFastRateButton->WhileHeld(new LinearSysRate(Robot::lift,Robot::lift, -20.0));
-	//SmartDashboard::PutData("LowerLiftRate", new LinearSysRate(Robot::lift,Robot::lift,-10.0));
+	SmartDashboard::PutData("LowerLiftFast", new LinearSysRate(Robot::lift,Robot::lift, -20.0));
 
 	OpenClawRateButton = new JoystickButton(joystick2, 5);
 	OpenClawRateButton->WhileHeld(new ClawRate(0.8));
+	SmartDashboard::PutData("CloseClawRate", new ClawRate(1.0));
 
-	//OpenClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw, 0.5));
-	SmartDashboard::PutData("OpenClawRate", new LinearSysRate(Robot::claw,Robot::claw, 0.5));
-//
 	CloseClawRateButton = new JoystickButton(joystick2, 6);
 	CloseClawRateButton->WhileHeld(new ClawRate(-0.8));
-	//CloseClawRateButton->WhileHeld(new LinearSysRate(Robot::claw,Robot::claw,-0.5));
-	SmartDashboard::PutData("CloseClawRate", new LinearSysRate(Robot::claw,Robot::claw,-0.5));
-//
-	ClawOpenPosButton = new JoystickButton(joystick2, 7);
-	// Tolerance should turn motor off when close enough
-	ClawOpenPosButton->WhileHeld(new ClawRate(1.0));
-	//ClawOpenPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw, 0.95, 0.1));
-	SmartDashboard::PutData("ClawOpenPos", new LinearSysPosition(Robot::claw,Robot::claw,0.95, 0.1));
+	SmartDashboard::PutData("CloseClawRate", new ClawRate(-1.0));
 
-	//This should apply some force on holding objects
+	ClawOpenPosButton = new JoystickButton(joystick2, 7);
+	ClawOpenPosButton->WhileHeld(new ClawRate(1.0));
+
 	ClawClosedPosButton = new JoystickButton(joystick2, 8);
 	ClawClosedPosButton->WhileHeld(new ClawRate(-1.0));
-	//ClawClosedPosButton->WhenPressed(new LinearSysPosition(Robot::claw,Robot::claw,0.05, 0.1));
-	SmartDashboard::PutData("ClawClosedPos", new LinearSysPosition(Robot::claw,Robot::claw,0.05, 0.1));
+
 
 	// Setting Drive motor mode M=Manual, P=PID, First value is gyro, second is drive motors
 	MMDriveButton = new JoystickButton(joystick1, 5);
@@ -96,32 +90,11 @@ OI::OI() {
 	PPDriveButton = new JoystickButton(joystick1, 4);
 	PPDriveButton->WhenPressed(new DriveInTelop(cPIDController::RATE, cPIDController::RATE, 2.0));
 
+#ifdef DEBUG
+	std::cout << "OI init complete\n";
+#endif
 
-	//char name[] = "liftp.auto";
-	//SmartDashboard::PutData("AutotuneLiftPos", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
-	//			RobotMap::liftPositionController, RobotMap::liftEncoder, name ));
-//	strcpy(name,"liftr.auto");
-//	SmartDashboard::PutData("AutotuneLiftRate", new AutotunePID(Robot::lift, 30.0, 10.0, 15.0,
-//				RobotMap::liftRateController, RobotMap::liftEncoder, name ));
-//	strcpy(name,"clawp.auto");
-//	SmartDashboard::PutData("AutotuneClawPos", new AutotunePID(Robot::claw, 0.5,0.3, 0.5,
-//				RobotMap::clawPositionController, RobotMap::clawEncoder, name ));
-//	strcpy(name,"clawr.auto");
-//	SmartDashboard::PutData("AutotuneClawRate", new AutotunePID(Robot::claw, 0.5,0.3, 0.5,
-//				RobotMap::clawRateController, RobotMap::clawEncoder, name ));
-//	strcpy(name,"drive.auto");
-//	SmartDashboard::PutData("AutotuneDrive", new AutotunePIDv(Robot::driveMotors, 0.0,10.0, 10.0,
-//				RobotMap::driveMotorsControllers, RobotMap::driveMotorsEncoders, RobotMap::driveMotorsNames ));
-//	SmartDashboard::PutData("Autonomous Command", new AutonomousCommand());
-	//SmartDashboard::PutData("DriveInTelopGyroOff", new DriveInTelop(cPIDController::DIRECT));
-	//SmartDashboard::PutData("DriveInTelopGyroRate", new DriveInTelop(cPIDController::RATE));
-    //SmartDashboard::PutData("TestDrive", new TestDrive());
-
-    //std::cout << "Done with OI\n";
-    // END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=CONSTRUCTORS
 }
-
-// BEGIN AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=FUNCTIONS
 
 AdvancedJoystick* OI::getJoystick1() {
 	return joystick1;
@@ -130,4 +103,4 @@ AdvancedJoystick* OI::getJoystick1() {
 Joystick* OI::getJoystick2() {
 	return joystick2;
 }
-    // END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=FUNCTIONS
+

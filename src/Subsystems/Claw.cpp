@@ -25,8 +25,10 @@ Claw::Claw() : Subsystem("Claw") {
 	positionGains = RobotMap::clawPositionGains;
 	lim = RobotMap::clawLimits;
 	name = new char[5];
+#ifdef OUTPUT
 	strcpy(name,"claw");
 	controller->LogData(true,name);
+#endif
 	Stop();
 }
 
@@ -62,7 +64,7 @@ void Claw::EnforceLimits() {
 		lim->pMax = 0.1;
 		lim->pMin = lim->pMax - lim->pRange;
 	}
-	return;
+	/*return;
 	// Following code not active
 	double penalty = 1.0;
 	if (mode == cPIDController::RATE) {
@@ -76,4 +78,5 @@ void Claw::EnforceLimits() {
 			setPoint = setPoint*penalty;
 		}
 	}
+	*/
 }
