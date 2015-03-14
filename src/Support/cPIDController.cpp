@@ -12,15 +12,15 @@
 #include <sstream>
 #include <iomanip>
 
-double cPIDController::PIDSampleTime = 0.002;
 double cPIDController::sensAlpha = 0.75;
 double cPIDController::setAlpha = 0.75;
 
-cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput) {
+cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput, float periodIn) {
 	pidParams = params;
 	lim = pLim;
 	pidSource = pSource;
 	pidOutput = pOutput;
+	period = periodIn;
 	// Initialize default values
 	timer = RobotMap::timer;
 	double tempTime = timer->Get();
@@ -81,7 +81,7 @@ double cPIDController::UpdateController(double curOutput) {
 	double t = timer->Get();
 	// Only iterate if we are hitting our sample rate.  Prevents noise
 	// in the derivatives
-	if (t - time[iN] < PIDSampleTime) return curOutput;
+	if (t - time[iN] < period) return output;
 
 	// Advance the iNex, with mod to loop it
 	iNM2 = iNM1;
@@ -158,8 +158,8 @@ void cPIDController::Reset( double setIn) {
 		dSensDt[k] = 0.0;
 	}
 	time[iN] = timer->Get();
-	time[iNM1] = time[iN] - PIDSampleTime;
-	time[iNM2] = time[iNM1] - PIDSampleTime;
+	time[iNM1] = time[iN] - period;
+	time[iNM2] = time[iNM1] - period;
 }
 
 void cPIDController::SetMode(int modeIn) {

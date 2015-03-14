@@ -15,7 +15,7 @@ private:
 public:
 	cPIDOutput();
 	float Get(void);
-	void PIDWrite (float speed);
+	void PIDWrite (float out);
 };
 #endif
 

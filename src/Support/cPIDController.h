@@ -40,6 +40,7 @@ private:
 	double d = 0;
 	double f = 0;
 	double rate = 0.0;
+	float period;
 	PIDSource* pidSource;
 	PIDOutput* pidOutput;
 	Timer* timer;
@@ -59,7 +60,7 @@ public:
 	double UpdateController(double curOutput);
     void OutputToDashboard(std::string controllerName);
     void SetRanges(float setRangeIn[2], float dsdtRangeIn[2], float outRangeIn[2]);
-    cPIDController(PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput);
+    cPIDController(PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput, float periodIn = 0.05);
     void SetPIDParams(PIDParams* params);
     void Reset(double setIn);
     void SetMode(int modeIn);
