@@ -20,10 +20,16 @@
  *
  * @author ExampleAuthor
  */
-class LinearHoldPosition: public LinearSysPosition {
+class LinearHoldPosition : public Command {
+protected:
+	LinearSystem* sys;
 public:
 	LinearHoldPosition(Subsystem* sysIn,  LinearSystem* linSys);
 	virtual void Initialize();
+	virtual void Execute();
+	virtual bool IsFinished();
+	virtual void End();
+	virtual void Interrupted();
 };
 
 #endif

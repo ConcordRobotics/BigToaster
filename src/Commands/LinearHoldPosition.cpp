@@ -9,18 +9,46 @@
 // it from being updated in the future.
 #include "Commands/LinearHoldPosition.h"
 
-LinearHoldPosition::LinearHoldPosition(Subsystem* sysIn, LinearSystem* linSys)
-                  : LinearSysPosition(sysIn, linSys, 0.0, -1.0) {
+
+LinearHoldPosition::LinearHoldPosition(Subsystem* sysIn, LinearSystem* linSys) {
+	// Use requires() here to declare subsystem dependencies
+	Requires(sysIn);
+	sys = linSys;
 }
 
 
 // Called just before this Command runs the first time
 void LinearHoldPosition::Initialize() {
 	sys->SetMode(cPIDController::POSITION);
-	position = sys->encoder->GetDistance();
-	sys->controller->Reset(position);
-	sys->SetSetpoint(position);
 #ifdef OUTPUT
 	std::cout << "COM START " << sys->name << " Hold " << RobotMap::timer->Get() << "\n";
+#endif
+}
+
+// Called repeatedly when this Command is scheduled to run
+void LinearHoldPosition::Execute() {
+	sys->UpdateController();
+}
+
+// Make this return true when this Command no longer needs to run execute()
+bool LinearHoldPosition::IsFinished() {
+	// Require it to be in position for one second before it is flagged as done
+	return false;
+}
+
+// Called once after isFinished returns true
+void LinearHoldPosition::End() {
+	sys->Stop();
+#ifdef OUTPUT
+	std::cout << "COM END " << sys->name << " Pos " << RobotMap::timer->Get() << "\n";
+#endif
+}
+
+// Called when another command which requires one or more of the same
+// subsystems is scheduled to run
+void LinearHoldPosition::Interrupted() {
+	sys->Stop();
+#ifdef OUTPUT
+	std::cout << "COM END " << sys->name << " Pos " << RobotMap::timer->Get() << "\n";
 #endif
 }
