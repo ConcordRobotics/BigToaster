@@ -16,6 +16,8 @@
 // Global data
 float RobotMap::MotorWaitTime = 0.002; // 5ms
 Timer* RobotMap::timer = NULL;
+float RobotMap::driveMotorsDrivePower = 1.0;
+float RobotMap::driveMotorsGyroPower = 0.6;
 
 // Data for Robot Drive system
 SpeedController *RobotMap::dmSCs[4] = {NULL, NULL, NULL, NULL};
@@ -24,6 +26,7 @@ Encoder *RobotMap::driveMotorsEncoders[4] = {NULL, NULL, NULL, NULL};
 cPIDController* RobotMap::driveMotorsControllers[4] = {NULL, NULL, NULL, NULL};
 PIDParams* RobotMap::driveMotorsRateGains = NULL;
 ControllerLimits* RobotMap::driveMotorsLimits = NULL;
+ControllerLimits* RobotMap::driveMotorsAbsLimits = NULL;
 // ToDo Calibrate distance per rev
 double RobotMap::distPerRev = 3.14159*8.0/12.0; // 8" wheels
 
@@ -39,6 +42,7 @@ float RobotMap::driveMotorsDPP[4] = {0.00419, 0.00433, 0.004, 0.004};
 Gyro* RobotMap::gyro = NULL;
 cPIDController* RobotMap::gyroController = NULL;
 ControllerLimits* RobotMap::gyroLimits = NULL;
+ControllerLimits* RobotMap::gyroAbsLimits = NULL;
 PIDParams* RobotMap::gyroRateGains = NULL;
 PIDParams* RobotMap::gyroPositionGains = NULL;
 cPIDOutput* RobotMap::gyroControllerOutput = NULL;
@@ -82,9 +86,10 @@ void RobotMap::init() {
 	timer = new Timer();
 	timer->Start();
 
-	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.0, 0.1);
+	driveMotorsRateGains = new PIDParams(0.5, 0.0, 0.0, 1.0);
 	// Set large position limits since there is no real limit
 	driveMotorsLimits = new ControllerLimits(-1.0E30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
+	driveMotorsAbsLimits = new ControllerLimits(-1.0E30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 	// Loop over motors to initialize Drive Motor data
 	for (int i = 0; i < 4; i++) {
 			dmSCs[i] = new Talon(driveMotorsPWMs[i]);
@@ -93,7 +98,8 @@ void RobotMap::init() {
 					driveMotorsEncReversed[i], Encoder::k4X);
 			driveMotorsEncoders[i]->SetDistancePerPulse(driveMotorsDPP[i]);
 			driveMotorsEncoders[i]->SetPIDSourceParameter(Encoder::kDistance);
-			driveMotorsEncoders[i]->SetSamplesToAverage(127);
+			// ToDo should the encoder have less averaging?
+			driveMotorsEncoders[i]->SetSamplesToAverage(16);
 			driveMotorsControllers[i] = new cPIDController(driveMotorsRateGains, driveMotorsLimits,
 					driveMotorsEncoders[i], driveMotorsSCs[i]);
 			lw->AddActuator(driveMotorsNames[i], "SpeedController", (Talon*) dmSCs[i]);
@@ -110,9 +116,10 @@ void RobotMap::init() {
 		gyro->Reset();
 		// No real limit for the gyros since angles wrap past 360 degrees
 		// Should implement continuous mode for the controller
-		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -20.0, 20.0, -0.6, 0.6);
-		gyroRateGains = new PIDParams(0.05, 0.0, 0.0, 1.0);
-		gyroPositionGains = new PIDParams(0.05, 2.0, 0.0, 1.0);
+		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
+		gyroAbsLimits = new ControllerLimits(-1.0E-30, 1.0E30, -30.0, 30.0, -1.0, 1.0);
+		gyroRateGains = new PIDParams(0.1, 0.0, 0.0, 1.0);
+		gyroPositionGains = new PIDParams(0.1, 2.0, 0.0, 1.0);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 
@@ -135,8 +142,8 @@ void RobotMap::init() {
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 		// The Controller
 			liftLimits = new ControllerLimits(-1.0, 50.0, -20.0, 20.0, -1.0, 1.0);
-			liftPositionGains = new PIDParams(0.1, 1.1, 0.2, 0.1);
-			liftRateGains = new PIDParams(0.1, 0.0, 0.2, 0.1);
+			liftPositionGains = new PIDParams(0.1, 1.0, 0.2, 0.1);
+			liftRateGains = new PIDParams(0.1, 1.0, 0.2, 0.1);
 			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftCSC);
 			liftLowerSwitch = new DigitalInput(16);
 			liftUpperSwitch = new DigitalInput(24);

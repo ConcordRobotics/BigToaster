@@ -9,22 +9,25 @@
 // it from being updated in the future.
 
 
-#ifndef DRIVEINTELOP_H
-#define DRIVEINTELOP_H
+#ifndef SETGYROPOWER_H
+#define SETGYROPOWER_H
 
 
 #include "Commands/Subsystem.h"
+#include "Subsystems/DriveMotors.h"
 #include "../Robot.h"
-#include "Support/cPIDController.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class DriveInTelop: public Command {
+class SetGyroPower: public Command {
+private:
+	float gyroPower;
+	bool powerSet = false;
 public:
-	DriveInTelop();
+	SetGyroPower(float gyroPowerIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

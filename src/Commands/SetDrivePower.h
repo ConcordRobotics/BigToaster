@@ -9,22 +9,25 @@
 // it from being updated in the future.
 
 
-#ifndef DRIVEINTELOP_H
-#define DRIVEINTELOP_H
+#ifndef SETDRIVEPOWER_H
+#define SETDRIVEPOWER_H
 
 
 #include "Commands/Subsystem.h"
+#include "Subsystems/DriveMotors.h"
 #include "../Robot.h"
-#include "Support/cPIDController.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class DriveInTelop: public Command {
+class SetDrivePower: public Command {
+private:
+	float drivePower;
+	bool powerSet = false;
 public:
-	DriveInTelop();
+	SetDrivePower(float drivePowerIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

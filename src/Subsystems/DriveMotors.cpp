@@ -22,35 +22,41 @@
 
 
 DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
-	for (int i=0; i < 4; i++) {
-		scs[i] = RobotMap::driveMotorsSCs[i];
-		encoders[i] = RobotMap::driveMotorsEncoders[i];
-		controllers[i] = RobotMap::driveMotorsControllers[i];
-		controllers[i]->SetMode(cPIDController::DIRECT);
-		controllers[i]->SetRate(0.0);
-		scs[i]->Set(0.0);
-#ifdef OUTPUT
-		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
-#endif
-		output[i] = 0.0;
-	}
+	// Set up pointers
 	gyro = RobotMap::gyro;
 	gyro->Reset();
 	headingCont = RobotMap::gyroController;
-    gyroMode = cPIDController::DIRECT;
-    driveMode = cPIDController::DIRECT;
-    SetGyroMode(cPIDController::DIRECT);
+    
     gyroOutput = RobotMap::gyroControllerOutput;
     gyroName = new char[5];
 	strcpy(gyroName,"gyro");
 #ifdef OUTPUT
 	headingCont->LogData(true,gyroName);
+#endif    
+    // Set default modes
+    gyroMode = cPIDController::DIRECT;
+    driveMode = cPIDController::DIRECT;
+    SetGyroMode(cPIDController::DIRECT);
+    SetDriveMode(cPIDController::DIRECT);
+	for (int i=0; i < 4; i++) {
+		scs[i] = RobotMap::driveMotorsSCs[i];
+		encoders[i] = RobotMap::driveMotorsEncoders[i];
+		controllers[i] = RobotMap::driveMotorsControllers[i];
+		controllers[i]->SetRate(0.0);
+#ifdef OUTPUT
+		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 #endif
+		output[i] = 0.0;
+	}
+
+	//Set power from RobotMap
+	drivePower = RobotMap::driveMotorsDrivePower;
+	gyroPower = RobotMap::driveMotorsGyroPower;
+	SetGyroPower(gyroPower);
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
 	lim = RobotMap::driveMotorsLimits;
 	// Since mecanum drive can have x=1, y=1, z=1
 	// scale the rate to be < 1/3 of the max rate
-	rateScale = 0.3*lim->rMax;
 	Stop();
 }
 
@@ -61,7 +67,7 @@ void DriveMotors::SetGyroMode(int modeIn) {
 		headingCont->SetPIDParams(RobotMap::gyroRateGains);
 	} else if (gyroMode == cPIDController::POSITION) {
 		headingCont->SetPIDParams(RobotMap::gyroPositionGains);
-	}
+	} else headingCont->SetPIDParams(RobotMap::gyroRateGains);
 }
 
 void DriveMotors::SetDriveMode(int modeIn) {
@@ -73,7 +79,7 @@ void DriveMotors::SetDriveMode(int modeIn) {
 
 void DriveMotors::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new DriveInTelop(cPIDController::DIRECT, cPIDController::RATE));
+	SetDefaultCommand(new DriveInTelop());
 
 }
 
@@ -82,14 +88,21 @@ void DriveMotors::SetHeadingTarget(float headingTargetIn ) {
 }
 
 void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
+	// Inputs will range from -1 to 1
 	float x,y,z;
-	x = dx;
-	y = dy;
-	z = dz;
-
+	x = drivePower*dx;
+	y = drivePower*dy;
+	z = gyroPower*dz;
+    // Scale power to prevent clipping
+	float mag = std::abs(x) + std::abs(y) + std::abs(z);
+	if (mag > 1.0) {
+		x = x/mag;
+		y = y/mag;
+		z = z/mag;
+	}
 
 	 if (gyroMode == cPIDController::RATE) {
-		 headingCont->SetRate(z*RobotMap::gyroLimits->rMax);
+		 headingCont->SetRate(z*RobotMap::gyroAbsLimits->rMax);
 		 headingCont->UpdateController(gyroOutput->Get());
 	 } else if (gyroMode == cPIDController::POSITION) {
 		 /*float curHeading = gyro->GetAngle();
@@ -104,41 +117,54 @@ void DriveMotors::ArcadeDrive (float dx, float dy, float dz) {
 		 headingCont->SetSetpoint(headingTarget);
 		 headingCont->UpdateController(gyroOutput->Get());
 	 } else if (gyroMode == cPIDController::DIRECT){
+		 // Scale the max output by the gyro output limits
 		 headingCont->SetFeedForward(z);
 		 headingCont->UpdateController(0.0);
 	 }
 	 // Get the output from the controller
-	 z = gyroOutput->Get();
-	 headingCont->OutputToDashboard("gyro");
-
+	z = gyroOutput->Get();
+	headingCont->OutputToDashboard("gyro");
+    double rateScale = RobotMap::driveMotorsAbsLimits->rMax;
     double wheelSpeeds[4];
-    wheelSpeeds[0] = rateScale*double(x + y + z);
-    wheelSpeeds[1] = rateScale*double(-x + y - z);
-    wheelSpeeds[2] = rateScale*double(-x + y + z);
-    wheelSpeeds[3] = rateScale*double(x + y - z);
+    wheelSpeeds[0] = double(x + y + z);
+    wheelSpeeds[1] = double(-x + y - z);
+    wheelSpeeds[2] = double(-x + y + z);
+    wheelSpeeds[3] = double(x + y - z);
 
     for (int i = 0; i < 4; i++) {
-    	// ToDo hard code the 15.
-    	controllers[i]->SetRate(wheelSpeeds[i]);
     	// ToDo Remove once encoders enable
+    	controllers[i]->SetRate(rateScale*wheelSpeeds[i]);
     	if (driveMode==cPIDController::DIRECT) {
     		controllers[i]->SetFeedForward(wheelSpeeds[i]);
     		output[i]=controllers[i]->UpdateController(0.0);
     	} else {
-    		output[i]=controllers[i]->UpdateController(output[i]);
+    		output[i]=controllers[i]->UpdateController(scs[i]->Get());
     	}
     	controllers[i]->OutputToDashboard(RobotMap::driveMotorsNames[i]);
-    	//RobotMap::driveMotorsSCs[i]->SafePWM::SetExpiration(1.0);
     }
-    bool inDeadband = true;
+    /*
+     * The encoders should handle detecting if stopped.
+	bool inDeadband = true;
     for (int i = 0; i < 4; i++) {
     	if (std::abs(controllers[i]->GetRate()) > rateDeadband) inDeadband = false;
     	if (std::abs(wheelSpeeds[i]) > rateDeadband) inDeadband = false;
     }
     if (inDeadband) Stop();
+    */
     // This should not be necessary for a command based robot?
     //Wait(RobotMap::MotorWaitTime); // wait to avoid hogging CPU cycles
     //Stop();
+}
+
+void DriveMotors::SetDrivePower(float drivePowerIn ) {
+   drivePower = drivePowerIn;
+}
+
+void DriveMotors::SetGyroPower(float gyroPowerIn ) {
+   gyroPower = gyroPowerIn;
+   // Set the rate limit since the z scale has no effect on the position controller
+   RobotMap::gyroLimits->rMax = gyroPower*RobotMap::gyroAbsLimits->rMax;
+   RobotMap::gyroLimits->rMin = gyroPower*RobotMap::gyroAbsLimits->rMin;
 }
 
 void DriveMotors::Stop() {

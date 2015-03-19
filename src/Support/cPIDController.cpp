@@ -12,15 +12,15 @@
 #include <sstream>
 #include <iomanip>
 
-double cPIDController::PIDSampleTime = 0.002;
-double cPIDController::sensAlpha = 0.75;
-double cPIDController::setAlpha = 0.75;
+double cPIDController::sensAlpha = 0.0;
+double cPIDController::setAlpha = 0.0;
 
-cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput) {
+cPIDController::cPIDController (PIDParams* params, ControllerLimits* pLim, PIDSource* pSource, PIDOutput* pOutput, float periodIn) {
 	pidParams = params;
 	lim = pLim;
 	pidSource = pSource;
 	pidOutput = pOutput;
+	period = periodIn;
 	// Initialize default values
 	timer = RobotMap::timer;
 	double tempTime = timer->Get();
@@ -81,7 +81,7 @@ double cPIDController::UpdateController(double curOutput) {
 	double t = timer->Get();
 	// Only iterate if we are hitting our sample rate.  Prevents noise
 	// in the derivatives
-	if (t - time[iN] < PIDSampleTime) return curOutput;
+	if (t - time[iN] < period) return output;
 
 	// Advance the iNex, with mod to loop it
 	iNM2 = iNM1;
@@ -91,7 +91,7 @@ double cPIDController::UpdateController(double curOutput) {
 	// Get time step information
 	time[iN] = t;
 	double delT = time[iN] - time[iNM1];
-
+    delT = period;
 	// Smooth the setpoint
 	setPoint[iN] = (1.0 - setAlpha)*setPoint[iN] + setAlpha*setPoint[iNM1];
 
@@ -112,8 +112,8 @@ double cPIDController::UpdateController(double curOutput) {
 	double dSetDt = (setPoint[iN] - setPoint[iNM1])/delT;
 	dSensDt[iN] = (sensVal[iN] - sensVal[iNM1])/delT;
 	// Second derivative of the sensor values
-	double delTMid = 0.5*(time[iN] - time[iNM2]);
-	double ddSensDtsq = (dSensDt[iN] - dSensDt[iNM1])/delTMid;
+	//double delTMid = 0.5*(time[iN] - time[iNM2]);
+	double ddSensDtsq = (dSensDt[iN] - dSensDt[iNM1])/period;
 	// For derivative term, use sensor value rather than error to prevent jumps
 	// Could filter this but better to filter at the sensor level
 
@@ -126,7 +126,10 @@ double cPIDController::UpdateController(double curOutput) {
 	// changes
 	d = - delT*(pidParams->pGain)*(pidParams->dGain)*ddSensDtsq;
 	// Now set the output based on the mode
-	if (mode == OFF) return 0.0;
+	if (mode == OFF) {
+		output = 0.0;
+	    return output;
+	}
 	output = curOutput;
 	if (mode == DIRECT) {
 		// For direct mode, output set directly through feed-forward term;
@@ -158,8 +161,8 @@ void cPIDController::Reset( double setIn) {
 		dSensDt[k] = 0.0;
 	}
 	time[iN] = timer->Get();
-	time[iNM1] = time[iN] - PIDSampleTime;
-	time[iNM2] = time[iNM1] - PIDSampleTime;
+	time[iNM1] = time[iN] - period;
+	time[iNM2] = time[iNM1] - period;
 }
 
 void cPIDController::SetMode(int modeIn) {

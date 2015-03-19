@@ -12,8 +12,8 @@ cPIDOutput::cPIDOutput () {
 
 float cPIDOutput::Get(void) {
 	return output;
-
 }
+
 void cPIDOutput::PIDWrite(float out) {
 	output = out;
 }

@@ -9,22 +9,25 @@
 // it from being updated in the future.
 
 
-#ifndef DRIVEINTELOP_H
-#define DRIVEINTELOP_H
+#ifndef SETDRIVEMODE_H
+#define SETDRIVEMODE_H
 
 
 #include "Commands/Subsystem.h"
+#include "Subsystems/DriveMotors.h"
 #include "../Robot.h"
-#include "Support/cPIDController.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class DriveInTelop: public Command {
+class SetDriveMode: public Command {
+private:
+	int driveMode;
+	bool modeSet = false;
 public:
-	DriveInTelop();
+	SetDriveMode(int driveModeIn);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
