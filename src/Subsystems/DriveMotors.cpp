@@ -22,30 +22,33 @@
 
 
 DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
-	for (int i=0; i < 4; i++) {
-		scs[i] = RobotMap::driveMotorsSCs[i];
-		encoders[i] = RobotMap::driveMotorsEncoders[i];
-		controllers[i] = RobotMap::driveMotorsControllers[i];
-		controllers[i]->SetMode(cPIDController::DIRECT);
-		controllers[i]->SetRate(0.0);
-		scs[i]->Set(0.0);
-#ifdef OUTPUT
-		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
-#endif
-		output[i] = 0.0;
-	}
+	// Set up pointers
 	gyro = RobotMap::gyro;
 	gyro->Reset();
 	headingCont = RobotMap::gyroController;
-    gyroMode = cPIDController::DIRECT;
-    driveMode = cPIDController::DIRECT;
-    SetGyroMode(cPIDController::DIRECT);
+    
     gyroOutput = RobotMap::gyroControllerOutput;
     gyroName = new char[5];
 	strcpy(gyroName,"gyro");
 #ifdef OUTPUT
 	headingCont->LogData(true,gyroName);
+#endif    
+    // Set default modes
+    gyroMode = cPIDController::DIRECT;
+    driveMode = cPIDController::DIRECT;
+    SetGyroMode(cPIDController::DIRECT);
+    SetDriveMode(cPIDController::DIRECT);
+	for (int i=0; i < 4; i++) {
+		scs[i] = RobotMap::driveMotorsSCs[i];
+		encoders[i] = RobotMap::driveMotorsEncoders[i];
+		controllers[i] = RobotMap::driveMotorsControllers[i];
+		controllers[i]->SetRate(0.0);
+#ifdef OUTPUT
+		controllers[i]->LogData(true,RobotMap::driveMotorsNames[i]);
 #endif
+		output[i] = 0.0;
+	}
+
 	//Set power from RobotMap
 	drivePower = RobotMap::driveMotorsDrivePower;
 	gyroPower = RobotMap::driveMotorsGyroPower;
@@ -64,7 +67,7 @@ void DriveMotors::SetGyroMode(int modeIn) {
 		headingCont->SetPIDParams(RobotMap::gyroRateGains);
 	} else if (gyroMode == cPIDController::POSITION) {
 		headingCont->SetPIDParams(RobotMap::gyroPositionGains);
-	}
+	} else headingCont->SetPIDParams(RobotMap::gyroRateGains);
 }
 
 void DriveMotors::SetDriveMode(int modeIn) {

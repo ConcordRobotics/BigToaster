@@ -22,9 +22,7 @@ SetGyroMode::SetGyroMode(int gyroModeIn) {
 
 // Called just before this Command runs the first time
 void SetGyroMode::Initialize() {
-	Robot::driveMotors->SetGyroMode(gyroMode);
-	double angle = RobotMap::gyro->GetAngle();
-	RobotMap::gyroController->Reset(angle);
+	modeSet = false;
 }
 
 // Called repeatedly when this Command is scheduled to run

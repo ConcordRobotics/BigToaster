@@ -22,8 +22,7 @@ SetDrivePower::SetDrivePower(float drivePowerIn) {
 
 // Called just before this Command runs the first time
 void SetDrivePower::Initialize() {
-	Robot::driveMotors->SetDrivePower(drivePower);
-	powerSet = true;
+	powerSet = false;
 }
 
 // Called repeatedly when this Command is scheduled to run

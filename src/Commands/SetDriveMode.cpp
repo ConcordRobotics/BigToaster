@@ -22,11 +22,7 @@ SetDriveMode::SetDriveMode(int driveModeIn) {
 
 // Called just before this Command runs the first time
 void SetDriveMode::Initialize() {
-	Robot::driveMotors->SetDriveMode(driveMode);
-	for (int i = 0; i < 4; i++) {
-		Robot::driveMotors->controllers[i]->Reset(Robot::driveMotors->encoders[i]->GetDistance());
-	}
-	modeSet = true;
+	modeSet = false;
 }
 
 // Called repeatedly when this Command is scheduled to run

@@ -22,8 +22,7 @@ SetGyroPower::SetGyroPower(float gyroPowerIn) {
 
 // Called just before this Command runs the first time
 void SetGyroPower::Initialize() {
-	Robot::driveMotors->SetGyroPower(gyroPower);
-	powerSet = true;
+	powerSet = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
