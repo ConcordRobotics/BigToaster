@@ -85,6 +85,7 @@ public:
  	static PIDParams* clawPositionGains;
  	static PIDParams* clawRateGains;
 
+ 	enum autoMode {OFF, LEFT, CENTER, RIGHT};
 	static void init();
 };
 #endif

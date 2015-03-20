@@ -6,8 +6,10 @@
 
 class AutonomousCommandGroup: public CommandGroup
 {
+private:
+	int autoMode;
 public:
-	AutonomousCommandGroup();
+	AutonomousCommandGroup(int autoModeIn);
 };
 
 #endif

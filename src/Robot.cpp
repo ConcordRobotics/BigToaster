@@ -60,7 +60,12 @@ void Robot::RobotInit() {
 #ifdef DEBUG
 	std::cout << "Robot adding Autonomous\n";
 #endif
-	autonomousCommand = new AutonomousCommandGroup();
+	chooser = new SendableChooser();
+	chooser->AddDefault("Auto Off", new AutonomousCommandGroup(RobotMap::OFF));
+	chooser->AddDefault("Auto Left", new AutonomousCommandGroup(RobotMap::LEFT));
+	chooser->AddDefault("Auto Center", new AutonomousCommandGroup(RobotMap::CENTER));
+	chooser->AddDefault("Auto Right", new AutonomousCommandGroup(RobotMap::RIGHT));
+
     SmartDashboard::PutData(Scheduler::GetInstance());
     SmartDashboard::PutData(lift);
     SmartDashboard::PutData(claw);
@@ -91,6 +96,7 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
+	autonomousCommand = (Command *) chooser->GetSelected();
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 }
