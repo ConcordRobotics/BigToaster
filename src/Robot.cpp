@@ -61,9 +61,9 @@ void Robot::RobotInit() {
 	std::cout << "Robot adding Autonomous\n";
 #endif
 	chooser = new SendableChooser();
-	chooser->AddDefault("Auto Off", new AutonomousCommandGroup(RobotMap::OFF));
+	chooser->AddDefault("Auto Center", new AutonomousCommandGroup(RobotMap::CENTER));
 	chooser->AddObject("Auto Left", new AutonomousCommandGroup(RobotMap::LEFT));
-	chooser->AddObject("Auto Center", new AutonomousCommandGroup(RobotMap::CENTER));
+	chooser->AddObject("Auto Off", new AutonomousCommandGroup(RobotMap::OFF));
 	chooser->AddObject("Auto Right", new AutonomousCommandGroup(RobotMap::RIGHT));
 	SmartDashboard::PutData("Autonomous Modes", chooser);
 	
