@@ -116,6 +116,7 @@ void Robot::TeleopInit() {
 		autonomousCommand->Cancel();
 	driveMotors->SetDriveMode(cPIDController::DIRECT);
 	driveMotors->SetGyroMode(cPIDController::DIRECT);
+	driveMotors->SetGyroPower(RobotMap::driveMotorsGyroPower);
 }
 
 void Robot::TeleopPeriodic() {

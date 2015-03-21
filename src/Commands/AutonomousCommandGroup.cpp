@@ -7,17 +7,17 @@
 #include "Commands/ClawRate.h"
 #include "Commands/SetDriveMode.h"
 #include "Commands/SetGyroPower.h"
+#include "Commands/ResetGyro.h"
 
 #include "Robot.h"
 
 AutonomousCommandGroup::AutonomousCommandGroup(int autoModeIn)
 {
 	autoMode = autoModeIn;
-
+	AddSequential(new ResetGyro());
 	if (autoMode == RobotMap::OFF) return;
 
 	double angle;
-	RobotMap::gyro->Reset();
 	//Robot::driveMotors->SetDriveMode(cPIDController::DIRECT);
 	//Grip the container
 	//AddSequential(new ClawGrip(0.01));
@@ -30,7 +30,7 @@ AutonomousCommandGroup::AutonomousCommandGroup(int autoModeIn)
 	//AddParallel(new LinearHoldPosition(Robot::lift, Robot::lift));
 	angle = 90.0;
 	AddSequential(new DriveToHeading(angle, 3.0));
-	AddSequential(new DriveForward(0.6, 7.0, 0.5, angle));
+	AddSequential(new DriveForward(0.6, 7.5, 0.5, angle));
     if (autoMode == RobotMap::LEFT) {
     	angle = 180.0;
     	AddSequential(new DriveToHeading(angle, 3.0));
