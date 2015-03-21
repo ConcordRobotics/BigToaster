@@ -33,11 +33,7 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 #ifdef OUTPUT
 	headingCont->LogData(true,gyroName);
 #endif    
-    // Set default modes
-    gyroMode = cPIDController::DIRECT;
-    driveMode = cPIDController::DIRECT;
-    SetGyroMode(cPIDController::DIRECT);
-    SetDriveMode(cPIDController::DIRECT);
+
 	for (int i=0; i < 4; i++) {
 		scs[i] = RobotMap::driveMotorsSCs[i];
 		encoders[i] = RobotMap::driveMotorsEncoders[i];
@@ -48,15 +44,20 @@ DriveMotors::DriveMotors() : Subsystem("DriveMotors") {
 #endif
 		output[i] = 0.0;
 	}
-
+	lim = RobotMap::driveMotorsLimits;
 	//Set power from RobotMap
 	drivePower = RobotMap::driveMotorsDrivePower;
 	gyroPower = RobotMap::driveMotorsGyroPower;
 	SetGyroPower(gyroPower);
 	//accelerometer = RobotMap::driveMotorsAccelerometer;
-	lim = RobotMap::driveMotorsLimits;
+	
 	// Since mecanum drive can have x=1, y=1, z=1
 	// scale the rate to be < 1/3 of the max rate
+	    // Set default modes
+    gyroMode = cPIDController::DIRECT;
+    driveMode = cPIDController::DIRECT;
+    SetGyroMode(cPIDController::DIRECT);
+    SetDriveMode(cPIDController::DIRECT);
 	Stop();
 }
 

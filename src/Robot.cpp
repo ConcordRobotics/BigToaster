@@ -62,10 +62,11 @@ void Robot::RobotInit() {
 #endif
 	chooser = new SendableChooser();
 	chooser->AddDefault("Auto Off", new AutonomousCommandGroup(RobotMap::OFF));
-	chooser->AddDefault("Auto Left", new AutonomousCommandGroup(RobotMap::LEFT));
-	chooser->AddDefault("Auto Center", new AutonomousCommandGroup(RobotMap::CENTER));
-	chooser->AddDefault("Auto Right", new AutonomousCommandGroup(RobotMap::RIGHT));
-
+	chooser->AddObject("Auto Left", new AutonomousCommandGroup(RobotMap::LEFT));
+	chooser->AddObject("Auto Center", new AutonomousCommandGroup(RobotMap::CENTER));
+	chooser->AddObject("Auto Right", new AutonomousCommandGroup(RobotMap::RIGHT));
+	SmartDashboard::PutData("Autonomous Modes", chooser);
+	
     SmartDashboard::PutData(Scheduler::GetInstance());
     SmartDashboard::PutData(lift);
     SmartDashboard::PutData(claw);
