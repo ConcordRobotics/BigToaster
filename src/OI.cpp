@@ -96,11 +96,11 @@ OI::OI() {
 
 // Buttons to control speeds
 	gyroLoButton = new JoystickButton(joystick1, 12);
-	gyroLoButton->WhenPressed(new SetGyroPower(0.3));
+	gyroLoButton->WhenPressed(new SetGyroPower(0.1));
 	gyroMedButton = new JoystickButton(joystick1, 10);
-	gyroMedButton->WhenPressed(new SetGyroPower(0.6));
+	gyroMedButton->WhenPressed(new SetGyroPower(0.3));
 	gyroHighButton = new JoystickButton(joystick1, 8);
-	gyroHighButton->WhenPressed(new SetGyroPower(1.0));
+	gyroHighButton->WhenPressed(new SetGyroPower(0.6));
 	driveLoButton = new JoystickButton(joystick1, 11);
 	driveLoButton->WhenPressed(new SetDrivePower(0.3));
 	driveMedButton = new JoystickButton(joystick1, 9);
