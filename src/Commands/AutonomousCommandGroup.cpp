@@ -27,7 +27,7 @@ AutonomousCommandGroup::AutonomousCommandGroup(int autoModeIn)
 	AddSequential(new SetGyroPower(1.0));
 	// Lift the container
 	AddSequential( new LinearSysPosition(Robot::lift, Robot::lift, 0.30, 0.10));
-	//AddParallel(new LinearHoldPosition(Robot::lift, Robot::lift));
+	AddParallel(new LinearHoldPosition(Robot::lift, Robot::lift));
 	angle = 90.0;
 	AddSequential(new DriveToHeading(angle, 3.0));
 	AddSequential(new DriveForward(0.6, 7.5, 0.5, angle));
