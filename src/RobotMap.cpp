@@ -118,8 +118,8 @@ void RobotMap::init() {
 		// Should implement continuous mode for the controller
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 		gyroAbsLimits = new ControllerLimits(-1.0E-30, 1.0E30, -30.0, 30.0, -1.0, 1.0);
-		gyroRateGains = new PIDParams(0.1, 0.0, 0.0, 1.0);
-		gyroPositionGains = new PIDParams(0.1, 2.0, 0.0, 1.0);
+		gyroRateGains = new PIDParams(0.05, 0.0, 0.2, 1.0);
+		gyroPositionGains = new PIDParams(0.05, 2.0, 0.2, 1.0);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 

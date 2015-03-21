@@ -27,6 +27,7 @@ void LinearHoldPosition::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void LinearHoldPosition::Execute() {
+	sys->SetSetpoint(sys->controller->GetSetpoint());
 	sys->UpdateController();
 }
 
