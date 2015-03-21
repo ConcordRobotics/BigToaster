@@ -119,7 +119,7 @@ void RobotMap::init() {
 		gyroLimits = new ControllerLimits(-1.0E-30, 1.0E30, -15.0, 15.0, -1.0, 1.0);
 		gyroAbsLimits = new ControllerLimits(-1.0E-30, 1.0E30, -30.0, 30.0, -1.0, 1.0);
 		gyroRateGains = new PIDParams(0.05, 0.0, 0.2, 1.0);
-		gyroPositionGains = new PIDParams(0.05, 2.0, 0.2, 1.0);
+		gyroPositionGains = new PIDParams(0.05, 1.0, 0.2, 1.0);
 		gyroControllerOutput = new cPIDOutput();
 		gyroController = new cPIDController(gyroRateGains, gyroLimits, gyro, gyroControllerOutput);
 
@@ -141,7 +141,7 @@ void RobotMap::init() {
 			liftEncoder->SetPIDSourceParameter(Encoder::kDistance);
 			lw->AddSensor("Lift", "LiftEncoder", liftEncoder);
 		// The Controller
-			liftLimits = new ControllerLimits(-1.0, 50.0, -20.0, 20.0, -1.0, 1.0);
+			liftLimits = new ControllerLimits(-1.0, 55.0, -20.0, 20.0, -1.0, 1.0);
 			liftPositionGains = new PIDParams(0.1, 1.0, 0.2, 0.1);
 			liftRateGains = new PIDParams(0.1, 1.0, 0.2, 0.1);
 			liftController = new cPIDController(liftPositionGains, liftLimits, liftEncoder, liftCSC);

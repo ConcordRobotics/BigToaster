@@ -12,8 +12,8 @@
 #ifndef ROBOTMAP_H
 #define ROBOTMAP_H
 
-#define OUTPUT
-#define DEBUG
+//#define OUTPUT
+//#define DEBUG
 
 #include "WPILib.h"
 #include "Support/cEncoder.h"

@@ -42,9 +42,9 @@ void DriveToHeading::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveToHeading::IsFinished() {
-	float delHeading = RobotMap::gyro->GetAngle() - heading;
-	int nRevs = floor(delHeading/360.0);
-	delHeading = delHeading - nRevs*360.0;
+	float delHeading = std::abs(RobotMap::gyro->GetAngle() - heading);
+	//int nRevs = floor(delHeading/360.0);
+	//delHeading = delHeading - nRevs*360.0;
     return (delHeading < tol);
 }
 
