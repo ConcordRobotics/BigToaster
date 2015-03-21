@@ -114,6 +114,8 @@ void Robot::TeleopInit() {
 	// these lines or comment it out.
 	if (autonomousCommand != NULL)
 		autonomousCommand->Cancel();
+	driveMotors->SetDriveMode(cPIDController::DIRECT);
+	driveMotors->SetGyroMode(cPIDController::DIRECT);
 }
 
 void Robot::TeleopPeriodic() {
