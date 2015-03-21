@@ -83,16 +83,16 @@ OI::OI() {
 
 	// Setting Drive motor mode M=Manual, P=PID, First value is gyro, second is drive motors
 	MMDriveButton = new JoystickButton(joystick1, 5);
-	MMDriveButton->WhenPressed(new SetDriveMode(cPIDController::RATE));
+	MMDriveButton->WhileHeld(new SetDriveMode(cPIDController::RATE));
 
 	MPDriveButton = new JoystickButton(joystick1, 6);
-	MPDriveButton->WhenPressed(new SetGyroMode(cPIDController::RATE));
+	MPDriveButton->WhileHeld(new SetGyroMode(cPIDController::RATE));
 
 	PMDriveButton = new JoystickButton(joystick1, 3);
-	PMDriveButton->WhenPressed(new SetDriveMode(cPIDController::DIRECT));
+	PMDriveButton->WhileHeld(new SetDriveMode(cPIDController::DIRECT));
 
 	PPDriveButton = new JoystickButton(joystick1, 4);
-	PPDriveButton->WhenPressed(new SetGyroMode(cPIDController::DIRECT));
+	PPDriveButton->WhileHeld(new SetGyroMode(cPIDController::DIRECT));
 
 // Buttons to control speeds
 	gyroLoButton = new JoystickButton(joystick1, 12);

@@ -175,7 +175,8 @@ double cPIDController::GetRate(void) {
 
 void cPIDController::OutputToDashboard(std::string controllerName) {
 	std::ostringstream buffer;
-	buffer << "s: " << std::fixed << std::setprecision(5) << setPoint[iN];
+	buffer << "m: " << std::fixed << std::setprecision(1) << mode;
+	buffer << " s: " << std::fixed << std::setprecision(5) << setPoint[iN];
     buffer << " v: " << std::fixed << std::setprecision(5) << sensVal[iN];
     buffer << " tR: " << std::fixed << std::setprecision(5) << rate;
     buffer << " sR " << std::fixed << std::setprecision(4) << dSensDt[iN];

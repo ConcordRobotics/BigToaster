@@ -10,6 +10,7 @@ private:
 	int autoMode;
 public:
 	AutonomousCommandGroup(int autoModeIn);
+	void Cancel(void);
 };
 
 #endif

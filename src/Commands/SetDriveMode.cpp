@@ -28,9 +28,9 @@ void SetDriveMode::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void SetDriveMode::Execute() {
 	Robot::driveMotors->SetDriveMode(driveMode);
-	for (int i = 0; i < 4; i++) {
-		Robot::driveMotors->controllers[i]->Reset(Robot::driveMotors->encoders[i]->GetDistance());
-	}
+	//for (int i = 0; i < 4; i++) {
+	//	Robot::driveMotors->controllers[i]->Reset(Robot::driveMotors->encoders[i]->GetDistance());
+	//}
 	modeSet = true;
 }
 

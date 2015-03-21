@@ -172,4 +172,5 @@ void DriveMotors::Stop() {
 	for (int i = 0; i < 4; i++) {
 		scs[i]->Set(0.0);  // Could go back to inherited
 	}
+	gyroOutput->PIDWrite(0.0);
 }

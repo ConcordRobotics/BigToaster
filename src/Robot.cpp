@@ -94,6 +94,7 @@ void Robot::DisabledInit(){
 
 void Robot::DisabledPeriodic() {
 	Scheduler::GetInstance()->Run();
+	SmartDashboard::PutData("Autonomous Modes", chooser);
 }
 
 void Robot::AutonomousInit() {
