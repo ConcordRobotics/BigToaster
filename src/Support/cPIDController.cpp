@@ -174,9 +174,8 @@ double cPIDController::GetRate(void) {
 }
 
 void cPIDController::OutputToDashboard(std::string controllerName) {
-#ifndef OUTPUT
-	return;
-#endif
+#ifdef OUTPUT
+
 	std::ostringstream buffer;
 	buffer << "m: " << std::fixed << std::setprecision(1) << mode;
 	buffer << " s: " << std::fixed << std::setprecision(5) << setPoint[iN];
@@ -190,6 +189,7 @@ void cPIDController::OutputToDashboard(std::string controllerName) {
     buffer << " f: " << std::fixed << std::setprecision(4) << f;
 	std::string value = buffer.str();
 	SmartDashboard::PutString(controllerName, value);
+#endif
 }
 
 void cPIDController::LogData(bool active, char* logNameIn) {
